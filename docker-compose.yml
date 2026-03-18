@@ -10,6 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # Add this line to map your local 'sql' folder to the initialization directory:
+      - ./sql:/docker-entrypoint-initdb.d
 
   pgadmin:
     image: dpage/pgadmin4
