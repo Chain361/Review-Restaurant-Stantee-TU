@@ -1,0 +1,264 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Prompt', sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #333;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #fff;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 48px;
+    height: 48px;
+    background-color: transparent;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Neonderthaw', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    color: #000000;
+    text-shadow: 0 0 1px #000, 0 0 1px #000, 0 0 1px #000;
+    -webkit-text-stroke: 1.5px #000000;
+    padding-right: 2px;
+    padding-bottom: 2px;
+}
+
+.logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: #000;
+}
+
+.search-bar {
+    position: relative;
+    width: 400px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 45px 10px 20px;
+    border: 1px solid #a5b2c0;
+    border-radius: 30px;
+    outline: none;
+    font-size: 16px;
+    font-family: 'Prompt', sans-serif;
+}
+
+.search-bar i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a5b2c0;
+    font-size: 16px;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 6px 6px 16px;
+    border: 1px solid #333;
+    border-radius: 30px;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    font-family: 'Prompt', sans-serif;
+}
+
+.login-btn i {
+    font-size: 26px;
+    color: #333;
+}
+
+.banner {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+}
+
+.categories {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.category-item i {
+    font-size: 24px;
+    color: #333;
+}
+
+.category-item span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    flex-grow: 1;
+}
+
+.sidebar {
+    background-color: #f1f2f4;
+}
+
+.content {
+    padding: 30px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+    display: inline-block;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.rating {
+    background-color: #b92b27;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.review-count {
+    font-size: 12px;
+    color: #666;
+}
+
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid #ddd;
+    color: #555;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.footer-logo {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo .logo-icon {
+    width: 55px;
+    height: 55px;
+    background-color: transparent; 
+    border: 2px solid #000000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Neonderthaw', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 38px;
+    color: #000000;
+}
+
+.footer-logo .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+}
+
+.footer-text-light {
+    color: #888;
+}
