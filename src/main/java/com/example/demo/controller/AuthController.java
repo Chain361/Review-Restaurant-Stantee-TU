@@ -1,0 +1,42 @@
+package com.example.demo.controller;
+
+import java.util.Map;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.entity.User;
+import com.example.demo.service.JwtService;
+import com.example.demo.service.UserService; 
+
+@RestController
+@RequestMapping("/api/auth") 
+public class AuthController {
+
+    private final UserService userService;
+    private final JwtService jwtService;
+
+    public AuthController(UserService userService, JwtService jwtService) {
+        this.userService = userService;
+        this.jwtService = jwtService;
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+
+        boolean isAuthenticated = userService.authenticate(
+                request.getUsername(),
+                request.getPassword()
+        );
+
+        if (isAuthenticated) {
+            String token = jwtService.generateToken(request.getUsername());
+            return ResponseEntity.ok(Map.of(
+                    "accessToken", token
+            ));
+        }
+
+        return ResponseEntity.status(401)
+                .body(Map.of("message", "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"));
+    }
+}
