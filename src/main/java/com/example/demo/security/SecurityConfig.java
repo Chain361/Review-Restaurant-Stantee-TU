@@ -16,7 +16,7 @@ public class SecurityConfig {
         this.jwtAuthFilter = jwtAuthFilter;
     }
 
-    @Bean
+   @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
@@ -25,13 +25,13 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/places/**").authenticated()
+                .requestMatchers("/api/auth/**").permitAll() // สำหรับ Login/Register (ข้ามได้)
+                .requestMatchers("/places/**").permitAll()    // <--- แก้บรรทัดนี้จาก .authenticated() เป็น .permitAll()
                 .requestMatchers("/").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/logout").permitAll()
+                .anyRequest().authenticated()               // Path อื่นๆ ที่เหลือยังต้อง Login อยู่
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 }

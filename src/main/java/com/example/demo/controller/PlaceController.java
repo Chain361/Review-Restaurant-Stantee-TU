@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +17,8 @@ public class PlaceController {
         this.mockDataService = mockDataService;
     }
 
-    @GetMapping("/{id}")
-    public Place getPlaceByIDPlace(@PathVariable int id){
-        return mockDataService.getPlaceById(id);
+    @GetMapping("/{placeID}")
+    public Place getPlaceByIDPlace(@PathVariable int placeID){
+        return mockDataService.getPlaceById(placeID);
     }
 }
