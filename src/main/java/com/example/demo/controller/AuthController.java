@@ -45,7 +45,7 @@ public class AuthController {
         return ResponseEntity.status(401)
                 .body(Map.of("message", "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"));
     }
-    @PostMapping("/logout")
+    @PostMapping("/logout") // ต้องไปเพิ่ม ลบ token ในฝั่ง frontend (เราจะทำให้ DB ไม่ต้องเก็บ Sessions)
     public ResponseEntity<?> postMethodName() {
         String resopnseBody = "Success Logout";
         return ResponseEntity.status(HttpStatus.OK).body(resopnseBody);
