@@ -120,13 +120,10 @@ header {
 
 .categories {
     display: flex;
-    justify-content: center; 
+    justify-content: space-around;
     align-items: center;
-    padding: 15px 46px;     
-    gap: 236px;              
-    height: 120px;          
-    background: #FFFFFF;    
-    border-bottom: 1px solid #eee; 
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
 }
 
 .category-item {
@@ -136,6 +133,7 @@ header {
     gap: 10px;
     cursor: pointer;
 }
+
 .category-item i {
     font-size: 24px;
     color: #333;
