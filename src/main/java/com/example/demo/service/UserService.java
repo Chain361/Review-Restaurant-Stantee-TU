@@ -18,8 +18,6 @@ public class UserService {
                 .findFirst()
                 .orElse(null);
     }
-
-    // ✅ ใช้ plain text ก่อน
     public boolean authenticate(String username, String rawPassword) {
         User user = findByUsername(username);
 
