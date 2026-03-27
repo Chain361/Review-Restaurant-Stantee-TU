@@ -12,9 +12,7 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.JwtService;
 import com.example.demo.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
- 
+import com.example.demo.dto.RegisterRequest;
 
 
 @RestController
@@ -49,6 +47,17 @@ public class AuthController {
     public ResponseEntity<?> postMethodName() {
         String resopnseBody = "Success Logout";
         return ResponseEntity.status(HttpStatus.OK).body(resopnseBody);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        String result = userService.register(request);
+
+        if (result.equals("ชื่อผู้ใช้นี้มีอยู่แล้ว")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("message", result));
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", result));
     }
     
 }
