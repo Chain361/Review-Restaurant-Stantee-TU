@@ -2,11 +2,13 @@ package com.example.demo.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Place;
 import com.example.demo.service.MockDataService;
 
+import java.util.List;
 @RestController
 @RequestMapping("/places") 
 public class PlaceController {
@@ -21,4 +23,10 @@ public class PlaceController {
     public Place getPlaceByIDPlace(@PathVariable int placeID){
         return mockDataService.getPlaceById(placeID);
     }
+    @GetMapping("/search")
+    public List<Place> findPlaceWithSearch(@RequestParam("search") String search) {
+        return mockDataService.getAllPlaces().stream()
+            .filter(place -> place.getPlaceName().toLowerCase().contains(search.toLowerCase()))
+            .toList();
+} 
 }
