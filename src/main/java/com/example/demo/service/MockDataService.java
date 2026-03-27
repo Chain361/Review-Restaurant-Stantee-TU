@@ -48,6 +48,10 @@ public class MockDataService {
         return mockUsers;
     }
 
+    public List<Place> getAllPlaces() {
+        return mockPlaces;
+    }
+    
     public Place getPlaceById(int placeId) {
         return mockPlaces.stream()
                 .filter(p -> p.getPlaceID() == placeId)
