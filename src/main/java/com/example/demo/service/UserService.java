@@ -48,7 +48,7 @@ public class UserService {
         User user = findByUsername(username);
 
         if (user != null) {
-            return rawPassword.equals(user.getPasswordHash());
+            return passwordEncoder.matches(rawPassword, user.getPasswordHash());
         }
         return false;
     }
