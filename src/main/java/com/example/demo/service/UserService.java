@@ -25,18 +25,25 @@ public class UserService {
     }
     public String register(RegisterRequest request) {
 
+        // เช็คซ้ำ username
         if (userRepository.findByUsername(request.getUsername()).isPresent()){
             return "ชื่อผู้ใช้นี้มีอยู่แล้ว";
         }
 
+        // เข้ารหัส password
+        String hashed = passwordEncoder.encode(request.getPassword());
 
-        String hashed = passwordEncoder.encode(request.getPasswordHash());
+        // สร้าง user ใหม่
         User newUser = new User();
         newUser.setUsername(request.getUsername()); 
+        newUser.setPasswordHash(hashed);
+
+        // save ลง database
+        userRepository.save(newUser);
 
         return "ลงทะเบียนสำเร็จ";
     }
-    // ✅ ใช้ plain text ก่อน
+    
     public boolean authenticate(String username, String rawPassword) {
         User user = findByUsername(username);
 

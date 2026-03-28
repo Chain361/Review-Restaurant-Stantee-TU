@@ -10,20 +10,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import lombok.RequiredArgsConstructor;
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
-        this.jwtAuthFilter = jwtAuthFilter;
-    }
 
-   @Bean 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
@@ -32,13 +31,13 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll() // สำหรับ Login/Register (ข้ามได้)
-                .requestMatchers("/places/**").permitAll()    // <--- แก้บรรทัดนี้จาก .authenticated() เป็น .permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/places/**").permitAll()
                 .requestMatchers("/").permitAll()
-                .requestMatchers("/logout").permitAll()
-                .anyRequest().authenticated()               // Path อื่นๆ ที่เหลือยังต้อง Login อยู่
+                .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }

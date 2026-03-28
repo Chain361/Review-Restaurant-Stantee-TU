@@ -6,8 +6,18 @@ public class RegisterRequest {
     @JsonProperty("Username")
     private String username;
 
+    @JsonProperty("Password")
+    private String password;
+
     @JsonProperty("PasswordHash")
     private String passwordHash;
+
+    @JsonProperty("Firstname")
+    private String Firstname;
+    
+    @JsonProperty("Lastname")
+    private String Lastname;
+    
 
     public RegisterRequest() {
     }
@@ -20,10 +30,16 @@ public class RegisterRequest {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
+    }   
+    public String getPassword(){
+        return this.password;
     }
 
+    public String getPasswordHash() {
+        return passwordHash;
+    }    
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }

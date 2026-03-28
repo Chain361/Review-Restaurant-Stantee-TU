@@ -27,10 +27,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                    FilterChain filterChain)
             throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+
+        // ข้าม path ที่ไม่ต้อง login
+        if (path.startsWith("/auth") || path.startsWith("/places") || path.equals("/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"message\":\"Unauthorized\"}");
             return;
         }
 

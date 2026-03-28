@@ -14,8 +14,8 @@ public class User {
     private int userID;
     private String username;
     private String passwordHash;
-    private String firstName;
-    private String lastName;
+    private String Firstname;
+    private String Lastname;
 
     public User(){
         
@@ -24,8 +24,8 @@ public class User {
         this.userID = userID;
         this.username = username;
         this.passwordHash = passwordHash;
-        this.firstName=firstName;
-        this.lastName=lastName;
+        this.Firstname=firstName;
+        this.Lastname=lastName;
     }
     
     public int getUserID(){
@@ -38,10 +38,10 @@ public class User {
         return passwordHash;
     }
     public String getFirstName(){
-        return firstName;
+        return this.Firstname;
     }
     public String getLastName(){
-        return lastName;
+        return this.Lastname;
     }
     public void setUsername(String username) {
        this.username = username;
