@@ -3,7 +3,7 @@ package com.example.demo.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RegisterRequest {
-        @JsonProperty("Username")
+    @JsonProperty("Username")
     private String username;
 
     @JsonProperty("PasswordHash")

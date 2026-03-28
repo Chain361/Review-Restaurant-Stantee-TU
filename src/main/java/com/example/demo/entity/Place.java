@@ -1,6 +1,20 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.Table;
+
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+@Entity
+@Table(name="places")
 public class Place {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int placeID;
     private String placeName;
     private String description;
@@ -9,6 +23,9 @@ public class Place {
     private String timePeriod;
     private double latitude;
     private double longitude;
+    
+    @OneToMany(mappedBy = "place")
+    private List<Review> reviews;
     
     public Place(int placeID,String placeName,String description,String phone,String address,String timePeriod,double latitude,double longitude){
         this.placeID = placeID;
