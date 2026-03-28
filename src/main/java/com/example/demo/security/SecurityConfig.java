@@ -31,9 +31,12 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/places/**").permitAll()
-                .requestMatchers("/").permitAll()
+                // หน้า public
+                .requestMatchers("/", "/login", "/login.html", "/register", "/register.html", "/homepage", "/homepage.html").permitAll()
+                // API public
+                .requestMatchers("/auth/**", "/places/**").permitAll()
+                .requestMatchers("/**/*.html", "/css/**", "/js/**", "/images/**").permitAll()
+                // อื่น ๆ ต้อง authenticated
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
