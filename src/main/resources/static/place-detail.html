@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดสถานที่ - HotSnow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: #e9ecef; 
+            color: #333;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* --- ส่วนรูปภาพ --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 850px 1fr; 
+            gap: 20px;
+            margin-bottom: 30px; /* ผลักกล่องเนื้อหาด้านล่างลงไปให้ห่างกำลังดี */
+        }
+
+        .main-photo {
+            width: 100%;
+            height: 340px; /* บังคับสูง 340px เป๊ะๆ */
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .side-photos {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* ดันรูปให้ชิดขอบบน-ล่าง */
+            height: 340px; /* บังคับสูง 340px เป๊ะๆ */
+        }
+
+        .side-photo {
+            width: 100%;
+            height: 160px; /* (340 - 20) / 2 = 160 บังคับสูง 160px เป๊ะๆ */
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+        }
+
+        /* --- ส่วนเนื้อหา --- */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 850px 1fr;
+            gap: 20px;
+        }
+
+        .white-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .place-title {
+            font-size: 28px; 
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .rating-badge {
+            background-color: #b92b27;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .review-count {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .meta-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 20px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px; 
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .btn-blue { background-color: #7bd3f7; color: white; }
+        .btn-blue:hover { background-color: #62bfe6; }
+        
+        .btn-gray { background-color: #f1f3f5; color: #4a5560; }
+        .btn-gray:hover { background-color: #e2e6ea; }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            object-fit: cover;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333; 
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .map-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333; 
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+            display: inline-block;
+        }
+
+        .map-image {
+            width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="gallery-grid">
+            <img src="image/Greencanteen.png" alt="รูปหลัก" class="main-photo">
+            <div class="side-photos">
+                <img src="image/restaurant.png" alt="รูปย่อย 1" class="side-photo">
+                <img src="image/food.png" alt="รูปย่อย 2" class="side-photo">
+            </div>
+        </div>
+
+        <div class="content-layout">
+            
+            <div class="left-column">
+                
+                <div class="white-card">
+                    <h1 class="place-title">Green canteen กรีน แคนทีน</h1>
+                    
+                    <div class="rating-row">
+                        <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
+                        <span class="review-count">xxx รีวิว</span>
+                    </div>
+
+                    <div class="meta-info">
+                        <div>หมวดหมู่: ร้านค้า</div>
+                        <div>เปิด: 08:00 - 16:00 น.</div>
+                    </div>
+
+                    <div class="description">
+                        รายละเอียด: แหล่งรวมร้านอาหารเพื่อ เด็กป.ตรี มธ. ทุกคน
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-blue"><i class="fa-solid fa-pen"></i> เขียนรีวิว</button>
+                        <button class="btn btn-gray"><i class="fa-regular fa-bookmark"></i> บันทึก</button>
+                        <button class="btn btn-gray"><i class="fa-solid fa-utensils"></i> เมนู</button>
+                        <button class="btn btn-gray"><i class="fa-solid fa-share-nodes"></i> แชร์</button>
+                    </div>
+                </div>
+
+                <div class="white-card">
+                    <div class="review-header">
+                        <img src="image/Gugu.png" alt="Avatar" class="avatar">
+                        <div>
+                            <div class="reviewer-name">User:GuGu gaga</div>
+                            <div class="rating-row" style="margin-bottom: 0;">
+                                <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
+                                <span class="review-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-text">
+                        Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
+                        Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
+                    </div>
+                </div>
+
+                <div class="white-card">
+                    <div class="review-header">
+                        <img src="image/Gugu.png" alt="Avatar" class="avatar">
+                        <div>
+                            <div class="reviewer-name">User:GuGu gaga</div>
+                            <div class="rating-row" style="margin-bottom: 0;">
+                                <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
+                                <span class="review-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-text">
+                        Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
+                        Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="right-column">
+                <div class="white-card">
+                    <h2 class="map-title">ตำแหน่งบนแผนที่</h2>
+                    <img src="image/Tumap.png" alt="Map" class="map-image">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
