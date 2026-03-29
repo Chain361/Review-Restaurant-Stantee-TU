@@ -26,17 +26,16 @@
             padding: 0 20px;
         }
 
-        /* --- ส่วนรูปภาพ --- */
         .gallery-grid {
             display: grid;
             grid-template-columns: 850px 1fr; 
             gap: 20px;
-            margin-bottom: 30px; /* ผลักกล่องเนื้อหาด้านล่างลงไปให้ห่างกำลังดี */
+            margin-bottom: 30px; 
         }
 
         .main-photo {
             width: 100%;
-            height: 340px; /* บังคับสูง 340px เป๊ะๆ */
+            height: 340px; 
             object-fit: cover;
             border-radius: 12px;
             display: block;
@@ -45,19 +44,18 @@
         .side-photos {
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* ดันรูปให้ชิดขอบบน-ล่าง */
-            height: 340px; /* บังคับสูง 340px เป๊ะๆ */
+            justify-content: space-between; 
+            height: 340px; 
         }
 
         .side-photo {
             width: 100%;
-            height: 160px; /* (340 - 20) / 2 = 160 บังคับสูง 160px เป๊ะๆ */
+            height: 160px; 
             object-fit: cover;
             border-radius: 12px;
             display: block;
         }
 
-        /* --- ส่วนเนื้อหา --- */
         .content-layout {
             display: grid;
             grid-template-columns: 850px 1fr;
@@ -160,15 +158,21 @@
         }
 
         .reviewer-name {
-            font-weight: 600;
+            font-family: 'Manrope', sans-serif;
+            font-style: normal;
+            font-weight: 300;
             font-size: 16px;
-            color: #333; 
+            line-height: 22px;
+            color: #3D4245;
         }
 
         .review-text {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
+           font-family: 'Manrope', sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            font-size: 16px;
+            line-height: 22px;
+            color: #3D4245;
         }
 
         .map-title {
@@ -235,7 +239,7 @@
 
                 <div class="white-card">
                     <div class="review-header">
-                        <img src="image/Gugu.png" alt="Avatar" class="avatar">
+                        <img src="image/penguingirl.png" alt="Avatar" class="avatar">
                         <div>
                             <div class="reviewer-name">User:GuGu gaga</div>
                             <div class="rating-row" style="margin-bottom: 0;">
@@ -252,7 +256,7 @@
 
                 <div class="white-card">
                     <div class="review-header">
-                        <img src="image/Gugu.png" alt="Avatar" class="avatar">
+                        <img src="image/penguingirl.png" alt="Avatar" class="avatar">
                         <div>
                             <div class="reviewer-name">User:GuGu gaga</div>
                             <div class="rating-row" style="margin-bottom: 0;">
