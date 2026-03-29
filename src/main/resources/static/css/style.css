@@ -295,3 +295,256 @@ footer {
     align-items: flex-start; 
     gap: 10px; 
 }
+
+/* =============================================
+   ACCOUNT PAGE — เพิ่มต่อท้าย style.css เดิม
+   ============================================= */
+
+/* ── Account: Breadcrumb ─────────────────── */
+.acc-breadcrumb {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 8px 0;
+  font-size: 13px;
+  color: #757575;
+}
+.acc-breadcrumb a { color: #1a73e8; }
+.acc-breadcrumb a:hover { text-decoration: underline; }
+.acc-breadcrumb-current { color: #333; }
+
+/* ── Account: Container ──────────────────── */
+.acc-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ── Account: Profile Hero ───────────────── */
+.acc-profile-hero {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 24px 0;
+}
+.acc-profile-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.acc-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #bbb;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.acc-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.acc-profile-name { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.acc-stats { display: flex; align-items: center; }
+.acc-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+}
+.acc-stat-item:first-child { padding-left: 0; }
+.acc-stat-number { font-size: 18px; font-weight: 700; }
+.acc-stat-label  { font-size: 12px; color: #757575; margin-top: 2px; }
+.acc-stat-divider { width: 1px; height: 28px; background: #e8e8e8; }
+.acc-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.acc-btn-edit {
+  padding: 8px 16px;
+  background: #fff;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+}
+.acc-btn-edit:hover { background: #f5f5f5; }
+.acc-btn-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #bbb;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  color: #757575;
+  cursor: pointer;
+}
+.acc-btn-icon:hover { background: #f5f5f5; }
+
+/* ── Account: Main layout ────────────────── */
+.acc-main { padding: 20px 0 40px; background: #f5f5f5; }
+.acc-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr 260px;
+  gap: 16px;
+  align-items: start;
+}
+
+/* ── Account: Left sidebar ───────────────── */
+.acc-sidebar-left {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.10);
+  overflow: hidden;
+}
+.acc-nav { display: flex; flex-direction: column; }
+.acc-nav-item {
+  padding: 11px 16px;
+  font-size: 14px;
+  color: #333;
+  border-left: 3px solid transparent;
+  display: block;
+  cursor: pointer;
+  transition: background .12s;
+  text-decoration: none;
+}
+.acc-nav-item:hover { background: #f5f5f5; }
+.acc-nav-item.active {
+  background: #e8f0fe;
+  border-left-color: #1a73e8;
+  color: #1a73e8;
+  font-weight: 600;
+}
+.acc-nav-item.sub {
+  padding-left: 28px;
+  font-size: 13px;
+  color: #757575;
+}
+.acc-nav-sub { background: #f5f5f5; }
+
+/* ── Account: Center content ─────────────── */
+.acc-center {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.10);
+  overflow: hidden;
+  min-height: 300px;
+}
+.acc-tabs {
+  display: flex;
+  border-bottom: 2px solid #e8e8e8;
+  padding: 0 4px;
+}
+.acc-tab-btn {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #757575;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color .15s;
+}
+.acc-tab-btn:hover { color: #1a73e8; }
+.acc-tab-btn.active {
+  color: #1a73e8;
+  border-bottom-color: #1a73e8;
+  font-weight: 700;
+}
+.acc-tab-content { padding: 0; }
+.acc-tab-content.hidden { display: none; }
+.acc-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #bbb;
+  gap: 10px;
+}
+.acc-empty-icon { font-size: 36px; }
+.acc-empty p { font-size: 14px; }
+
+/* ── Account: Right sidebar ──────────────── */
+.acc-sidebar-right { display: flex; flex-direction: column; gap: 12px; }
+.acc-widget {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.10);
+  padding: 16px;
+}
+.acc-widget-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600;
+}
+.acc-widget-count { font-weight: 400; color: #757575; }
+.acc-recipe-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #ff6b35;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 13px;
+}
+.acc-widget-header {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 10px;
+}
+.acc-widget-label { font-size: 14px; font-weight: 600; }
+.acc-widget-link  { font-size: 12px; color: #1a73e8; text-decoration: none; }
+.acc-widget-link:hover { text-decoration: underline; }
+.acc-rank-info { font-size: 12px; color: #757575; margin-bottom: 8px; }
+.acc-rank-badge {
+  width: 30px; height: 30px; border-radius: 6px;
+  background: linear-gradient(135deg, #e8a900, #f5c842);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 14px;
+  box-shadow: 0 2px 6px rgba(232,169,0,.35);
+}
+.acc-rank-track {
+  height: 8px; background: #e8e8e8;
+  border-radius: 99px; overflow: hidden; margin-top: 4px;
+}
+.acc-rank-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff6b35, #ffb347);
+  border-radius: 99px; transition: width .4s ease;
+}
+.acc-rank-labels {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: #757575;
+}
+.acc-score-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px; font-weight: 600;
+  border-top: 1px solid #e8e8e8;
+  padding-top: 8px; margin-top: 4px;
+}
+.acc-score-sub { font-size: 12px; color: #757575; margin-top: 2px; }
+.acc-stars { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.acc-star-row {
+  display: flex; align-items: center; gap: 4px; font-size: 12px;
+}
+.acc-star-num { width: 10px; text-align: right; color: #757575; }
+.acc-star-row .fa-star { color: #ffc107; font-size: 11px; }
+.acc-star-bar {
+  flex: 1; height: 7px; background: #e8e8e8;
+  border-radius: 99px; overflow: hidden;
+}
+.acc-star-fill { height: 100%; background: #ffc107; border-radius: 99px; }
+.acc-review-stats { border-top: 1px solid #e8e8e8; padding-top: 10px; }
+.acc-review-stats p { font-size: 13px; color: #757575; margin-bottom: 4px; }
+.acc-review-stats p span { font-weight: 700; color: #333; }
+
+/* ── Account: Responsive ─────────────────── */
+@media (max-width: 900px) {
+  .acc-layout { grid-template-columns: 1fr; }
+  .acc-sidebar-left, .acc-sidebar-right { order: 2; }
+  .acc-center { order: 1; }
+  .acc-profile-inner { flex-direction: column; align-items: flex-start; }
+  .acc-actions { margin-left: 0; }
+}

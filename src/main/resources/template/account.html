@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>บัญชีของฉัน</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- BREADCRUMB -->
+  <div class="acc-breadcrumb">
+    <div class="acc-container">
+      <a href="#">หน้าแรก</a>
+      <span> / </span>
+      <span class="acc-breadcrumb-current">กิจกรรมล่าสุด</span>
+    </div>
+  </div>
+
+  <!-- PROFILE HERO -->
+  <section class="acc-profile-hero">
+    <div class="acc-container">
+      <div class="acc-profile-inner">
+        <div class="acc-avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div>
+          <h2 class="acc-profile-name">กฤษณะพล</h2>
+          <div class="acc-stats">
+            <div class="acc-stat-item">
+              <span class="acc-stat-number">0</span>
+              <span class="acc-stat-label">คะแนนทั้งหมด</span>
+            </div>
+            <div class="acc-stat-divider"></div>
+            <div class="acc-stat-item">
+              <span class="acc-stat-number">0</span>
+              <span class="acc-stat-label">ผู้ติดตาม</span>
+            </div>
+            <div class="acc-stat-divider"></div>
+            <div class="acc-stat-item">
+              <span class="acc-stat-number">0</span>
+              <span class="acc-stat-label">กำลังติดตาม</span>
+            </div>
+          </div>
+        </div>
+        <div class="acc-actions">
+          <button class="acc-btn-edit">
+            <i class="fa-solid fa-pen"></i> แก้ไขโปรไฟล์
+          </button>
+          <button class="acc-btn-icon"><i class="fa-regular fa-envelope"></i></button>
+          <button class="acc-btn-icon"><i class="fa-solid fa-ellipsis"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="acc-main">
+    <div class="acc-container">
+      <div class="acc-layout">
+
+        <!-- LEFT SIDEBAR -->
+        <aside class="acc-sidebar-left">
+          <nav class="acc-nav">
+            <a href="#" class="acc-nav-item active">กิจกรรมล่าสุด</a>
+            <a href="#" class="acc-nav-item">ภาพรวม</a>
+            <a href="#" class="acc-nav-item">ทริป</a>
+            <a href="#" class="acc-nav-item">รายการที่บันทึกไว้</a>
+            <div class="acc-nav-sub">
+              <a href="#" class="acc-nav-item sub">ทั้งหมด</a>
+              <a href="#" class="acc-nav-item sub">คอลเล็กชัน</a>
+            </div>
+          </nav>
+        </aside>
+
+        <!-- CENTER CONTENT -->
+        <section class="acc-center">
+          <div class="acc-tabs">
+            <button class="acc-tab-btn active" data-tab="all">ทั้งหมด</button>
+            <button class="acc-tab-btn" data-tab="review">รีวิว</button>
+            <button class="acc-tab-btn" data-tab="photo">รูปภาพ</button>
+            <button class="acc-tab-btn" data-tab="checkin">เช็คอิน</button>
+          </div>
+
+          <div class="acc-tab-content" id="acc-tab-all">
+            <div class="acc-empty">
+              <i class="fa-regular fa-clock acc-empty-icon"></i>
+              <p>ไม่มีกิจกรรม</p>
+            </div>
+          </div>
+          <div class="acc-tab-content hidden" id="acc-tab-review">
+            <div class="acc-empty">
+              <i class="fa-regular fa-star acc-empty-icon"></i>
+              <p>ยังไม่มีรีวิว</p>
+            </div>
+          </div>
+          <div class="acc-tab-content hidden" id="acc-tab-photo">
+            <div class="acc-empty">
+              <i class="fa-regular fa-image acc-empty-icon"></i>
+              <p>ยังไม่มีรูปภาพ</p>
+            </div>
+          </div>
+          <div class="acc-tab-content hidden" id="acc-tab-checkin">
+            <div class="acc-empty">
+              <i class="fa-solid fa-location-dot acc-empty-icon"></i>
+              <p>ยังไม่มีเช็คอิน</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="acc-sidebar-right">
+
+          <!-- สูตรอาหาร -->
+          <div class="acc-widget">
+            <div class="acc-widget-title">
+              <span class="acc-recipe-icon"><i class="fa-solid fa-bowl-food"></i></span>
+              <span>สูตรอาหาร <span class="acc-widget-count">(0)</span></span>
+            </div>
+          </div>
+
+          <!-- ภาพรวม -->
+          <div class="acc-widget">
+            <div class="acc-widget-header">
+              <span class="acc-widget-label">ภาพรวม</span>
+              <a href="#" class="acc-widget-link">ดูทั้งหมด</a>
+            </div>
+            <p class="acc-rank-info">แรงค์ปัจจุบัน : <strong>Bronze I</strong></p>
+            <div class="acc-rank-badge"><i class="fa-solid fa-gem"></i></div>
+            <div class="acc-rank-track">
+              <div class="acc-rank-fill" style="width:0%"></div>
+            </div>
+            <div class="acc-rank-labels"><span>0</span><span>5</span></div>
+            <div class="acc-score-row">
+              <span>คะแนนทั้งหมด</span><strong>0</strong>
+            </div>
+            <div class="acc-score-sub">0</div>
+          </div>
+
+          <!-- รีวิว -->
+          <div class="acc-widget">
+            <div class="acc-widget-header">
+              <span class="acc-widget-label">0 รีวิว <span class="acc-widget-count">(0 เรตติ้ง)</span></span>
+            </div>
+            <div class="acc-stars">
+              <div class="acc-star-row"><span class="acc-star-num">5</span><i class="fa-solid fa-star"></i><div class="acc-star-bar"><div class="acc-star-fill" style="width:0%"></div></div></div>
+              <div class="acc-star-row"><span class="acc-star-num">4</span><i class="fa-solid fa-star"></i><div class="acc-star-bar"><div class="acc-star-fill" style="width:0%"></div></div></div>
+              <div class="acc-star-row"><span class="acc-star-num">3</span><i class="fa-solid fa-star"></i><div class="acc-star-bar"><div class="acc-star-fill" style="width:0%"></div></div></div>
+              <div class="acc-star-row"><span class="acc-star-num">2</span><i class="fa-solid fa-star"></i><div class="acc-star-bar"><div class="acc-star-fill" style="width:0%"></div></div></div>
+              <div class="acc-star-row"><span class="acc-star-num">1</span><i class="fa-solid fa-star"></i><div class="acc-star-bar"><div class="acc-star-fill" style="width:0%"></div></div></div>
+            </div>
+            <div class="acc-review-stats">
+              <p><span>0</span> รีวิวคนแรก</p>
+              <p><span>0</span> คน ถูกใจรีวิว</p>
+              <p><span>0</span> คน ถูกใจรูปภาพ</p>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('.acc-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.acc-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.acc-tab-content').forEach(c => c.classList.add('hidden'));
+        btn.classList.add('active');
+        document.getElementById('acc-tab-' + btn.dataset.tab).classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>

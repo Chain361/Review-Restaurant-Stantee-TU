@@ -23,14 +23,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                   HttpServletResponse response,
-                                   FilterChain filterChain)
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
             throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+
+        // ข้าม path public (API + หน้า static)
+        if (path.startsWith("/auth") ||
+            path.startsWith("/places") ||
+            path.equals("/") ||
+            path.equals("/login") ||
+            path.equals("/login.html") ||
+            path.equals("/register") ||
+            path.equals("/register.html") ||
+            path.equals("/homepage") ||
+            path.equals("/homepage.html") ||
+            path.startsWith("/css/") ||
+            path.startsWith("/js/") ||
+            path.startsWith("/images/")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"message\":\"Unauthorized\"}");
             return;
         }
 
