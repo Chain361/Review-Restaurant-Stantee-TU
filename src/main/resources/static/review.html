@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>รีวิวร้านค้า</title>
+  <link rel="stylesheet" href="../static/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Kanit:wght@400;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- Business Card -->
+    <div class="business-card">
+      <div class="business-img">
+        <img src="https://via.placeholder.com/80x80/e8f4f8/2d7dd2?text=🏥" alt="ร้าน" />
+      </div>
+      <div class="business-info">
+        <div class="business-name">green canteen</div>
+        <div class="business-rating-row">
+          <span class="badge badge-score">4.9</span>
+          <span class="review-count">41 รีวิว (ดู รีวิว)</span>
+        </div>
+        <div class="business-tags">
+          <span class="tag">ร้านอาหาร</span>          
+        </div>
+        <div class="open-status">🟠 เปิดถึงเวลา 17:00</div>
+      </div>
+    </div>
+
+    <!-- Review Form -->
+    <div class="review-container">
+      <div class="form-header">
+        <h2>ให้คะแนนร้านนี้</h2>
+      </div>
+
+      <!-- Star Rating -->
+      <div class="star-section">
+        <div class="stars" id="starRating">
+          <span class="star" data-val="1">★</span>
+          <span class="star" data-val="2">★</span>
+          <span class="star" data-val="3">★</span>
+          <span class="star" data-val="4">★</span>
+          <span class="star" data-val="5">★</span>
+        </div>
+        <div class="star-label" id="starLabel">เลือกคะแนน</div>
+      </div>
+
+      <!-- Headline -->
+      <div class="field-group">
+        <label class="field-label">
+          หัวข้อรีวิว
+          <span class="tooltip-icon" title="ชื่อรีวิวของคุณ">?</span>
+        </label>
+        <div class="input-wrap">
+          <input type="text" id="headline" maxlength="120" placeholder="เขียนหัวข้อรีวิวของคุณ ไม่เกิน 120 ตัวอักษร" oninput="updateCount('headline','headlineCount',120)"/>
+          <span class="char-count"><span id="headlineCount">0</span>/120</span>
+        </div>
+      </div>
+
+      <!-- Detailed Review -->
+      <div class="field-group">
+        <label class="field-label">
+          รายละเอียดรีวิว
+          <span class="optional-badge">ไม่จำเป็น</span>
+          <span class="tooltip-icon" title="รายละเอียดเพิ่มเติม">?</span>
+        </label>
+        <p class="field-hint">เขียนรายละเอียดรีวิวเพิ่มเติม เพื่อช่วยให้ผู้อื่นได้รับข้อมูลที่ครบถ้วน อย่างน้อย 40 ตัวอักษร</p>
+        <div class="input-wrap">
+          <textarea id="detail" maxlength="500" rows="4" placeholder="เขียนรีวิวของคุณ..." oninput="updateCount('detail','detailCount',500)"></textarea>
+          <span class="char-count textarea-count"><span id="detailCount">0</span>/500</span>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div class="field-group">
+        <label class="field-label">แท็ก</label>
+        <div class="input-wrap">
+          <input type="text" id="tagInput" maxlength="100" placeholder="เพิ่มแท็กที่เกี่ยวข้อง..." oninput="updateCount('tagInput','tagCount',100)"/>
+          <span class="char-count"><span id="tagCount">0</span>/100</span>
+        </div>
+      </div>
+
+    
+      <!-- Image Upload -->
+      <div class="field-group">
+        <label class="field-label">รูปภาพ</label>
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+          <input type="file" id="fileInput" accept=".gif,.jpg,.png" style="display:none" onchange="handleFile(event)"/>
+          <div class="upload-placeholder" id="uploadPlaceholder">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Choose File</div>
+            <div class="upload-hint">ไฟล์ GIF, JPG หรือ PNG<br/>ขนาดไม่เกิน 1 MB</div>
+          </div>
+          <img id="previewImg" src="" alt="preview" style="display:none; max-width:100%; border-radius:8px;" />
+        </div>
+        <div class="upload-meta">
+          <span class="upload-count" id="imgCount">0/80</span>
+          <button type="button" class="btn-add-img" onclick="document.getElementById('fileInput').click()">+ เพิ่มรูปภาพ</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button class="btn-submit" onclick="submitReview()">บันทึกรีวิว</button>
+        <button class="btn-cancel" onclick="resetForm()">ยกเลิก</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Star Rating
+    const stars = document.querySelectorAll('.star');
+    const starLabel = document.getElementById('starLabel');
+    const labels = ['','แย่มาก','พอใช้','ปานกลาง','ดี','ดีมาก'];
+    let selectedRating = 0;
+
+    stars.forEach(star => {
+      star.addEventListener('mouseover', () => highlight(+star.dataset.val));
+      star.addEventListener('mouseout', () => highlight(selectedRating));
+      star.addEventListener('click', () => {
+        selectedRating = +star.dataset.val;
+        highlight(selectedRating);
+        starLabel.textContent = labels[selectedRating];
+      });
+    });
+
+    function highlight(n) {
+      stars.forEach(s => s.classList.toggle('active', +s.dataset.val <= n));
+    }
+
+    // Char Count
+    function updateCount(inputId, countId, max) {
+      const len = document.getElementById(inputId).value.length;
+      document.getElementById(countId).textContent = len;
+    }
+
+    // File Upload
+    function handleFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        document.getElementById('uploadPlaceholder').style.display = 'none';
+        const img = document.getElementById('previewImg');
+        img.src = ev.target.result;
+        img.style.display = 'block';
+        document.getElementById('imgCount').textContent = '1/80';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Submit
+    function submitReview() {
+      if (!selectedRating) {
+        alert('กรุณาให้คะแนนก่อนบันทึกรีวิว');
+        return;
+      }
+      alert('บันทึกรีวิวเรียบร้อยแล้ว!');
+    }
+
+    function resetForm() {
+      selectedRating = 0;
+      highlight(0);
+      starLabel.textContent = 'เลือกคะแนน';
+      document.getElementById('headline').value = '';
+      document.getElementById('detail').value = '';
+      document.getElementById('tagInput').value = '';
+      document.getElementById('headlineCount').textContent = '0';
+      document.getElementById('detailCount').textContent = '0';
+      document.getElementById('tagCount').textContent = '0';
+      document.getElementById('previewImg').style.display = 'none';
+      document.getElementById('uploadPlaceholder').style.display = 'flex';
+      document.getElementById('imgCount').textContent = '0/80';
+      document.getElementById('sponsoredToggle').checked = false;
+    }
+  </script>
+
+</body>
+</html>
