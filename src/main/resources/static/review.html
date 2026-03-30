@@ -27,6 +27,12 @@
         </div>
         <div class="open-status">🟠 เปิดถึงเวลา 17:00</div>
       </div>
+        <button class="btn-save">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 4px;">
+          <path d="M17 3H7a2 2 0 0 0-2 2v16l7-3 7 3V5a2 2 0 0 0-2-2zm0 14.3l-5-2.14-5 2.14V5h10v12.3z"/>
+          </svg>
+                บันทึก
+        </button>
     </div>
 
     <!-- Review Form -->
@@ -66,7 +72,7 @@
           <span class="optional-badge">ไม่จำเป็น</span>
           <span class="tooltip-icon" title="รายละเอียดเพิ่มเติม">?</span>
         </label>
-        <p class="field-hint">เขียนรายละเอียดรีวิวเพิ่มเติม เพื่อช่วยให้ผู้อื่นได้รับข้อมูลที่ครบถ้วน อย่างน้อย 40 ตัวอักษร</p>
+        <p class="field-hint">เขียนรายละเอียดรีวิวเพิ่มเติม เพื่อช่วยให้ผู้อื่นได้รับข้อมูลที่ครบถ้วน</p>
         <div class="input-wrap">
           <textarea id="detail" maxlength="500" rows="4" placeholder="เขียนรีวิวของคุณ..." oninput="updateCount('detail','detailCount',500)"></textarea>
           <span class="char-count textarea-count"><span id="detailCount">0</span>/500</span>
