@@ -13,7 +13,7 @@ import com.example.demo.entity.Place;
 @Repository
 public interface PlaceRepository extends JpaRepository<Place,Integer>{
    Optional<Place> findById(Integer placeID);
-    @Query("SELECT p FROM Place p WHERE " +
+       @Query("SELECT p FROM Place p WHERE " +
            "LOWER(p.placeName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
            "OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
            "OR LOWER(p.phone) LIKE LOWER(CONCAT('%', :keyword, '%'))")

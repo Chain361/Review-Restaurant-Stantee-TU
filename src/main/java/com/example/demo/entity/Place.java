@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"placeID\"")
     private int placeID;
 
     @Column(name = "\"placeName\"")
