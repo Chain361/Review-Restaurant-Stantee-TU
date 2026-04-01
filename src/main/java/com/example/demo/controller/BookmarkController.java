@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.UserBookmarkDTO;
@@ -37,6 +38,22 @@ public class BookmarkController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("message", "ดึงรายการบุ๊กมาร์กไม่สำเร็จ"));
+        }
+    }
+    @GetMapping("/bookmarks/check/{placeId}")
+    public ResponseEntity<?> checkBookmarkStatus(@PathVariable int placeId, Authentication authentication) {
+        try {
+            String username = authentication.getName();
+            boolean isFavorite = placeService.checkBookmarkStatus(username, placeId);
+
+            return ResponseEntity.ok(Map.of("isFavorite", isFavorite));
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "ไม่สามารถตรวจสอบสถานะบุ๊กมาร์กได้"));
         }
     }
 }

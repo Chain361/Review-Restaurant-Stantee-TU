@@ -34,4 +34,12 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, BookmarkId> 
         ORDER BY b.add_date DESC
         """, nativeQuery = true)
     List<Object[]> findUserBookmarks(@Param("userId") int userId);
+    @Query(value = """
+        SELECT EXISTS (
+            SELECT 1
+            FROM bookmark
+            WHERE placeid = :placeId AND userid = :userId
+        )
+        """, nativeQuery = true)
+    boolean existsBookmark(@Param("placeId") int placeId, @Param("userId") int userId);
 }

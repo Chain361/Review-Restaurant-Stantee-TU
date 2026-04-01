@@ -57,4 +57,14 @@ public class PlaceService {
             return new UserBookmarkDTO(placeId, placeName, category, filePath, addDate);
         }).toList();
     }
+    public boolean checkBookmarkStatus(String username, int placeId) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("ไม่พบผู้ใช้"));
+
+        if (placeRepository.findById(placeId).isEmpty()) {
+            throw new RuntimeException("ไม่พบสถานที่");
+        }
+
+        return bookmarkRepository.existsBookmark(placeId, user.getUserID());
+    }
 }
