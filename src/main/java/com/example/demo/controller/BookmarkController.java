@@ -8,8 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ToggleBookmarkRequest;
 import com.example.demo.dto.UserBookmarkDTO;
 import com.example.demo.service.PlaceService;
 
@@ -54,6 +57,33 @@ public class BookmarkController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("message", "ไม่สามารถตรวจสอบสถานะบุ๊กมาร์กได้"));
+        }
+    }
+    @PostMapping("/bookmarks")
+    public ResponseEntity<?> toggleBookmark(@RequestBody ToggleBookmarkRequest request,
+                                            Authentication authentication) {
+        try {
+            if (authentication == null || authentication.getName() == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("message", "กรุณาเข้าสู่ระบบ"));
+            }
+
+            if (request == null || request.getPlaceId() <= 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("message", "PlaceID ไม่ถูกต้อง"));
+            }
+
+            String username = authentication.getName();
+            Map<String, Object> result = placeService.toggleBookmark(username, request.getPlaceId());
+
+            return ResponseEntity.ok(result);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "ไม่สามารถเปลี่ยนสถานะบุ๊กมาร์กได้"));
         }
     }
 }

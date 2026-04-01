@@ -67,4 +67,32 @@ public class PlaceService {
 
         return bookmarkRepository.existsBookmark(placeId, user.getUserID());
     }
+    public java.util.Map<String, Object> toggleBookmark(String username, int placeId) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("ไม่พบผู้ใช้"));
+
+        if (placeId <= 0) {
+            throw new IllegalArgumentException("PlaceID ไม่ถูกต้อง");
+        }
+
+        if (placeRepository.findById(placeId).isEmpty()) {
+            throw new IllegalArgumentException("ไม่พบสถานที่");
+        }
+
+        boolean exists = bookmarkRepository.existsBookmark(placeId, user.getUserID());
+
+        if (exists) {
+            bookmarkRepository.deleteBookmark(placeId, user.getUserID());
+            return java.util.Map.of(
+                    "status", "unbookmarked",
+                    "isFavorite", false
+            );
+        } else {
+            bookmarkRepository.insertBookmark(placeId, user.getUserID());
+            return java.util.Map.of(
+                    "status", "bookmarked",
+                    "isFavorite", true
+            );
+        }
+    }
 }

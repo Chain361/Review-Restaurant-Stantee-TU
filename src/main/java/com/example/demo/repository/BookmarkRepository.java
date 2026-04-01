@@ -3,13 +3,14 @@ package com.example.demo.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Bookmark;
 import com.example.demo.entity.BookmarkId;
-
+import jakarta.transaction.Transactional;
 @Repository
 public interface BookmarkRepository extends JpaRepository<Bookmark, BookmarkId> {
 
@@ -42,4 +43,19 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, BookmarkId> 
         )
         """, nativeQuery = true)
     boolean existsBookmark(@Param("placeId") int placeId, @Param("userId") int userId);
+    @Modifying
+    @Transactional
+    @Query(value = """
+        INSERT INTO bookmark (placeid, userid, add_date)
+        VALUES (:placeId, :userId, CURRENT_TIMESTAMP)
+        """, nativeQuery = true)
+    void insertBookmark(@Param("placeId") int placeId, @Param("userId") int userId);
+
+    @Modifying
+    @Transactional
+    @Query(value = """
+        DELETE FROM bookmark
+        WHERE placeid = :placeId AND userid = :userId
+        """, nativeQuery = true)
+    void deleteBookmark(@Param("placeId") int placeId, @Param("userId") int userId);
 }
