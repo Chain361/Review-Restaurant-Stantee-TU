@@ -196,13 +196,17 @@
         .review-images-container { display: flex; gap: 10px; margin-bottom: 15px; }
         .review-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; }
 
+        .rate-box { text-align: center; padding: 30px 20px; }
+        .rate-title { font-size: 18px; font-weight: 500; margin-bottom: 15px; }
+        .star-rating-action { font-size: 36px; color: #ffc107; display: flex; justify-content: center; gap: 15px; cursor: pointer; }
+
     </style>
 </head>
 <body>
 
     <div class="container">
         <header>
-            <div class="logo-container">
+            <div class="logo-container" onclick="window.location.href='../static/homepage.html'">
                 <div class="logo-icon">S</div>
                 <div class="logo-text">HotSnow</div>
             </div>
@@ -216,12 +220,12 @@
                 เข้าสู่ระบบ <i class="fa-solid fa-circle-user"></i>
             </a>
         </header>
-
+        
         <div class="gallery-grid">
             <img src="image/Greencanteen.png" alt="รูปหลัก" class="main-photo">
             <div class="side-photos">
                 <img src="image/restaurant.png" alt="รูปย่อย 1" class="side-photo">
-                <img src="image/food.png" alt="รูปย่อย 2" class="side-photo">
+                <img src="image/restaurant.png" alt="รูปย่อย 2" class="side-photo">
             </div>
         </div>
 
@@ -256,21 +260,15 @@
                     </div>
                 </div>
 
-                <div class="white-card">
-                    <div class="review-header">
-                        <img src="image/penguingirl.png" alt="Avatar" class="avatar">
-                        <div>
-                            <div class="reviewer-name">User:GuGu gaga</div>
-                            <div class="rating-row" style="margin-bottom: 0;">
-                                <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
-                                <span class="review-count">xxx รีวิว</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="review-text">
-                        Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
-                        Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
-                    </div>
+                <div class="white-card rate-box">
+                        <h3 class="rate-title">ให้คะแนนสถานที่</h3>
+                        <div class="star-rating-action" id="interactive-rating">
+                            <i class="fa-regular fa-star" data-index="0"></i>
+                            <i class="fa-regular fa-star" data-index="1"></i>
+                            <i class="fa-regular fa-star" data-index="2"></i>
+                            <i class="fa-regular fa-star" data-index="3"></i>
+                            <i class="fa-regular fa-star" data-index="4"></i>
+                        </div>                   
                 </div>
 
                 <div class="white-card">
@@ -290,7 +288,7 @@
                     </div>
                 </div>
 
-                 <div class="white-card">
+                <div class="white-card">
                     <div class="review-header">
                         <img src="image/penguingirl.png" alt="Avatar" class="avatar">
                         <div>
@@ -381,6 +379,33 @@
             </div>
         </footer>
     </div>
-
+        <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                const stars = document.querySelectorAll('#interactive-rating i');
+                const ratingDisplay = document.getElementById('rating-display');
+                let currentRating = 0; 
+                function updateStars(rating) {
+                    stars.forEach((star, index) => {
+                        star.className = 'fa-star'; 
+                        if (rating >= index + 1) {
+                            star.classList.add('fa-solid'); 
+                        } else if (rating >= index + 0.5) {
+                            star.classList.add('fa-solid', 'fa-star-half-stroke'); 
+                        } else {
+                            star.classList.add('fa-regular'); 
+                        }
+                    });
+                }
+                stars.forEach((star, index) => {
+                    star.addEventListener('click', function(e) {
+                        const rect = star.getBoundingClientRect();
+                        const isHalf = e.clientX - rect.left < rect.width / 2;
+                        currentRating = index + (isHalf ? 0.5 : 1);
+                        updateStars(currentRating);
+                        ratingDisplay.innerText = `คะแนนที่ให้: ${currentRating.toFixed(1)}`;
+                    });
+                });
+            });
+        </script>
 </body>
 </html>
