@@ -6,7 +6,8 @@
     <title>รายละเอียดสถานที่ - HotSnow</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="css/style.css">
+     <link href="https://fonts.cdnfonts.com/css/neonderthaw" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,12 +19,6 @@
         body {
             background-color: #e9ecef; 
             color: #333;
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 40px auto;
-            padding: 0 20px;
         }
 
         .gallery-grid {
@@ -197,13 +192,31 @@
             object-fit: cover;
             border: 1px solid #eee;
         }
+        
+        .review-images-container { display: flex; gap: 10px; margin-bottom: 15px; }
+        .review-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; }
 
     </style>
 </head>
 <body>
 
     <div class="container">
-        
+        <header>
+            <div class="logo-container">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">HotSnow</div>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search ...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            
+            <a href="login.html" class="login-btn" style="text-decoration: none;">
+                เข้าสู่ระบบ <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </header>
+
         <div class="gallery-grid">
             <img src="image/Greencanteen.png" alt="รูปหลัก" class="main-photo">
             <div class="side-photos">
@@ -277,6 +290,72 @@
                     </div>
                 </div>
 
+                 <div class="white-card">
+                    <div class="review-header">
+                        <img src="image/penguingirl.png" alt="Avatar" class="avatar">
+                        <div>
+                            <div class="reviewer-name">User:GuGu gaga</div>
+                            <div class="rating-row" style="margin-bottom: 0;">
+                                <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
+                                <span class="review-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="review-text">
+                        Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
+                        Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
+                    </div>
+                </div>
+
+                <div class="white-card">
+                    <div class="review-header">
+                        <img src="image/penguingirl.png" alt="Avatar" class="avatar">
+                        <div>
+                            <div class="reviewer-name">User:GuGu gaga</div>
+                            <div class="rating-row" style="margin-bottom: 0;">
+                                <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
+                                <span class="review-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-images-container">
+                        <img src="image/owl.png" class="review-img" alt="img">
+                        <img src="image/rem-rezero.png" class="review-img" alt="img">
+                        <img src="image/image-food-review.png" class="review-img" alt="img">
+                    </div>
+
+                    <div class="review-text">
+                        Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
+                        Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
+                    </div>
+                    
+                </div>
+
+                <div class="white-card">
+                    <div class="review-header">
+                        <img src="image/penguingirl.png" alt="Avatar" class="avatar">
+                        <div>
+                            <div class="reviewer-name">User:GuGu gaga</div>
+                            <div class="rating-row" style="margin-bottom: 0;">
+                                <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
+                                <span class="review-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="review-images-container">
+                        <img src="image/owl.png" class="review-img" alt="img">
+                        <img src="image/rem-rezero.png" class="review-img" alt="img">
+                        <img src="image/image-food-review.png" class="review-img" alt="img">
+                    </div>
+                    
+                    <div class="review-text">
+                        Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
+                        Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
+                    </div>
+                    
+                </div>
+
             </div>
 
             <div class="right-column">
@@ -287,6 +366,20 @@
             </div>
 
         </div>
+        <footer>
+            <div><strong>ชื่อระบบ: cs251 ระบบรีวิวสถานที่ใน TU</strong></div>
+            <div>คำอธิบาย : แพลตฟอร์มกลางที่รวบรวมข้อมูลสถานที่และความคิดเห็นจากผู้ใช้งานจริงรอบรั้วธรรมศาสตร์ รังสิต</div>
+            
+            <div class="footer-logo">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">HotSnow</div>
+            </div>
+
+            <div class="footer-contact-group">
+                <div class="footer-text-light">ช่องทางติดต่อ : ........................................</div>
+                <div class="copyright-text">Copyright: © 2024 Group 8 CS251 Thammasat University.</div>
+            </div>
+        </footer>
     </div>
 
 </body>
