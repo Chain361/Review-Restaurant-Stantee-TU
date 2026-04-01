@@ -14,36 +14,38 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="reviews")
+@Table(name = "reviews")
 public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewID;
+
     private LocalDate reviewDate;
     private double rating;
     private String comment;
-    private int userID;
-    private int placeID;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    
+
     @ManyToOne
     @JoinColumn(name = "place_id")
     private Place place;
-    public Review(int reviewID, LocalDate reviewDate, double rating, String comment, int userID, int placeID) {
-        this.reviewID = reviewID;
-        this.reviewDate = reviewDate;
-        this.rating = rating;
-        this.comment = comment;
-        this.userID = userID;
-        this.placeID = placeID;
-    }
+
+    public Review() {}
+
     public int getReviewID() { return reviewID; }
     public LocalDate getReviewDate() { return reviewDate; }
     public double getRating() { return rating; }
     public String getComment() { return comment; }
-    public int getUserID() { return userID; }
-    public int getPlaceID() { return placeID; }
+    public User getUser() { return user; }
+    public Place getPlace() { return place; }
+
+    public void setReviewID(int reviewID) { this.reviewID = reviewID; }
+    public void setReviewDate(LocalDate reviewDate) { this.reviewDate = reviewDate; }
+    public void setRating(double rating) { this.rating = rating; }
+    public void setComment(String comment) { this.comment = comment; }
+    public void setUser(User user) { this.user = user; }
+    public void setPlace(Place place) { this.place = place; }
 }
