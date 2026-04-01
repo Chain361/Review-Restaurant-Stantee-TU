@@ -1,51 +1,81 @@
 package com.example.demo.entity;
 
 import java.time.LocalDate;
-
-import jakarta.persistence.GenerationType;
-
-import jakarta.persistence.GeneratedValue;
-
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Entity;
-
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "\"Reviews\"")
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int reviewID;
+    @Column(name = "\"reviewID\"")
+    private Integer reviewID;
 
+    @Column(name = "\"reviewDate\"")
     private LocalDate reviewDate;
-    private double rating;
+
+    @Column(name = "\"rating\"")
+    private Integer rating;
+
+    @Column(name = "\"comment\"")
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "\"userID\"")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "place_id")
+    @JoinColumn(name = "\"placeID\"")
     private Place place;
 
-    public Review() {}
+    public Review(){}
 
-    public int getReviewID() { return reviewID; }
-    public LocalDate getReviewDate() { return reviewDate; }
-    public double getRating() { return rating; }
-    public String getComment() { return comment; }
-    public User getUser() { return user; }
-    public Place getPlace() { return place; }
+    public Integer getReviewID() {
+        return reviewID;
+    }
 
-    public void setReviewID(int reviewID) { this.reviewID = reviewID; }
-    public void setReviewDate(LocalDate reviewDate) { this.reviewDate = reviewDate; }
-    public void setRating(double rating) { this.rating = rating; }
-    public void setComment(String comment) { this.comment = comment; }
-    public void setUser(User user) { this.user = user; }
-    public void setPlace(Place place) { this.place = place; }
+    public void setReviewID(Integer reviewID) {
+        this.reviewID = reviewID;
+    }
+
+    public LocalDate getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(LocalDate reviewDate) {
+        this.reviewDate = reviewDate;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
 }

@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.RegisterRequest;
+
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    //private final MockDataService mockDataService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -23,33 +23,25 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
-    public String register(RegisterRequest request) {
 
-        // เช็คซ้ำ username
+    public String register(RegisterRequest request, boolean isAdmin) {
+
         if (userRepository.findByUsername(request.getUsername()).isPresent()){
             return "ชื่อผู้ใช้นี้มีอยู่แล้ว";
         }
 
-        // เข้ารหัส password
-        String hashed = passwordEncoder.encode(request.getPassword());
-
-        // สร้าง user ใหม่
         User newUser = new User();
-        newUser.setUsername(request.getUsername()); 
-        newUser.setPasswordHash(hashed);
+        newUser.setUsername(request.getUsername());
+        newUser.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        newUser.setRole(isAdmin ? "ADMIN" : "USER");
 
-        // save ลง database
         userRepository.save(newUser);
 
         return "ลงทะเบียนสำเร็จ";
     }
-    
+
     public boolean authenticate(String username, String rawPassword) {
         User user = findByUsername(username);
-
-        if (user != null) {
-            return passwordEncoder.matches(rawPassword, user.getPasswordHash());
-        }
-        return false;
+        return user != null && passwordEncoder.matches(rawPassword, user.getPasswordHash());
     }
 }

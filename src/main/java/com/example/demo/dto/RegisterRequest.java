@@ -3,24 +3,20 @@ package com.example.demo.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RegisterRequest {
-    @JsonProperty("Username")
+
+    @JsonProperty("username")
     private String username;
 
-    @JsonProperty("Password")
+    @JsonProperty("password")
     private String password;
 
-    @JsonProperty("PasswordHash")
-    private String passwordHash;
-
-    @JsonProperty("Firstname")
-    private String Firstname;
+    @JsonProperty("firstname")
+    private String firstName;
     
-    @JsonProperty("Lastname")
-    private String Lastname;
-    
+    @JsonProperty("lastname")
+    private String lastName;
 
-    public RegisterRequest() {
-    }
+    public RegisterRequest() {}
 
     public String getUsername() {
         return username;
@@ -30,18 +26,27 @@ public class RegisterRequest {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }   
+
     public void setPassword(String password) {
         this.password = password;
-    }   
-    public String getPassword(){
-        return this.password;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }    
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public String getFirstName() {
+        return firstName;
+    }   
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
-    
+
+    public String getLastName() {
+        return lastName;
+    }   
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }
