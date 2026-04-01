@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.PlaceDTO;
+import com.example.demo.dto.TopPlaceDTO;
 import com.example.demo.entity.Place;
 import com.example.demo.service.PlaceService;
 
@@ -37,5 +38,17 @@ public class PlaceController {
                     .body(Map.of("message", "ไม่พบสถานที่ตามคำค้นหา"));
         }
         return ResponseEntity.ok(results);
+    }
+    @GetMapping("/top")
+    public ResponseEntity<?> getTopPlaces() {
+        try {
+            List<TopPlaceDTO> data = placeService.getTop5Places();
+            return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "data", data
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("status", "error", "message", e.getMessage()));
+        }
     }
 }

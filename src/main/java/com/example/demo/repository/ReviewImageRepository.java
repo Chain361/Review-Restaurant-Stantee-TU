@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReviewImageRepository extends JpaRepository<ReviewImage, Integer> {
     List<ReviewImage> findByReview_ReviewID(int reviewID);
+    List<ReviewImage> findByPlace_PlaceID(Integer placeID);
 }
