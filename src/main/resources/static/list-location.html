@@ -8,7 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Manrope:wght@400;600&family=Playfair+Display:wght@400;600&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/neonderthaw" rel="stylesheet">
     <style>
         /* ======= RESET & BASE ======= */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,86 +31,7 @@
             flex-direction: column;
             min-height: 100vh;
             width: 3000px;
-        }
-
-        /* ======= HEADER ======= */
-        header {
-            background-color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 40px;
-            border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 2px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .logo-text {
-            font-family: 'Kanit', sans-serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background-color: #f5f5f5;
-            border-radius: 20px;
-            padding: 8px 18px;
-            gap: 10px;
-            width: 340px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .search-bar input {
-            border: none;
-            background: transparent;
-            outline: none;
-            font-family: 'Kanit', sans-serif;
-            font-size: 14px;
-            width: 100%;
-            color: #555;
-        }
-
-        .search-bar i { color: #999; font-size: 14px; }
-
-        .login-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Kanit', sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            color: #333;
-            text-decoration: none;
-            border: 1px solid #ddd;
-            padding: 7px 18px;
-            border-radius: 20px;
-            transition: background 0.2s;
-        }
-
-        .login-btn:hover { background-color: #f5f5f5; }
+        } 
 
         /* ======= MAIN ======= */
         main {
@@ -429,19 +352,21 @@
 
 <div class="container">
     
-    <header>
-    <div class="logo-container">
-        <div class="logo-icon">S</div>
-        <div class="logo-text">HotSnow</div>
-    </div>
-    <div class="search-bar">
-        <input type="text" placeholder="Search ...">
-        <i class="fa-solid fa-magnifying-glass"></i>
-    </div>
-    <a href="login.html" class="login-btn">
-        เข้าสู่ระบบ <i class="fa-solid fa-circle-user"></i>
-    </a>
-    </header>
+        <header>
+            <div class="logo-container">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">HotSnow</div>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search ...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            
+            <a href="login.html" class="login-btn" style="text-decoration: none;">
+                เข้าสู่ระบบ <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </header>
 
 
     <!-- MAIN -->
@@ -474,7 +399,7 @@
                 <!-- Card 1 -->
                 <a href="review.html" class="location-card">
                     <div class="card-images">
-                        <div class="card-img-main">
+                        <div class="card-img-small">
                             <img src="image/Greencanteen.png" alt="location">
                         </div>
                         <div class="card-img-small">
@@ -493,7 +418,7 @@
                 <!-- Card 2 -->
                 <a href="review.html" class="location-card">
                     <div class="card-images">
-                        <div class="card-img-main">
+                        <div class="card-img-small">
                             <img src="image/Greencanteen.png" alt="location">
                         </div>
                         <div class="card-img-small">
@@ -664,16 +589,20 @@
         </div>
     </main>
 
-    <footer>
-        <p style="font-size: 14px;">ชื่อระบบ : cs251 ระบบรีวิวสถานที่ใน TU</p>
-        <p style="font-size: 12px; margin-bottom: 4px;">คำอธิบาย : แพลตฟอร์มกลางที่รวบรวมข้อมูลสถานที่และความคิดเห็นจากผู้ใช้งานจริงรอบรั้วธรรมศาสตร์ รังสิต</p>
-        <div class="footer-logo">
-            <div class="logo-icon">S</div>
-            <div class="logo-text">HotSnow</div>
-        </div>
-        <p style="font-size: 12px; margin-top: 6px;">ช่องทางติดต่อ : ............................</p>
-        <p class="copyright-text">Copyright: © 2024 Group 8 CS251 Thammasat University.</p>
-    </footer>
+        <footer>
+            <div><strong>ชื่อระบบ: cs251 ระบบรีวิวสถานที่ใน TU</strong></div>
+            <div>คำอธิบาย : แพลตฟอร์มกลางที่รวบรวมข้อมูลสถานที่และความคิดเห็นจากผู้ใช้งานจริงรอบรั้วธรรมศาสตร์ รังสิต</div>
+            
+            <div class="footer-logo">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">HotSnow</div>
+            </div>
+
+            <div class="footer-contact-group">
+                <div class="footer-text-light">ช่องทางติดต่อ : ........................................</div>
+                <div class="copyright-text">Copyright: © 2024 Group 8 CS251 Thammasat University.</div>
+            </div>
+        </footer>
 
 
 
