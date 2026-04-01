@@ -30,7 +30,6 @@ public class ReviewController {
     @Autowired
     private PlaceRepository placeRepository; // เพิ่มเพื่อหา Place
     // @Autowired private UserRepository userRepository; // ถ้ามี User ให้ฉีดเข้ามาด้วย
-
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 public ResponseEntity<?> createReview(
         @RequestParam Integer placeID,
@@ -52,14 +51,14 @@ public ResponseEntity<?> createReview(
         Review savedReview = reviewRepository.save(review);
 
         if (file != null && !file.isEmpty()) {
-            imageService.uploadImage(placeID, savedReview, file, "review");
+            imageService.uploadImage(placeID, savedReview, file);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedReview);
 
     } catch (Exception e) {
-        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }
+    
 }
