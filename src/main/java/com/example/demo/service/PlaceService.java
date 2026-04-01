@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,17 +9,25 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.PlaceDTO;
+import com.example.demo.dto.UserBookmarkDTO;
 import com.example.demo.dto.TopPlaceDTO;
 import com.example.demo.entity.Place;
+import com.example.demo.repository.BookmarkRepository;
 import com.example.demo.repository.PlaceRepository;
-import com.example.demo.repository.ReviewImageRepository;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.entity.User;
+import java.sql.Timestamp;import com.example.demo.repository.ReviewImageRepository;
 @Service
 public class PlaceService {
     private final PlaceRepository placeRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final UserRepository userRepository;
     private final ReviewImageRepository reviewImageRepository;
 
-    public PlaceService(PlaceRepository placeRepository, ReviewImageRepository reviewImageRepository) {
+    public PlaceService(PlaceRepository placeRepository,BookmarkRepository bookmarkRepository,UserRepository userRepository, ReviewImageRepository reviewImageRepository) {
         this.placeRepository = placeRepository;
+        this.bookmarkRepository = bookmarkRepository;
+        this.userRepository = userRepository;
         this.reviewImageRepository = reviewImageRepository;
     }
     public List<PlaceDTO> searchPlace(String search){
@@ -61,5 +70,37 @@ public class PlaceService {
             ));
         }
         return topPlaces;
+    }
+    public List<UserBookmarkDTO> getUserBookmarks(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("ไม่พบผู้ใช้"));
+
+        List<Object[]> rows = bookmarkRepository.findUserBookmarks(user.getUserID());
+       
+        return rows.stream().map(row -> {
+            int placeId = row[0] != null ? ((Number) row[0]).intValue() : 0;
+            String placeName = row[1] != null ? row[1].toString() : "";
+            String category = row[2] != null ? row[2].toString() : "";
+            String filePath = row[3] != null ? row[3].toString() : "";
+
+            LocalDateTime addDate = null;
+            if (row[4] instanceof Timestamp timestamp) {
+                addDate = timestamp.toLocalDateTime();
+            } else if (row[4] instanceof LocalDateTime localDateTime) {
+                addDate = localDateTime;
+            }
+
+            return new UserBookmarkDTO(placeId, placeName, category, filePath, addDate);
+        }).toList();
+    }
+    public boolean checkBookmarkStatus(String username, int placeId) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("ไม่พบผู้ใช้"));
+
+        if (placeRepository.findById(placeId).isEmpty()) {
+            throw new RuntimeException("ไม่พบสถานที่");
+        }
+
+        return bookmarkRepository.existsBookmark(placeId, user.getUserID());
     }
 }

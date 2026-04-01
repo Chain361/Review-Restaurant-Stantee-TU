@@ -1,38 +1,5 @@
 package com.example.demo.entity;
 
-import jakarta.annotation.Generated;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name="PlaceImages")
 public class PlaceImage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer placeImageId;
     
-    private String fileName;
-    private String filePath;
-
-    @ManyToOne
-    @JoinColumn(name = "placeID")
-    private Place place;
-
-    public Integer getPlaceImageId() { return placeImageId; }
-    public void setPlaceImageId(Integer placeImageId) { this.placeImageId = placeImageId; }
-
-    public String getFileName() { return fileName; }
-    public void setFileName(String fileName) { this.fileName = fileName; }
-
-    public Place getPlace() { return place; }
-    public void setPlace(Place place) { this.place = place; }
-    public void setFilePath(String replace) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFilePath'");
-    }
 }
