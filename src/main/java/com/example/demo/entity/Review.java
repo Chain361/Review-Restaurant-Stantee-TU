@@ -16,7 +16,7 @@ public class Review {
     private LocalDate reviewDate;
 
     @Column(name = "\"rating\"")
-    private Integer rating;
+    private Float rating;
 
     @Column(name = "\"comment\"")
     private String comment;
@@ -47,11 +47,11 @@ public class Review {
         this.reviewDate = reviewDate;
     }
 
-    public Integer getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 
