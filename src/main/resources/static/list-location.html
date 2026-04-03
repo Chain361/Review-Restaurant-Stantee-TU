@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HotSnow - สถานที่และร้านอาหาร</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Manrope:wght@400;600&family=Playfair+Display:wght@400;600&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/neonderthaw" rel="stylesheet">
+    <style>
+        /* ======= RESET & BASE ======= */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #eef2f5;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 3000px;
+        } 
+
+        /* ======= MAIN ======= */
+        main {
+            flex-grow: 1;
+            padding: 28px 20px 40px;
+            background-color: #eef2f5;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 24px;
+        }
+
+        /* ======= LAYOUT ======= */
+        .list-layout {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        /* ======= FILTER SIDEBAR ======= */
+        .filter-sidebar {
+            width: 200px;
+            flex-shrink: 0;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 22px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .filter-section-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 14px;
+        }
+
+        .filter-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .filter-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 400;
+            color: #444;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .filter-list li input[type="checkbox"] {
+            accent-color: #79cbf9;
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+        }
+
+        .filter-divider {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            margin: 4px 0 16px;
+        }
+
+        /* ======= LOCATION LIST ======= */
+        .location-list-wrapper {
+            flex: 0 1 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            min-width: 0;
+        }
+
+        .location-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: box-shadow 0.2s, transform 0.2s;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            width: 100%;
+        }
+
+        .location-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-1px);            
+        }
+
+        .card-images {
+            display: flex;
+            gap: 10px;
+            height: 140px;
+            margin-bottom: 14px;
+        }
+
+        .card-img-main {
+            flex: 1;
+            border-radius: 7px;
+            overflow: hidden;
+            background-color: #ddd;
+        }
+
+        .card-img-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-img-small {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+        }
+
+        .card-img-small .img-placeholder {
+            flex: 1;
+            border-radius: 7px;
+            background-color: #d8d8d8;
+        }
+
+        .card-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .card-rating-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rating-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #c0392b;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 5px;
+        }
+
+        .rating-badge i { font-size: 10px; }
+
+        .review-count {
+            font-size: 12px;
+            color: #888;
+            font-weight: 400;
+        }
+
+        /* ======= PAGINATION ======= */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding: 0 2px;
+        }
+
+        .pagination a {
+            font-size: 13px;
+            font-weight: 400;
+            color: #79cbf9;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .pagination a:hover { color: #3aabec; }
+
+        /* ======= TOP 5 SIDEBAR ======= */
+        .top5-sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 18px 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .top5-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .top5-subtitle {
+            font-size: 12px;
+            font-weight: 400;
+            color: #888;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .top5-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .top5-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .top5-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background-color: #ddd;
+        }
+
+        .top5-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .top5-name {
+            font-size: 11px;
+            font-weight: 500;
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+
+        .top5-rating-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .top5-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: #c0392b;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+
+        .top5-badge i { font-size: 8px; }
+
+        .top5-count {
+            font-size: 10px;
+            color: #888;
+            font-weight: 400;
+        }
+
+        /* ======= FOOTER ======= */
+        footer {
+            background-color: #fff;
+            text-align: center;
+            padding: 30px 20px 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 14px 0 10px;
+        }
+
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+
+        .footer-logo .logo-text {
+            font-size: 22px;
+        }
+
+        footer p {
+            font-size: 12px;
+            color: #555;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .copyright-text {
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+        <header>
+            <div class="logo-container">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">HotSnow</div>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search ...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            
+            <a href="login.html" class="login-btn" style="text-decoration: none;">
+                เข้าสู่ระบบ <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </header>
+
+
+    <!-- MAIN -->
+    <main>
+        <p class="page-title">สถานที่และร้านอาหาร ในธรรมศาสตร์ รังสิต</p>
+
+        <div class="list-layout">
+
+            <!-- FILTER SIDEBAR -->
+            <aside class="filter-sidebar">
+                <ul class="filter-list">
+                    <li><input type="checkbox" id="f1"> <label for="f1">ร้านอาหาร</label></li>
+                    <li><input type="checkbox" id="f2"> <label for="f2">สถานที่เรียน</label></li>
+                    <li><input type="checkbox" id="f3"> <label for="f3">สนามกีฬา</label></li>
+                    <li><input type="checkbox" id="f4"> <label for="f4">การเดินทาง</label></li>
+                </ul>
+                <hr class="filter-divider">
+                <p class="filter-section-title">Ratings</p>
+                <ul class="filter-list">
+                    <li><input type="checkbox" id="r1"> <label for="r1">3.5 +</label></li>
+                    <li><input type="checkbox" id="r2"> <label for="r2">4.0 +</label></li>
+                </ul>
+            </aside>
+
+            
+
+            <!-- LOCATION CARDS -->
+            <div class="location-list-wrapper">
+
+                <!-- Card 1 -->
+                <a href="review.html" class="location-card">
+                    <div class="card-images">
+                        <div class="card-img-small">
+                            <img src="image/Greencanteen.png" alt="location">
+                        </div>
+                        <div class="card-img-small">
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                        </div>
+                    </div>
+                    <p class="card-name">ชื่อ....</p>
+                    <div class="card-rating-row">
+                        <span class="rating-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                        <span class="review-count">xxx รีวิว</span>
+                    </div>
+                </a>
+
+                <!-- Card 2 -->
+                <a href="review.html" class="location-card">
+                    <div class="card-images">
+                        <div class="card-img-small">
+                            <img src="image/Greencanteen.png" alt="location">
+                        </div>
+                        <div class="card-img-small">
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                        </div>
+                    </div>
+                    <p class="card-name">ชื่อ....</p>
+                    <div class="card-rating-row">
+                        <span class="rating-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                        <span class="review-count">xxx รีวิว</span>
+                    </div>
+                </a>
+
+                <!-- Card 3 -->
+                <a href="review.html" class="location-card">
+                    <div class="card-images">
+                        <div class="card-img-main">
+                            <img src="image/Greencanteen.png" alt="location">
+                        </div>
+                        <div class="card-img-small">
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                        </div>
+                    </div>
+                    <p class="card-name">ชื่อ....</p>
+                    <div class="card-rating-row">
+                        <span class="rating-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                        <span class="review-count">xxx รีวิว</span>
+                    </div>
+                </a>
+
+                <!-- Card 4 -->
+                <a href="review.html" class="location-card">
+                    <div class="card-images">
+                        <div class="card-img-main">
+                            <img src="image/Greencanteen.png" alt="location">
+                        </div>
+                        <div class="card-img-small">
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                        </div>
+                    </div>
+                    <p class="card-name">ชื่อ....</p>
+                    <div class="card-rating-row">
+                        <span class="rating-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                        <span class="review-count">xxx รีวิว</span>
+                    </div>
+                </a>
+
+                <!-- Card 5 -->
+                <a href="review.html" class="location-card">
+                    <div class="card-images">
+                        <div class="card-img-main">
+                            <img src="image/Greencanteen.png" alt="location">
+                        </div>
+                        <div class="card-img-small">
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                        </div>
+                    </div>
+                    <p class="card-name">ชื่อ....</p>
+                    <div class="card-rating-row">
+                        <span class="rating-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                        <span class="review-count">xxx รีวิว</span>
+                    </div>
+                </a>
+
+                <!-- Card 6 -->
+                <a href="review.html" class="location-card">
+                    <div class="card-images">
+                        <div class="card-img-main">
+                            <img src="image/Greencanteen.png" alt="location">
+                        </div>
+                        <div class="card-img-small">
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                            <div class="img-placeholder"></div>
+                        </div>
+                    </div>
+                    <p class="card-name">ชื่อ....</p>
+                    <div class="card-rating-row">
+                        <span class="rating-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                        <span class="review-count">xxx รีวิว</span>
+                    </div>
+                </a>
+                
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+                    <a href="#">&lt; ย้อนกลับ</a>
+                    <a href="#">ถัดไป &gt;</a>
+                </div>
+                
+
+            </div>
+            <!-- END LOCATION CARDS -->
+
+            <!-- TOP 5 SIDEBAR -->
+            <aside class="top5-sidebar">
+                <p class="top5-title">Top 5</p>
+                <p class="top5-subtitle">สถานที่ยอดนิยม</p>
+                <div class="top5-list">
+
+                    <a href="review.html" class="top5-item">
+                        <img src="image/Greencanteen.png" alt="top5" class="top5-img">
+                        <div class="top5-info">
+                            <p class="top5-name">ชื่อ....xcvxcvxcvxcvxcvxvxvxvxvxv</p>
+                            <div class="top5-rating-row">
+                                <span class="top5-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                                <span class="top5-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="review.html" class="top5-item">
+                        <img src="image/Greencanteen.png" alt="top5" class="top5-img">
+                        <div class="top5-info">
+                            <p class="top5-name">ชื่อ....xcvxcvxcvxcvxcvxvxvxvxvxv</p>
+                            <div class="top5-rating-row">
+                                <span class="top5-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                                <span class="top5-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="review.html" class="top5-item">
+                        <img src="image/Greencanteen.png" alt="top5" class="top5-img">
+                        <div class="top5-info">
+                            <p class="top5-name">ชื่อ....xcvxcvxcvxcvxcvxvxvxvxvxv</p>
+                            <div class="top5-rating-row">
+                                <span class="top5-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                                <span class="top5-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="review.html" class="top5-item">
+                        <img src="image/Greencanteen.png" alt="top5" class="top5-img">
+                        <div class="top5-info">
+                            <p class="top5-name">ชื่อ....xcvxcvxcvxcvxcvxvxvxvxvxv</p>
+                            <div class="top5-rating-row">
+                                <span class="top5-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                                <span class="top5-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="review.html" class="top5-item">
+                        <img src="image/Greencanteen.png" alt="top5" class="top5-img">
+                        <div class="top5-info">
+                            <p class="top5-name">ชื่อ....xcvxcvxcvxcvxcvxvxvxvxvxv</p>
+                            <div class="top5-rating-row">
+                                <span class="top5-badge">0.0 <i class="fa-solid fa-star"></i></span>
+                                <span class="top5-count">xxx รีวิว</span>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+            </aside>
+            <!-- END TOP 5 -->
+
+        </div>
+    </main>
+
+        <footer>
+            <div><strong>ชื่อระบบ: cs251 ระบบรีวิวสถานที่ใน TU</strong></div>
+            <div>คำอธิบาย : แพลตฟอร์มกลางที่รวบรวมข้อมูลสถานที่และความคิดเห็นจากผู้ใช้งานจริงรอบรั้วธรรมศาสตร์ รังสิต</div>
+            
+            <div class="footer-logo">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">HotSnow</div>
+            </div>
+
+            <div class="footer-contact-group">
+                <div class="footer-text-light">ช่องทางติดต่อ : ........................................</div>
+                <div class="copyright-text">Copyright: © 2024 Group 8 CS251 Thammasat University.</div>
+            </div>
+        </footer>
+
+
+
+</div>
+
+</body>
+</html>
