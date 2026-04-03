@@ -34,6 +34,7 @@ header {
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
 }
 
 .logo-icon {
@@ -174,7 +175,7 @@ header {
 
 .section-title {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 600; 
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 2px solid #ddd;
@@ -196,6 +197,8 @@ header {
     flex-direction: column;
     gap: 10px;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+    text-decoration: none !important; /* เอาเส้นใต้ออก */
+    color: #333 !important;
 }
 
 .card img {
