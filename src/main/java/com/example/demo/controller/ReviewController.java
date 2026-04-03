@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.ReviewService;
+import com.example.demo.dto.ReviewResponseDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.ImageService;
@@ -9,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDate;
 
 @RestController
@@ -20,45 +21,50 @@ public class ReviewController {
     @Autowired private UserRepository userRepository;
     @Autowired private PlaceRepository placeRepository;
     @Autowired private ImageService imageService;
+    
+    // ตรวจสอบชื่อ Class ให้ตรงกับในไฟล์ Service นะครับ
+    @Autowired private ReviewService reviewService; 
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createReview(
             @RequestParam Integer placeID,
             @RequestParam Integer rating,
             @RequestParam String comment,
-            @RequestParam(value = "image", required = false) MultipartFile file) {
-
+            @RequestParam(value = "image", required = false) MultipartFile file,
+            Authentication authentication) {
         try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth.getName();
+            String currentUsername = authentication.getName();
+            User user = userRepository.findByUsername(currentUsername)
+                    .orElseThrow(() -> new RuntimeException("ไม่พบข้อมูลผู้ใช้งานในระบบ"));
 
-            User user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+            Place place = placeRepository.findById(placeID)
+                    .orElseThrow(() -> new RuntimeException("ไม่พบสถานที่ที่ต้องการรีวิว"));
 
-            // ปรับให้เช็คแบบไม่สนตัวพิมพ์เล็กใหญ่
-            if (!user.getRole().equalsIgnoreCase("USER")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("เฉพาะ USER เท่านั้นที่สามารถสร้างรีวิวได้ (Role ปัจจุบัน: " + user.getRole() + ")");
-            }
-
-            // ... โค้ดส่วนที่เหลือเหมือนเดิม ...
-            Place place = placeRepository.findById(placeID).get();
             Review review = new Review();
-            review.setPlace(place);
-            review.setUser(user);
+            review.setUser(user);   
+            review.setPlace(place); 
             review.setRating(rating);
             review.setComment(comment);
             review.setReviewDate(LocalDate.now());
 
             Review savedReview = reviewRepository.save(review);
+            
+            
             if (file != null && !file.isEmpty()) {
                 imageService.uploadImage(placeID, savedReview, file);
             }
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedReview);
+          
+            ReviewResponseDTO responseDTO = reviewService.convertToDTO(savedReview);
+            
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
 
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            // พิมพ์ log เพื่อดู error จริงๆ บน console server
+            e.printStackTrace(); 
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("เกิดข้อผิดพลาดภายในระบบ");
         }
     }
 }

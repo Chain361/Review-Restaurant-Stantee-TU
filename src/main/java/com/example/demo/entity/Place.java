@@ -42,6 +42,8 @@ public class Place {
     @OneToMany(mappedBy = "place")
     private List<Review> reviews;
 
+    @OneToMany(mappedBy = "place")
+    private List<PlaceImage> placeImages;
     // Default constructor สำหรับ Hibernate
     public Place() {}
 
@@ -66,4 +68,5 @@ public class Place {
     public String getTimePeriod() { return timePeriod; }
     public double getLatitude() { return latitude; }
     public double getLongitude() { return longitude; }
+    public List<PlaceImage> getPlaceImages() { return placeImages; }
 }
