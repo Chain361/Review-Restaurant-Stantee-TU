@@ -10,10 +10,12 @@ public class PlaceImage {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "placeid")
+    @JoinColumn(name = "placeid",referencedColumnName = "\"placeID\"")
     private Place place;
 
+    @Column(name = "file_name")
     private String fileName;
+    @Column(name = "file_path")
     private String filePath;
 
     public PlaceImage() {}
