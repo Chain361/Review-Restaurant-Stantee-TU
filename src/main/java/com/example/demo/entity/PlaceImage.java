@@ -2,7 +2,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 @Entity
-@Table(name = "place_images")
+@Table(name = "PlaceImages")
 @Data
 public class PlaceImage {
     @Id
