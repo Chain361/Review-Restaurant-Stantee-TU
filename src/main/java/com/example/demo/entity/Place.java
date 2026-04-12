@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"placeID\"")
     private int placeID;
 
     @Column(name = "\"placeName\"")
@@ -41,7 +42,8 @@ public class Place {
     @OneToMany(mappedBy = "place")
     private List<Review> reviews;
 
-    // Default constructor สำหรับ Hibernate
+    @OneToMany(mappedBy = "place")
+    private List<PlaceImage> placeImages;
     public Place() {}
 
     // Constructor แบบ parameterized
@@ -65,4 +67,5 @@ public class Place {
     public String getTimePeriod() { return timePeriod; }
     public double getLatitude() { return latitude; }
     public double getLongitude() { return longitude; }
+    public List<PlaceImage> getPlaceImages() { return placeImages; }
 }

@@ -8,7 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Integer>{
-    Optional<User>findByUsername(String username);
-}
+public interface UserRepository extends JpaRepository<User, Integer> {
 
+    Optional<User> findByUsername(String username);
+
+    // หาเฉพาะ admin
+    Optional<User> findByUsernameAndRole(String username, String role);
+}

@@ -1,53 +1,79 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="users")
+@Table(name = "\"Users\"")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID;
-    private String username;
-    private String passwordHash;
-    private String Firstname;
-    private String Lastname;
+    @Column(name = "\"userID\"")
+    private Integer userID;
 
-    public User(){
-        
-    }
-    public User(int userID,String username,String passwordHash,String firstName,String lastName){
+    @Column(name = "\"username\"")
+    private String username;
+
+    @Column(name = "\"passwordHash\"")
+    private String passwordHash;
+
+    @Column(name = "\"firstName\"")
+    private String firstName;
+
+    @Column(name = "\"lastName\"")
+    private String lastName;
+    @Column(name = "\"role\"")
+    private String role ;
+
+    public User(){}
+
+    public User(Integer userID, String username, String passwordHash, String firstName, String lastName){
         this.userID = userID;
         this.username = username;
         this.passwordHash = passwordHash;
-        this.Firstname=firstName;
-        this.Lastname=lastName;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
-    
-    public int getUserID(){
+
+    public Integer getUserID(){
         return userID;
     }
+
+    public void setUserID(Integer userID){
+        this.userID = userID;
+    }
+
     public String getUsername(){
         return username;
-    } 
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
     public String getPasswordHash(){
         return passwordHash;
     }
-    public String getFirstName(){
-        return this.Firstname;
-    }
-    public String getLastName(){
-        return this.Lastname;
-    }
-    public void setUsername(String username) {
-       this.username = username;
-    }
+
     public void setPasswordHash(String passwordHash){
         this.passwordHash = passwordHash;
     }
-    
+
+    public String getFirstName(){
+        return firstName;
+    }
+
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
+    }
+
+    public String getLastName(){
+        return lastName;
+    }
+
+    public void setLastName(String lastName){
+        this.lastName = lastName;
+    }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }
