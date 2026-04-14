@@ -5,33 +5,118 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Map;
 import com.example.demo.dto.PlaceDTO;
+import com.example.demo.dto.PlaceDetailResponseDTO;
+import com.example.demo.dto.ReviewResponseDTO;
 import com.example.demo.dto.UserBookmarkDTO;
 import com.example.demo.dto.TopPlaceDTO;
 import com.example.demo.entity.Bookmark;
 import com.example.demo.entity.BookmarkId;
 import com.example.demo.entity.Place;
+import com.example.demo.entity.PlaceImage;
+import com.example.demo.entity.Review;
+import com.example.demo.entity.ReviewImage;
 import com.example.demo.repository.BookmarkRepository;
+import com.example.demo.repository.PlaceImageRepository;
 import com.example.demo.repository.PlaceRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.entity.User;
-import java.sql.Timestamp;import com.example.demo.repository.ReviewImageRepository;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
+import com.example.demo.repository.ReviewImageRepository;
+
 @Service
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final ReviewImageRepository reviewImageRepository;
-
-    public PlaceService(PlaceRepository placeRepository,BookmarkRepository bookmarkRepository,UserRepository userRepository, ReviewImageRepository reviewImageRepository) {
+    private final ReviewService reviewService;
+    @Value("${app.image-base-url:http://localhost:8080/images/}")
+    private String imageBaseUrl;
+    private final PlaceImageRepository placeImageRepository;
+    public PlaceService(PlaceRepository placeRepository, 
+                        BookmarkRepository bookmarkRepository, 
+                        UserRepository userRepository, 
+                        ReviewImageRepository reviewImageRepository,
+                        ReviewService reviewService,
+                        PlaceImageRepository placeImageRepository) {
         this.placeRepository = placeRepository;
         this.bookmarkRepository = bookmarkRepository;
         this.userRepository = userRepository;
         this.reviewImageRepository = reviewImageRepository;
+        this.reviewService = reviewService;
+        this.placeImageRepository = placeImageRepository;
     }
+    public Place createPlace(Place place, List<MultipartFile> images) {
+        Place savedPlace = placeRepository.save(place);
+
+        if (images != null && !images.isEmpty()) {
+            Path uploadDir = Paths.get("uploads/places/" + savedPlace.getPlaceID());
+            try {
+                if (!Files.exists(uploadDir)) {
+                    Files.createDirectories(uploadDir);
+                }
+                for (MultipartFile file : images) {
+                    String originalFileName = file.getOriginalFilename();
+                    String extension = (originalFileName != null && originalFileName.contains("."))
+                            ? originalFileName.substring(originalFileName.lastIndexOf(".")) : "";
+                    String newFileName = "place_" + savedPlace.getPlaceID() + "_" + System.currentTimeMillis() + extension;
+
+                    Files.copy(file.getInputStream(), uploadDir.resolve(newFileName), StandardCopyOption.REPLACE_EXISTING);
+
+                    PlaceImage placeImage = new PlaceImage();
+                    placeImage.setPlace(savedPlace);
+                    placeImage.setFileName(originalFileName);
+                    placeImage.setFilePath(savedPlace.getPlaceID() + "/" + newFileName);
+                    placeImageRepository.save(placeImage);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("อัปโหลดรูปภาพไม่สำเร็จ: " + e.getMessage());
+            }
+        }
+
+        return savedPlace;
+    }
+    public PlaceDetailResponseDTO getPlaceDetail(int id) {
+        Place place = placeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Place with ID " + id + " not found"));
+
+        PlaceDetailResponseDTO dto = new PlaceDetailResponseDTO();
+        dto.setPlaceId(place.getPlaceID());
+        dto.setPlaceName(place.getPlaceName());
+        dto.setAddress(place.getAddress());
+        dto.setDescription(place.getDescription());
+        dto.setPhone(place.getPhone());
+
+        List<ReviewResponseDTO> reviewDTOs = place.getReviews().stream().map(review -> {
+            ReviewResponseDTO rDto = reviewService.convertToDTO(review);
+            
+            if (review.getImages() != null) {
+                List<String> imageUrls = review.getImages().stream()
+                        .map((ReviewImage img) -> imageBaseUrl + img.getFilePath())
+                        .toList();
+                rDto.setReviewImages(imageUrls);
+            }
+
+            return rDto;
+        }).toList();
+
+        dto.setReviews(reviewDTOs);
+        return dto;
+    }
+
     public List<PlaceDTO> searchPlace(String search){
         if(search == null || search.isBlank()) return List.of();
         return placeRepository.searchByKeyword(search)
@@ -39,10 +124,11 @@ public class PlaceService {
                             .map(p -> new PlaceDTO(p.getPlaceID(), p.getPlaceName(), p.getAddress(), p.getDescription(), p.getPhone()))
                             .toList();
     }
-    public Place getPlaceById(int id) {
-        return placeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Place with ID " + id + " not found"));
+
+    public PlaceDetailResponseDTO getPlaceById(int id) {
+        return getPlaceDetail(id);
     }
+
     public List<TopPlaceDTO> getTop5Places() {
         List<Object[]> results = placeRepository.findTopPlaces(PageRequest.of(0, 5));
         List<TopPlaceDTO> topPlaces = new ArrayList<>();
@@ -53,26 +139,24 @@ public class PlaceService {
             Double avgRating = (Double) row[1];
             Long reviewCount = (Long) row[2];
 
-            // แก้ไข: ค้นหารูปภาพโดยใช้ Place ID ของร้านนั้นๆ 
-            // ตรวจสอบว่าใน ReviewImageRepository ของคุณมี Method นี้หรือไม่ 
-            // (หรือใช้ findByPlace_PlaceID ถ้าใน Entity ReviewImage มี Place โดยตรง)
             List<String> imageUrls = reviewImageRepository.findByPlace_PlaceID(place.getPlaceID())
                     .stream()
-                    .map(img -> "http://localhost:8080/images/" + img.getFilePath())
+                    .map(img -> imageBaseUrl + img.getFilePath())
                     .limit(3)
-                    .collect(Collectors.toList());
+                    .toList();
 
             topPlaces.add(new TopPlaceDTO(
                 i + 1,
                 place.getPlaceID(),
                 place.getPlaceName(),
-                avgRating != null ? Math.round(avgRating * 10.0) / 10.0 : 0.0, // กันกรณีไม่มี rating
+                avgRating != null ? Math.round(avgRating * 10.0) / 10.0 : 0.0,
                 reviewCount,
                 imageUrls
             ));
         }
         return topPlaces;
     }
+
     public List<UserBookmarkDTO> getUserBookmarks(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("ไม่พบผู้ใช้"));
@@ -95,6 +179,7 @@ public class PlaceService {
             return new UserBookmarkDTO(placeId, placeName, category, filePath, addDate);
         }).toList();
     }
+
     public boolean checkBookmarkStatus(String username, int placeId) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("ไม่พบผู้ใช้"));
@@ -105,6 +190,7 @@ public class PlaceService {
 
         return bookmarkRepository.existsBookmark(placeId, user.getUserID());
     }
+
     public Map<String, Object> toggleBookmark(String username, int placeId) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("ไม่พบผู้ใช้"));

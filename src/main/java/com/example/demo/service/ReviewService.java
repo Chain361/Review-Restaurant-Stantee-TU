@@ -2,10 +2,16 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ReviewResponseDTO;
 import com.example.demo.entity.Review;
+import com.example.demo.repository.ReviewRepository;
+
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service 
 public class ReviewService {
+    @Autowired
+    private ReviewRepository reviewRepository;
     public ReviewResponseDTO convertToDTO(Review review) {
         if (review == null) return null;
 
@@ -26,5 +32,9 @@ public class ReviewService {
         }
         
         return dto;
+    }
+    public Review getReviewByPlaceID(Integer placeID) {
+        if(reviewRepository.findByPlacePlaceID(placeID).isEmpty()) return null;
+        return reviewRepository.findByPlacePlaceID(placeID).get(0);
     }
 }

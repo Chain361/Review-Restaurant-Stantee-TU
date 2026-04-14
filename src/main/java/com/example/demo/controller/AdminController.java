@@ -1,0 +1,78 @@
+package com.example.demo.controller;
+
+import com.example.demo.service.JwtService;
+import com.example.demo.service.PlaceService;
+import com.example.demo.entity.Place;
+import com.example.demo.entity.PlaceImage;
+import com.example.demo.repository.PlaceImageRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/admin")
+public class AdminController {
+
+    private final JwtService jwtService;
+    private final PlaceService placeService;
+
+    private final PlaceImageRepository placeImageRepository; 
+
+    public AdminController(JwtService jwtService, PlaceService placeService, PlaceImageRepository placeImageRepository) {
+        this.jwtService = jwtService;
+        this.placeService = placeService;
+        this.placeImageRepository = placeImageRepository;
+    }
+
+    private boolean isAdmin(String token) {
+        try {
+            if (token != null && token.startsWith("Bearer ")) {
+                String pureToken = token.substring(7);
+                String role = jwtService.extractRole(pureToken);
+                return "ADMIN".equals(role);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+
+    @PostMapping(value = "/places/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createPlace(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestPart("placeName") String placeName,
+            @RequestPart("description") String description,
+            @RequestPart("phone") String phone,
+            @RequestPart("address") String address,
+            @RequestPart("timePeriod") String timePeriod,
+            @RequestPart("latitude") String latitude,
+            @RequestPart("longitude") String longitude,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+
+        if (!isAdmin(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Admin only"));
+        }
+
+        Place place = new Place();
+        place.setPlaceName(placeName);
+        place.setDescription(description);
+        place.setPhone(phone);
+        place.setAddress(address);
+        place.setTimePeriod(timePeriod);
+        place.setLatitude(Double.parseDouble(latitude));
+        place.setLongitude(Double.parseDouble(longitude));
+
+        Place savedPlace = placeService.createPlace(place, images);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                "status", "success",
+                "placeId", savedPlace.getPlaceID()
+        ));
+    }
+}

@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.Data;
 
@@ -13,4 +14,5 @@ public class ReviewResponseDTO {
     private String username;
     private String placeName;
     private Integer placeID;
+    private List<String> reviewImages;
 }

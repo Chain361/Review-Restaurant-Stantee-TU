@@ -8,25 +8,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.PlaceDTO;
+import com.example.demo.dto.PlaceDetailResponseDTO;
 import com.example.demo.dto.TopPlaceDTO;
 import com.example.demo.entity.Place;
 import com.example.demo.service.PlaceService;
+import com.example.demo.service.ReviewService;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 @RestController
 @RequestMapping("/places") 
 public class PlaceController {
 
     private final PlaceService placeService;
-
-    public PlaceController(PlaceService placeService) {
+    private final ReviewService reviewService;
+    public PlaceController(PlaceService placeService, ReviewService reviewService) {
         this.placeService = placeService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping("/{placeID}")
-    public Place getPlaceByIDPlace(@PathVariable int placeID){
-        return placeService.getPlaceById(placeID);
+    public ResponseEntity<?> getPlaceByIDPlace(@PathVariable int placeID){
+        PlaceDetailResponseDTO place = placeService.getPlaceById(placeID);
+        if(place == null) { 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "ไม่พบสถานที่ที่มี ID: " + placeID));
+        }
+        
+        return ResponseEntity.ok(place);
     }
     @GetMapping("/search")
     public ResponseEntity<?> findPlaceWithSearch(@RequestParam("search") String search) {
@@ -51,4 +63,5 @@ public class PlaceController {
             return ResponseEntity.status(500).body(Map.of("status", "error", "message", e.getMessage()));
         }
     }
+    
 }
