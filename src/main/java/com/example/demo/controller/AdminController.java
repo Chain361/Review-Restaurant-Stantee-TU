@@ -2,9 +2,18 @@ package com.example.demo.controller;
 
 import com.example.demo.service.JwtService;
 import com.example.demo.service.PlaceService;
+import com.example.demo.service.ReviewService;
+import com.example.demo.dto.ReviewResponseDTO;
 import com.example.demo.entity.Place;
 import com.example.demo.entity.PlaceImage;
+import com.example.demo.entity.Review;
 import com.example.demo.repository.PlaceImageRepository;
+import com.example.demo.repository.ReviewRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +23,24 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
 
+    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
     private final JwtService jwtService;
     private final PlaceService placeService;
 
     private final PlaceImageRepository placeImageRepository; 
 
-    public AdminController(JwtService jwtService, PlaceService placeService, PlaceImageRepository placeImageRepository) {
+    public AdminController(JwtService jwtService, PlaceService placeService, PlaceImageRepository placeImageRepository,ReviewService reviewService,ReviewRepository reviewRepository) {
         this.jwtService = jwtService;
         this.placeService = placeService;
         this.placeImageRepository = placeImageRepository;
+        this.reviewService = reviewService;
+        this.reviewRepository = reviewRepository; 
     }
 
     private boolean isAdmin(String token) {
@@ -74,5 +88,41 @@ public class AdminController {
                 "status", "success",
                 "placeId", savedPlace.getPlaceID()
         ));
+    }
+
+    @GetMapping("/reviews")
+    public ResponseEntity<?> getAllReviews(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        if (!isAdmin(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Admin only"));
+        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by("reviewDate").descending());
+        Page<ReviewResponseDTO> reviews = reviewService.findAll(pageable);
+        return ResponseEntity.ok(reviews);
+    }
+
+    @DeleteMapping("/reviews/{reviewID}")
+    public ResponseEntity<?> deleteReview(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable Integer reviewID) {
+
+        if (!isAdmin(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Admin only"));
+        }
+        try {
+            reviewService.deleteReview(reviewID);
+            return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "message", "Review ID " + reviewID + " deleted successfully"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", e.getMessage()));
+        }
     }
 }

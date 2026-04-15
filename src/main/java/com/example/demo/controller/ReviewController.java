@@ -53,7 +53,6 @@ public class ReviewController {
                 imageService.uploadImage(placeID, savedReview, file);
             }
 
-          
             ReviewResponseDTO responseDTO = reviewService.convertToDTO(savedReview);
             
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
