@@ -21,17 +21,6 @@ CREATE TABLE "Users" (
     "role" VARCHAR(255)
 );
 
-CREATE TABLE "Reviews" (
-    "reviewID" SERIAL PRIMARY KEY,
-    "reviewDate" DATE,
-    "rating" INTEGER,
-    "comment" VARCHAR(255),
-    "userID" INTEGER,
-    "placeID" INTEGER,
-    CONSTRAINT fk_review_user FOREIGN KEY ("userID") REFERENCES "Users"("userID"),
-    CONSTRAINT fk_review_place FOREIGN KEY ("placeID") REFERENCES "Places"("placeID")
-);
-
 CREATE TABLE places (
     "placeID" SERIAL PRIMARY KEY,
     "placeName" VARCHAR(255),
@@ -42,6 +31,19 @@ CREATE TABLE places (
     "latitude" DOUBLE PRECISION,
     "longitude" DOUBLE PRECISION
 );
+
+
+CREATE TABLE "Reviews" (
+    "reviewID" SERIAL PRIMARY KEY,
+    "reviewDate" DATE,
+    "rating" INTEGER,
+    "comment" VARCHAR(255),
+    "userID" INTEGER,
+    "placeID" INTEGER,
+    CONSTRAINT fk_review_user FOREIGN KEY ("userID") REFERENCES "Users"("userID"),
+    CONSTRAINT fk_review_place FOREIGN KEY ("placeID") REFERENCES "places"("placeID")
+);
+
 
 
 -- Sample data

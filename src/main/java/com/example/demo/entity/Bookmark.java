@@ -9,19 +9,19 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Bookmark")
+@Table(name = "\"Bookmark\"")
 @IdClass(BookmarkId.class)
 public class Bookmark {
 
     @Id
-    @Column(name = "UserID")
+    @Column(name = "\"UserID\"")
     private Integer userID;
 
     @Id
-    @Column(name = "PlaceID")
+    @Column(name = "\"PlaceID\"")
     private Integer placeID;
 
-    @Column(name = "AddDate")
+    @Column(name = "\"AddDate\"")
     private LocalDateTime addDate;
 
     public Bookmark() {

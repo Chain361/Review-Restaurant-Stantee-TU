@@ -44,7 +44,6 @@ public class Place {
 
     @OneToMany(mappedBy = "place")
     private List<PlaceImage> placeImages;
-    // Default constructor สำหรับ Hibernate
     public Place() {}
 
     // Constructor แบบ parameterized

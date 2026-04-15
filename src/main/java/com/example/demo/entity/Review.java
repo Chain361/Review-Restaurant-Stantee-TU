@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -28,6 +30,9 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "\"placeID\"")
     private Place place;
+    
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewImage> images;
 
     public Review(){}
 
@@ -77,5 +82,12 @@ public class Review {
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+    public List<ReviewImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ReviewImage> images) {
+        this.images = images;
     }
 }

@@ -8,18 +8,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "PlaceCategory")
+@Table(name = "\"PlaceCategory\"")
 public class PlaceCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CategoryID")
+    @Column(name = "\"CategoryID\"")
     private int CategoryID;
 
-    @Column(name = "CategoryName")
+    @Column(name = "\"CategoryName\"")
     private String CategoryName;
 
-    @Column(name = "PlaceID")
+    @Column(name = "\"PlaceID\"")
     private int PlaceID;
 
     public PlaceCategory() {

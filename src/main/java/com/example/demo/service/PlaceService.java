@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
+import java.util.Map;
 import com.example.demo.dto.PlaceDTO;
 import com.example.demo.dto.UserBookmarkDTO;
 import com.example.demo.dto.TopPlaceDTO;
+import com.example.demo.entity.Bookmark;
+import com.example.demo.entity.BookmarkId;
 import com.example.demo.entity.Place;
 import com.example.demo.repository.BookmarkRepository;
 import com.example.demo.repository.PlaceRepository;
@@ -102,5 +104,37 @@ public class PlaceService {
         }
 
         return bookmarkRepository.existsBookmark(placeId, user.getUserID());
+    }
+    public Map<String, Object> toggleBookmark(String username, int placeId) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("ไม่พบผู้ใช้"));
+
+        if (placeRepository.findById(placeId).isEmpty()) {
+            throw new RuntimeException("ไม่พบสถานที่");
+        }
+
+        BookmarkId bookmarkId = new BookmarkId(user.getUserID(), placeId);
+
+        if (bookmarkRepository.existsById(bookmarkId)) {
+            bookmarkRepository.deleteById(bookmarkId);
+
+            return Map.of(
+                    "status", "unbookmarked",
+                    "isFavorite", false
+            );
+        }
+
+        Bookmark bookmark = new Bookmark(
+                user.getUserID(),
+                placeId,
+                LocalDateTime.now()
+        );
+
+        bookmarkRepository.save(bookmark);
+
+        return Map.of(
+                "status", "bookmarked",
+                "isFavorite", true
+        );
     }
 }

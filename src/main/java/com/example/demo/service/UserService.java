@@ -33,6 +33,8 @@ public class UserService {
         User newUser = new User();
         newUser.setUsername(request.getUsername());
         newUser.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        newUser.setFirstName(request.getFirstName());
+        newUser.setLastName(request.getLastName());
         newUser.setRole(isAdmin ? "ADMIN" : "USER");
 
         userRepository.save(newUser);

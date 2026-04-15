@@ -2,7 +2,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 @Entity
-@Table(name = "place_images")
+@Table(name = "PlaceImages")
 @Data
 public class PlaceImage {
     @Id
@@ -10,10 +10,12 @@ public class PlaceImage {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "placeid")
+    @JoinColumn(name = "placeid",referencedColumnName = "\"placeID\"")
     private Place place;
 
+    @Column(name = "file_name")
     private String fileName;
+    @Column(name = "file_path")
     private String filePath;
 
     public PlaceImage() {}
