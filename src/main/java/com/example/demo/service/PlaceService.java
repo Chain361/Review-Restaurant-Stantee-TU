@@ -3,14 +3,19 @@ package com.example.demo.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
 import com.example.demo.dto.PlaceDTO;
 import com.example.demo.dto.PlaceDetailResponseDTO;
 import com.example.demo.dto.ReviewResponseDTO;
@@ -22,18 +27,11 @@ import com.example.demo.entity.Place;
 import com.example.demo.entity.PlaceImage;
 import com.example.demo.entity.Review;
 import com.example.demo.entity.ReviewImage;
+import com.example.demo.entity.User;
 import com.example.demo.repository.BookmarkRepository;
 import com.example.demo.repository.PlaceImageRepository;
 import com.example.demo.repository.PlaceRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.entity.User;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.sql.Timestamp;
 import com.example.demo.repository.ReviewImageRepository;
 
 @Service
@@ -43,9 +41,8 @@ public class PlaceService {
     private final UserRepository userRepository;
     private final ReviewImageRepository reviewImageRepository;
     private final ReviewService reviewService;
-    @Value("${app.image-base-url:http://localhost:8080/images/}")
-    private String imageBaseUrl;
     private final PlaceImageRepository placeImageRepository;
+
     public PlaceService(PlaceRepository placeRepository, 
                         BookmarkRepository bookmarkRepository, 
                         UserRepository userRepository, 
@@ -59,6 +56,8 @@ public class PlaceService {
         this.reviewService = reviewService;
         this.placeImageRepository = placeImageRepository;
     }
+
+
     public Place createPlace(Place place, List<MultipartFile> images) {
         Place savedPlace = placeRepository.save(place);
 
@@ -105,7 +104,7 @@ public class PlaceService {
             
             if (review.getImages() != null) {
                 List<String> imageUrls = review.getImages().stream()
-                        .map((ReviewImage img) -> imageBaseUrl + img.getFilePath())
+                        .map(ReviewImage::getFilePath)
                         .toList();
                 rDto.setReviewImages(imageUrls);
             }
@@ -128,33 +127,38 @@ public class PlaceService {
     public PlaceDetailResponseDTO getPlaceById(int id) {
         return getPlaceDetail(id);
     }
-
     public List<TopPlaceDTO> getTop5Places() {
-        List<Object[]> results = placeRepository.findTopPlaces(PageRequest.of(0, 5));
-        List<TopPlaceDTO> topPlaces = new ArrayList<>();
+            List<Object[]> results = placeRepository.findTopPlaces(PageRequest.of(0, 5));
+            List<TopPlaceDTO> topPlaces = new ArrayList<>();
 
-        for (int i = 0; i < results.size(); i++) {
-            Object[] row = results.get(i);
-            Place place = (Place) row[0];
-            Double avgRating = (Double) row[1];
-            Long reviewCount = (Long) row[2];
+            for (int i = 0; i < results.size(); i++) {
+                Object[] row = results.get(i);
+                Place place = (Place) row[0];
+                Double avgRating = (Double) row[1];
+                Long reviewCount = (Long) row[2];
 
-            List<String> imageUrls = reviewImageRepository.findByPlace_PlaceID(place.getPlaceID())
-                    .stream()
-                    .map(img -> imageBaseUrl + img.getFilePath())
-                    .limit(3)
-                    .toList();
+                List<String> imageUrls = placeImageRepository.findByPlace_PlaceID(place.getPlaceID())
+                        .stream()
+                        .map(img -> {
+                            String path = img.getFilePath();
+                            if (path != null && path.contains("/")) {
+                                return path.substring(path.indexOf("/") + 1);
+                            }
+                            return path;
+                        })
+                        .limit(3)
+                        .toList();
 
-            topPlaces.add(new TopPlaceDTO(
-                i + 1,
-                place.getPlaceID(),
-                place.getPlaceName(),
-                avgRating != null ? Math.round(avgRating * 10.0) / 10.0 : 0.0,
-                reviewCount,
-                imageUrls
-            ));
-        }
-        return topPlaces;
+                topPlaces.add(new TopPlaceDTO(
+                    i + 1,
+                    place.getPlaceID(),
+                    place.getPlaceName(),
+                    avgRating != null ? Math.round(avgRating * 10.0) / 10.0 : 0.0,
+                    reviewCount,
+                    imageUrls
+                ));
+            }
+            return topPlaces;
     }
 
     public List<UserBookmarkDTO> getUserBookmarks(String username) {
