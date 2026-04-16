@@ -115,6 +115,18 @@
         .register-link a:hover {
             color: #5d6e7a;
         }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 13px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -122,12 +134,14 @@
     <div class="login-card">
         <h2>เข้าสู่ระบบ</h2>
         
-        <form action="#" method="POST">
+        <div class="error-message" id="errorMessage"></div>
+        
+        <form id="loginForm">
             <div class="input-group">
-                <input type="text" placeholder="ชื่อผู้ใช้" required>
+                <input type="text" id="username" name="username" placeholder="ชื่อผู้ใช้" required>
             </div>
             <div class="input-group">
-                <input type="password" placeholder="รหัสผ่าน" required>
+                <input type="password" id="password" name="password" placeholder="รหัสผ่าน" required>
             </div>
             
             <button type="submit" class="login-btn">เข้าสู่ระบบ</button>
@@ -140,5 +154,59 @@
         </p>
     </div>
 
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMessage.classList.remove('show');
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            try {
+                const response = await fetch('http://localhost:8080/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                if (response.status === 200) {
+                    const data = await response.json();
+                    
+                    // Store accessToken in session storage
+                    sessionStorage.setItem('accessToken', data.accessToken);
+                    sessionStorage.setItem('role', data.role);
+                    
+                    // Redirect to homepage
+                    window.location.href = 'homepage.html';
+                } else if (response.status === 401) {
+                    const data = await response.json();
+                    
+                    // Show error message
+                    errorMessage.textContent = data.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+                    errorMessage.classList.add('show');
+                    
+                    // Clear password field
+                    passwordInput.value = '';
+                } else {
+                    errorMessage.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ';
+                    errorMessage.classList.add('show');
+                }
+            } catch (error) {
+                errorMessage.textContent = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์';
+                errorMessage.classList.add('show');
+                console.error('Login error:', error);
+            }
+        });
+    </script>
 </body>
 </html>
