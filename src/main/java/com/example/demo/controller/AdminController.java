@@ -127,6 +127,27 @@ public class AdminController {
                 "message", "Updated successfully"
         ));
     }
+    @DeleteMapping("/places/delete/{id}")
+    public ResponseEntity<?> deletePlace(
+            @PathVariable("id") int id,
+            @RequestHeader(value = "Authorization", required = false) String token) {
+
+        if (!isAdmin(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Admin only"));
+        }
+
+        try {
+            placeService.deletePlace(id);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Place deleted successfully"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error deleting place: " + e.getMessage()));
+        }
+    }
     @GetMapping("/reviews")
     public ResponseEntity<?> getAllReviews(
             @RequestHeader(value = "Authorization", required = false) String token,

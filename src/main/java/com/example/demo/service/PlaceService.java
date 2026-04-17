@@ -157,6 +157,24 @@ public class PlaceService {
 
         return placeRepository.save(existingPlace);
     }
+    @Transactional
+    public void deletePlace(int id) {
+        Place place = placeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Place not found with id: " + id));
+
+        if (place.getPlaceImages() != null) {
+            for (PlaceImage image : place.getPlaceImages()) {
+                try {
+                    Files.deleteIfExists(Paths.get(image.getFilePath()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                placeImageRepository.delete(image);
+            }
+        }
+
+        placeRepository.delete(place);
+    }
     private void deleteFileOnServer(String filePath) {
         try {
             Path path = Paths.get("uploads/" + filePath);
