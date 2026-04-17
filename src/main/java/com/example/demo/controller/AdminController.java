@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -56,6 +57,8 @@ public class AdminController {
         return false;
     }
 
+
+    // Parts place
     @PostMapping(value = "/places/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createPlace(
             @RequestHeader(value = "Authorization", required = false) String token,
@@ -89,7 +92,44 @@ public class AdminController {
                 "placeId", savedPlace.getPlaceID()
         ));
     }
+    @PutMapping(value = "/places/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> editPlace(@PathVariable int id,
+        @RequestHeader(value = "Authorization", required = false) String token,
+        @RequestPart("placeName") String placeName,
+        @RequestPart("description") String description,
+        @RequestPart("phone")String phone,
+        @RequestPart("address")String address,
+        @RequestPart("timePeriod")String timePeriod,
+        @RequestPart("latitude") String latitude,
+        @RequestPart("longitude") String longitude,
+        @RequestPart(value = "images", required = false) List<MultipartFile> images){
+        
+        if (!isAdmin(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Admin only"));
+        }
 
+        Place placeDetails = new Place();
+        placeDetails.setPlaceName(placeName);
+        placeDetails.setDescription(description);
+        placeDetails.setPhone(phone);
+        placeDetails.setAddress(address);
+        placeDetails.setTimePeriod(timePeriod);
+        placeDetails.setLatitude(Double.parseDouble(latitude));
+        placeDetails.setLongitude(Double.parseDouble(longitude));
+        
+        try {
+            Place updatedPlace = placeService.updatePlace(id, placeDetails, images);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Place updated successfully",
+                    "placeId", updatedPlace.getPlaceID()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error updating place: " + e.getMessage()));
+        }
+    }
     @GetMapping("/reviews")
     public ResponseEntity<?> getAllReviews(
             @RequestHeader(value = "Authorization", required = false) String token,
