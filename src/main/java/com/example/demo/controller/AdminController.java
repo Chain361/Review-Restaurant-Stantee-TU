@@ -93,42 +93,39 @@ public class AdminController {
         ));
     }
     @PutMapping(value = "/places/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> editPlace(@PathVariable int id,
-        @RequestHeader(value = "Authorization", required = false) String token,
-        @RequestPart("placeName") String placeName,
-        @RequestPart("description") String description,
-        @RequestPart("phone")String phone,
-        @RequestPart("address")String address,
-        @RequestPart("timePeriod")String timePeriod,
-        @RequestPart("latitude") String latitude,
-        @RequestPart("longitude") String longitude,
-        @RequestPart(value = "images", required = false) List<MultipartFile> images){
-        
+    public ResponseEntity<?> editPlace(
+            @PathVariable("id") int id,
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestPart(value = "placeName", required = false) String placeName,
+            @RequestPart(value = "description", required = false) String description,
+            @RequestPart(value = "phone", required = false) String phone,
+            @RequestPart(value = "address", required = false) String address,
+            @RequestPart(value = "timePeriod", required = false) String timePeriod,
+            @RequestPart(value = "latitude", required = false) String latitude,
+            @RequestPart(value = "longitude", required = false) String longitude,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+
         if (!isAdmin(token)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", "Admin only"));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Admin only"));
         }
 
-        Place placeDetails = new Place();
-        placeDetails.setPlaceName(placeName);
-        placeDetails.setDescription(description);
-        placeDetails.setPhone(phone);
-        placeDetails.setAddress(address);
-        placeDetails.setTimePeriod(timePeriod);
-        placeDetails.setLatitude(Double.parseDouble(latitude));
-        placeDetails.setLongitude(Double.parseDouble(longitude));
+        // สร้าง Object เพื่อเก็บเฉพาะค่าที่ส่งมา
+        Place updateDetails = new Place();
+        updateDetails.setPlaceName(placeName);
+        updateDetails.setDescription(description);
+        updateDetails.setPhone(phone);
+        updateDetails.setAddress(address);
+        updateDetails.setTimePeriod(timePeriod);
         
-        try {
-            Place updatedPlace = placeService.updatePlace(id, placeDetails, images);
-            return ResponseEntity.ok(Map.of(
-                    "status", "success",
-                    "message", "Place updated successfully",
-                    "placeId", updatedPlace.getPlaceID()
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "Error updating place: " + e.getMessage()));
-        }
+        if (latitude != null) updateDetails.setLatitude(Double.parseDouble(latitude));
+        if (longitude != null) updateDetails.setLongitude(Double.parseDouble(longitude));
+
+        Place updatedPlace = placeService.updatePlace(id, updateDetails, images);
+
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "message", "Updated successfully"
+        ));
     }
     @GetMapping("/reviews")
     public ResponseEntity<?> getAllReviews(
