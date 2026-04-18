@@ -32,6 +32,9 @@ import com.example.demo.repository.BookmarkRepository;
 import com.example.demo.repository.PlaceImageRepository;
 import com.example.demo.repository.PlaceRepository;
 import com.example.demo.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
+
 import com.example.demo.repository.ReviewImageRepository;
 
 @Service
@@ -87,6 +90,98 @@ public class PlaceService {
         }
 
         return savedPlace;
+    }
+ 
+    @Transactional
+    public Place updatePlace(int id, Place updateDetails, List<MultipartFile> images) {
+        Place existingPlace = placeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Place not found with id: " + id));
+
+        if (updateDetails.getPlaceName() != null && !updateDetails.getPlaceName().trim().isEmpty()) {
+            existingPlace.setPlaceName(updateDetails.getPlaceName());
+        }
+        if (updateDetails.getDescription() != null) {
+            existingPlace.setDescription(updateDetails.getDescription());
+        }
+        if (updateDetails.getPhone() != null) {
+            existingPlace.setPhone(updateDetails.getPhone());
+        }
+        if (updateDetails.getAddress() != null) {
+            existingPlace.setAddress(updateDetails.getAddress());
+        }
+        if (updateDetails.getTimePeriod() != null) {
+            existingPlace.setTimePeriod(updateDetails.getTimePeriod());
+        }
+        if (updateDetails.getLatitude() != 0) {
+            existingPlace.setLatitude(updateDetails.getLatitude());
+        }
+        if (updateDetails.getLongitude() != 0) {
+            existingPlace.setLongitude(updateDetails.getLongitude());
+        }
+
+        if (images != null && !images.isEmpty()) {
+            if (existingPlace.getPlaceImages() != null && !existingPlace.getPlaceImages().isEmpty()) {
+                for (PlaceImage oldImg : existingPlace.getPlaceImages()) {
+                    try {
+                        if (oldImg.getFilePath() != null) {
+                            Files.deleteIfExists(Paths.get(oldImg.getFilePath()));
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    placeImageRepository.delete(oldImg);
+                }
+                existingPlace.getPlaceImages().clear();
+            }
+
+            String uploadDir = "uploads/places/";
+            for (MultipartFile file : images) {
+                if (!file.isEmpty()) {
+                    try {
+                        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                        Path path = Paths.get(uploadDir + fileName);
+                        Files.createDirectories(path.getParent());
+                        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+                        PlaceImage newImg = new PlaceImage();
+                        newImg.setFileName(fileName);
+                        newImg.setFilePath(path.toString());
+                        newImg.setPlace(existingPlace);
+                        placeImageRepository.save(newImg);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to store file", e);
+                    }
+                }
+            }
+        }
+
+        return placeRepository.save(existingPlace);
+    }
+    @Transactional
+    public void deletePlace(int id) {
+        Place place = placeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Place not found with id: " + id));
+
+        if (place.getPlaceImages() != null) {
+            for (PlaceImage image : place.getPlaceImages()) {
+                try {
+                    Files.deleteIfExists(Paths.get(image.getFilePath()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                placeImageRepository.delete(image);
+            }
+        }
+
+        placeRepository.delete(place);
+    }
+    private void deleteFileOnServer(String filePath) {
+        try {
+            Path path = Paths.get("uploads/" + filePath);
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            System.err.println("ไม่สามารถลบไฟล์ได้: " + e.getMessage());
+        }
     }
     public PlaceDetailResponseDTO getPlaceDetail(int id) {
         Place place = placeRepository.findById(id)
