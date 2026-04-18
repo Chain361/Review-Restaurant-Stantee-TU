@@ -254,7 +254,7 @@
             <div class="left-column">
                 
                 <div class="white-card">
-                    <h1 class="place-title">Green canteen กรีน แคนทีน</h1>
+                    <h1 class="place-title" id="placeName">กำลังโหลด...</h1>
                     
                     <div class="rating-row">
                         <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
@@ -263,13 +263,18 @@
 
                     <div class="meta-info">
                         <div>หมวดหมู่: ร้านค้า</div>
-                        <div>เปิด: 08:00 - 16:00 น.</div>
+                        <div>เปิด: <span id="timePeriod">กำลังโหลด...</span></div>
                     </div>
 
                     <div class="description">
-                        รายละเอียด: แหล่งรวมร้านอาหารเพื่อ เด็กป.ตรี มธ. ทุกคน
+                        รายละเอียด: <span id="description">กำลังโหลด...</span>
                     </div>
 
+                    <div class="description" style="margin-top: 10px;">
+                        ที่อยู่: <span id="address"></span><br>
+                        เบอร์โทร: <span id="phone"></span>
+                    </div>
+                    
                     <div class="divider"></div>
 
                     <div class="action-buttons">
@@ -435,5 +440,37 @@
                 });
             });
         </script>
+
+        <script>
+            async function fetchPlaceDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');          
+    
+            if (id) {
+                try {
+                const response = await fetch(`http://localhost:8080/places/${id}`);
+                const data = await response.json();
+            
+                const nameEl = document.getElementById('placeName');
+                const descEl = document.getElementById('description');
+                const addrEl = document.getElementById('address');
+                const timeEl = document.getElementById('timePeriod');
+                const phoneEl = document.getElementById('phone');
+
+                if (nameEl) nameEl.innerText = data.placeName; 
+                if (descEl) descEl.innerText = data.description;
+                if (addrEl) addrEl.innerText = data.address;
+                if (timeEl) timeEl.innerText = data.timePeriod;
+                if (phoneEl) phoneEl.innerText = data.phone;
+
+                console.log("แสดงข้อมูลสำเร็จ:", data);
+            } catch (error) {
+                console.error("เกิดข้อผิดพลาด:", error);
+            }
+        }
+    } 
+    fetchPlaceDetail();
+        </script>
+
 </body>
 </html>
