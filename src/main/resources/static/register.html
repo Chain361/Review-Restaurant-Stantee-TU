@@ -115,6 +115,31 @@
         .login-link a:hover {
             color: #5d6e7a;
         }
+
+        .message {
+            font-size: 13px;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            background-color: #ffebee;
+            border: 1px solid #ef5350;
+        }
+
+        .success-message {
+            color: #388e3c;
+            background-color: #f1f8e9;
+            border: 1px solid #7cb342;
+        }
     </style>
 </head>
 <body>
@@ -122,15 +147,20 @@
     <div class="register-card">
         <h2>สมัครสมาชิก</h2>
         
-        <form action="#" method="POST">
+        <div id="message" class="message"></div>
+        
+        <form id="registerForm">
             <div class="input-group">
-                <input type="text" placeholder="ชื่อผู้ใช้" required>
+                <input type="text" id="username" name="username" placeholder="ชื่อผู้ใช้" required>
             </div>
             <div class="input-group">
-                <input type="email" placeholder="อีเมล" required>
+                <input type="password" id="password" name="password" placeholder="รหัสผ่าน" required>
             </div>
             <div class="input-group">
-                <input type="password" placeholder="รหัสผ่าน" required>
+                <input type="text" id="firstname" name="firstname" placeholder="ชื่อจริง" required>
+            </div>
+            <div class="input-group">
+                <input type="text" id="lastname" name="lastname" placeholder="นามสกุล" required>
             </div>
             
             <button type="submit" class="register-btn">สมัครสมาชิก</button>
@@ -143,5 +173,69 @@
         </p>
     </div>
 
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const messageDiv = document.getElementById('message');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const firstnameInput = document.getElementById('firstname');
+        const lastnameInput = document.getElementById('lastname');
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            messageDiv.classList.remove('show', 'error-message', 'success-message');
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            const firstname = firstnameInput.value.trim();
+            const lastname = lastnameInput.value.trim();
+
+            try {
+                const response = await fetch('http://localhost:8080/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password,
+                        firstname: firstname,
+                        lastname: lastname
+                    })
+                });
+
+                if (response.status === 201) {
+                    const data = await response.json();
+                    
+                    // Show success message
+                    messageDiv.textContent = data.message || 'ลงทะเบียนสำเร็จ';
+                    messageDiv.classList.add('show', 'success-message');
+                    
+                    // Clear form
+                    registerForm.reset();
+                    
+                    // Redirect to login page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else if (response.status === 409) {
+                    const data = await response.json();
+                    
+                    // Show conflict message
+                    messageDiv.textContent = data.message || 'ชื่อผู้ใช้นี้มีอยู่แล้ว';
+                    messageDiv.classList.add('show', 'error-message');
+                } else {
+                    const data = await response.json();
+                    console.log(data.message);
+                    messageDiv.textContent = 'เกิดข้อผิดพลาดในการสมัครสมาชิก';
+                    messageDiv.classList.add('show', 'error-message');
+                }
+            } catch (error) {
+                messageDiv.textContent = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์';
+                messageDiv.classList.add('show', 'error-message');
+                console.error('Register error:', error);
+            }
+        });
+    </script>
 </body>
 </html>

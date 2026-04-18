@@ -28,7 +28,7 @@ public class ReviewController {
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createReview(
             @RequestParam Integer placeID,
-            @RequestParam Integer rating,
+            @RequestParam Float rating,
             @RequestParam String comment,
             @RequestParam(value = "image", required = false) MultipartFile file,
             Authentication authentication) {

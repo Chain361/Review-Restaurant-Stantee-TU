@@ -6,7 +6,7 @@ echo -e "\n=========================================="
 echo "1) Stopping old Docker containers"
 echo "=========================================="
 
-docker-compose down -v || echo "Warning: Docker down failed or no containers running"
+docker-compose down || echo "Warning: Docker down failed or no containers running"
 
 echo -e "\n=========================================="
 echo "2) Starting Docker containers"
