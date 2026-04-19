@@ -6,13 +6,11 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class ReviewResponseDTO {
+public class UserReviewResponseDTO {
     private Integer reviewID;
-    private String comment;
-    private Float rating;
-    private LocalDate reviewDate;
-    private String username;
     private String placeName;
-    private Integer placeID;
+    private Integer rating;
+    private String comment;
+    private LocalDate reviewDate;
     private List<String> reviewImages;
 }

@@ -2,8 +2,10 @@ package com.example.demo.entity;
 
 import jakarta.persistence.Table;
 
+import java.util.Collection;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,14 +41,14 @@ public class Place {
     @Column(name = "\"longitude\"")
     private double longitude;
 
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlaceImage> placeImages;
     public Place() {}
 
-    // Constructor แบบ parameterized
+    
     public Place(int placeID, String placeName, String description, String phone, String address, String timePeriod, double latitude, double longitude){
         this.placeID = placeID;
         this.placeName = placeName;
@@ -68,4 +70,12 @@ public class Place {
     public double getLatitude() { return latitude; }
     public double getLongitude() { return longitude; }
     public List<PlaceImage> getPlaceImages() { return placeImages; }
+    public List<Review> getReviews() { return reviews; }
+    public void setPlaceName(String placeName) { this.placeName = placeName; }
+    public void setDescription(String description) { this.description = description; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public void setAddress(String address) { this.address = address; }
+    public void setTimePeriod(String timePeriod) { this.timePeriod = timePeriod; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 }
