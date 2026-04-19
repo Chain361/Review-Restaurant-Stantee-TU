@@ -9,7 +9,7 @@ import lombok.Data;
 public class UserReviewResponseDTO {
     private Integer reviewID;
     private String placeName;
-    private Integer rating;
+    private Float rating;
     private String comment;
     private LocalDate reviewDate;
     private List<String> reviewImages;
