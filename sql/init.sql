@@ -44,6 +44,24 @@ CREATE TABLE "Reviews" (
     CONSTRAINT fk_review_place FOREIGN KEY ("placeID") REFERENCES "places"("placeID")
 );
 
+CREATE TABLE "ReviewImages" (
+    "reviewImageID" SERIAL PRIMARY KEY,
+    "fileName" VARCHAR(255),
+    "filePath" VARCHAR(255),
+    "placeID" INTEGER,
+    "reviewID" INTEGER,
+    CONSTRAINT fk_reviewimage_place FOREIGN KEY ("placeID") REFERENCES places("placeID"),
+    CONSTRAINT fk_reviewimage_review FOREIGN KEY ("reviewID") REFERENCES "Reviews"("reviewID")
+);
+
+CREATE TABLE place_images (
+    id SERIAL PRIMARY KEY,
+    file_name VARCHAR(255),
+    file_path VARCHAR(255),
+    placeid INTEGER,
+    CONSTRAINT fk_place_images_place FOREIGN KEY (placeid) REFERENCES places("placeID")
+);
+
 
 
 -- Sample data
@@ -172,4 +190,63 @@ INSERT INTO "Reviews" (
     'Incredibly crowded and hot during the day, but an essential historical site.', 
     2, 
     1  -- The Grand Palace
+),
+(
+    '2026-04-19', 
+    5, 
+    'this place sucks man', 
+    1, 
+    1  -- The Grand Palace
+),
+(
+    '2026-04-19', 
+    5, 
+    'Good place อาหารอร่อย', 
+    1, 
+    1  -- The Grand Palace
+), --id = 8
+(
+    '2026-04-19', 
+    5, 
+    'Wow', 
+    1, 
+    2  -- The Grand Palace
+);--id = 9
+
+INSERT INTO "ReviewImages" (
+    "reviewImageID", 
+    "fileName", 
+    "filePath", 
+    "placeID", 
+    "reviewID"
+) VALUES 
+(
+    1, 
+    '350673711_1274406769836773_4113371830929110241_n.jpg', 
+    '1/reviews/place_1_review_1.jpg', 
+    1, 
+    7
+),
+(
+    3, 
+    '669702607_980558307881757_7221144628390520287_n.jpg', 
+    '1/reviews/place_1_review_3.jpg', 
+    1, 
+    8
+
+),
+(
+    4, 
+    '440042554_10224959639803093_6439093849760028840_n.jpg', 
+    '2/reviews/place_2_review_4.jpg', 
+    2, 
+    9
 );
+
+INSERT INTO place_images (file_name, file_path, placeid) 
+VALUES 
+    ('1.jpg', '1/place_1_1776588063734.jpg', 1),
+    ('2.jpg', '2/place_2_1776588063734.jpg', 2),
+    ('3.jpg', '3/place_3_1776588063734.jpg', 3),
+    ('4.jpg', '4/place_4_1776588063734.jpg', 4),
+    ('5.jpg', '5/place_5_1776588063734.jpg', 5);
