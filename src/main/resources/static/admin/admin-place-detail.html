@@ -535,18 +535,32 @@
 
         async function fetchPlaceDetail() {
             const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');           
+            const id = urlParams.get('id');          
+    
             if (id) {
                 try {
-                    const response = await fetch(`http://localhost:8080/places/${id}`);
-                    const data = await response.json();
-                    if (document.getElementById('placeName')) document.getElementById('placeName').innerText = data.placeName; 
-                    if (document.getElementById('description')) document.getElementById('description').innerText = data.description;
-                    if (document.getElementById('timePeriod')) document.getElementById('timePeriod').innerText = data.timePeriod;
-                } catch (error) { console.error("Error:", error); }
+                const response = await fetch(`http://localhost:8080/places/${id}`);
+                const data = await response.json();
+            
+                const nameEl = document.getElementById('placeName');
+                const descEl = document.getElementById('description');
+                const addrEl = document.getElementById('address');
+                const timeEl = document.getElementById('timePeriod');
+                const phoneEl = document.getElementById('phone');
+
+                if (nameEl) nameEl.innerText = data.placeName; 
+                if (descEl) descEl.innerText = data.description;
+                if (addrEl) addrEl.innerText = data.address;
+                if (timeEl) timeEl.innerText = data.timePeriod;
+                if (phoneEl) phoneEl.innerText = data.phone;
+
+                console.log("แสดงข้อมูลสำเร็จ:", data);
+            } catch (error) {
+                console.error("เกิดข้อผิดพลาด:", error);
             }
-        } 
-        fetchPlaceDetail();
+        }
+    } 
+    fetchPlaceDetail();
     </script>
 </body>
 </html>
