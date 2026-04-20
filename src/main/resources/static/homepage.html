@@ -78,72 +78,7 @@
             <section class="content">
                 <h2 class="section-title">แนะนำสถานที่ มธ. รังสิต</h2>
                 
-                <div class="card-grid">
-                    <a href="place-detail.html" class="card">
-                        <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Place image">
-                        <div class="card-title">ชื่อ....</div>
-                        <div class="card-footer">
-                            <div class="rating">0.0 ★</div>
-                            <div class="review-count">xxx รีวิว</div>
-                        </div>
-                    </a>
-                    <a href="place-detail.html" class="card">
-                        <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Place image">
-                        <div class="card-title">ชื่อ....</div>
-                        <div class="card-footer">
-                            <div class="rating">0.0 ★</div>
-                            <div class="review-count">xxx รีวิว</div>
-                        </div>
-                    </a>
-                    <a href="place-detail.html" class="card">
-                        <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Place image">
-                        <div class="card-title">ชื่อ....</div>
-                        <div class="card-footer">
-                            <div class="rating">0.0 ★</div>
-                            <div class="review-count">xxx รีวิว</div>
-                        </div>
-                    </a>
-                    <a href="place-detail.html" class="card">
-                        <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Place image">
-                        <div class="card-title">ชื่อ....</div>
-                        <div class="card-footer">
-                            <div class="rating">0.0 ★</div>
-                            <div class="review-count">xxx รีวิว</div>
-                        </div>
-                    </a>
-                    <a href="place-detail.html" class="card">
-                        <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Place image">
-                        <div class="card-title">ชื่อ....</div>
-                        <div class="card-footer">
-                            <div class="rating">0.0 ★</div>
-                            <div class="review-count">xxx รีวิว</div>
-                        </div>
-                    </a>
-                    <a href="place-detail.html" class="card">
-                        <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Place image">
-                        <div class="card-title">ชื่อ....</div>
-                        <div class="card-footer">
-                            <div class="rating">0.0 ★</div>
-                            <div class="review-count">xxx รีวิว</div>
-                        </div>
-                    </a>
-                    <a href="place-detail.html" class="card">
-                        <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Place image">
-                        <div class="card-title">ชื่อ....</div>
-                        <div class="card-footer">
-                            <div class="rating">0.0 ★</div>
-                            <div class="review-count">xxx รีวิว</div>
-                        </div>
-                    </a>
-                    <a href="place-detail.html" class="card">
-                        <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Place image">
-                        <div class="card-title">ชื่อ....</div>
-                        <div class="card-footer">
-                            <div class="rating">0.0 ★</div>
-                            <div class="review-count">xxx รีวิว</div>
-                        </div>
-                    </a>
-                </div>
+                <div class="card-grid" id="top-places-grid"></div>
             </section>
 
             <aside class="sidebar"></aside>
@@ -164,6 +99,40 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        document.querySelectorAll('.category-item').forEach(function(el) {
+            el.style.cursor = 'pointer';
+            el.addEventListener('click', function() {
+                window.location.href = 'list-location.html';
+            });
+        });
+
+        fetch('/places/top')
+            .then(function(res) { return res.json(); })
+            .then(function(json) {
+                var grid = document.getElementById('top-places-grid');
+                if (json.status !== 'success' || !json.data) return;
+                json.data.forEach(function(place) {
+                    var imgSrc = (place.images && place.images.length > 0)
+                        ? place.images[0]
+                        : 'https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg';
+                    var rating = place.rating ? place.rating.toFixed(1) : '0.0';
+                    var card = document.createElement('a');
+                    card.href = 'place-detail.html?id=' + place.id;
+                    card.className = 'card';
+                    card.innerHTML =
+                        '<img src="' + imgSrc + '" alt="Place image">' +
+                        '<div class="card-title">' + place.name + '</div>' +
+                        '<div class="card-footer">' +
+                            '<div class="rating">' + rating + ' ★</div>' +
+                            '<div class="review-count">' + place.reviewCount + ' รีวิว</div>' +
+                        '</div>';
+                    grid.appendChild(card);
+                });
+            })
+            .catch(function(err) { console.error('Failed to load top places:', err); });
+    </script>
 
 </body>
 </html>
