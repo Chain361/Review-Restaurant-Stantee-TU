@@ -7,38 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
-     <link href="https://fonts.cdnfonts.com/css/neonderthaw" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/neonderthaw" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Kanit', sans-serif;
-        }
-
-        .review-header-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .btn-delete {
-            background-color: #b92b27;
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: 0.2s;
-        }
-
-        .btn-delete:hover {
-            background-color: #96221f;
         }
 
         body {
@@ -170,7 +145,6 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 15px;
         }
 
         .avatar {
@@ -191,15 +165,6 @@
             margin-bottom: 8px;
         }
 
-        .review-text {
-
-            display: flex;
-            gap: 40px;
-            font-size: 14px;
-            color: #777;
-
-        }
-
         .map-title {
             font-size: 18px;
             font-weight: 600;
@@ -217,14 +182,13 @@
             border: 1px solid #eee;
         }
         
-        .review-images-container { display: flex; gap: 10px; margin-bottom: 15px; }
+        .review-images-container { display: flex; gap: 10px; margin-top: 15px; }
         .review-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; }
 
         .rate-box { text-align: center; padding: 30px 20px; }
         .rate-title { font-size: 18px; font-weight: 500; margin-bottom: 15px; }
         .star-rating-action { font-size: 36px; color: #ffc107; display: flex; justify-content: center; gap: 15px; cursor: pointer; }
         
-  
         .pagination { 
             grid-column: 1 / -1; 
             display: flex; 
@@ -233,7 +197,6 @@
             padding: 20px 0 40px 0; 
         }   
         
-    
         .page-link {
             color: #79cbf9;
             text-decoration: none;
@@ -244,7 +207,75 @@
         .page-link:hover {
             text-decoration: underline;
         }
-        
+
+        .review-header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .btn-delete {
+            background-color: #b92b27;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #96221f;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header-danger {
+            background-color: #b92b27;
+            padding: 30px;
+            color: white;
+            font-size: 50px;
+        }
+
+        .modal-body { padding: 30px; }
+        .modal-body h3 { font-size: 18px; margin-bottom: 25px; font-weight: 500; }
+
+        .modal-buttons { display: flex; justify-content: center; gap: 15px; }
+
+        .btn-confirm-delete {
+            background-color: #b92b27; color: white;
+            border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;
+        }
+
+        .btn-cancel {
+            background-color: #dee2e6; color: #333;
+            border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer;
+        }
+
+        .success-padding { padding: 50px 30px; }
+        .success-icon { color: #5cb85c; font-size: 70px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -275,29 +306,21 @@
         </div>
 
         <div class="content-layout">
-            
             <div class="left-column">
-                
                 <div class="white-card">
                     <h1 class="place-title" id="placeName">Green canteen กรีน แคลทีน</h1>
-                    
                     <div class="rating-row">
                         <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
                         <span class="review-count">xxx รีวิว</span>
                     </div>
-
                     <div class="meta-info">
                         <div>หมวดหมู่: ร้านค้า</div>
                         <div>เปิด: <span id="timePeriod">08:00 - 16:00 น.</span></div>
                     </div>
-
                     <div class="description">
                         รายละเอียด: <span id="description">แหล่งรวมอาหาร เพื่อเด็กน้อย มธ. ทุกคน</span>
                     </div>
-
-                    
                     <div class="divider"></div>
-
                     <div class="action-buttons">
                         <button class="btn btn-blue" onclick="window.location.href='../review.html'">
                             <i class="fa-solid fa-pen"></i> เขียนรีวิว
@@ -309,19 +332,19 @@
                 </div>
 
                 <div class="white-card rate-box">
-                        <h3 class="rate-title">ให้คะแนนสถานที่</h3>
-                        <div class="star-rating-action" id="interactive-rating">
-                            <i class="fa-regular fa-star" data-index="0"></i>
-                            <i class="fa-regular fa-star" data-index="1"></i>
-                            <i class="fa-regular fa-star" data-index="2"></i>
-                            <i class="fa-regular fa-star" data-index="3"></i>
-                            <i class="fa-regular fa-star" data-index="4"></i>
-                        </div>                  
+                    <h3 class="rate-title">ให้คะแนนสถานที่</h3>
+                    <div class="star-rating-action" id="interactive-rating">
+                        <i class="fa-regular fa-star" data-index="0"></i>
+                        <i class="fa-regular fa-star" data-index="1"></i>
+                        <i class="fa-regular fa-star" data-index="2"></i>
+                        <i class="fa-regular fa-star" data-index="3"></i>
+                        <i class="fa-regular fa-star" data-index="4"></i>
+                    </div>                  
                 </div>
 
                 <div class="white-card">
                     <div class="review-header-wrapper">
-                        <div class="review-header" style="margin-bottom: 0;">
+                        <div class="review-header">
                             <img src="../image/penguingirl.png" alt="Avatar" class="avatar">
                             <div>
                                 <div class="reviewer-name">User:GuGu gaga</div>
@@ -331,7 +354,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn-delete">
+                        <button class="btn-delete" onclick="openDeleteModal()">
                             <i class="fa-solid fa-trash-can"></i> ลบรีวิว
                         </button>
                     </div>
@@ -343,7 +366,7 @@
 
                 <div class="white-card">
                     <div class="review-header-wrapper">
-                        <div class="review-header" style="margin-bottom: 0;">
+                        <div class="review-header">
                             <img src="../image/penguingirl.png" alt="Avatar" class="avatar">
                             <div>
                                 <div class="reviewer-name">User:GuGu gaga</div>
@@ -353,7 +376,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn-delete">
+                        <button class="btn-delete" onclick="openDeleteModal()">
                             <i class="fa-solid fa-trash-can"></i> ลบรีวิว
                         </button>
                     </div>
@@ -365,7 +388,7 @@
 
                 <div class="white-card">
                     <div class="review-header-wrapper">
-                        <div class="review-header" style="margin-bottom: 0;">
+                        <div class="review-header">
                             <img src="../image/penguingirl.png" alt="Avatar" class="avatar">
                             <div>
                                 <div class="reviewer-name">User:GuGu gaga</div>
@@ -375,36 +398,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn-delete">
-                            <i class="fa-solid fa-trash-can"></i> ลบรีวิว
-                        </button>
-                    </div>
-                    <div class="review-images-container">
-                        <img src="../image/owl.png" class="review-img" alt="img">
-                        <img src="../image/rem-rezero.png" class="review-img" alt="img">
-                        <img src="../image/image-food-review.png" class="review-img" alt="img">
-                    </div>
-
-                    <div class="review-text">
-                        Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
-                        Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
-                    </div>
-                    
-                </div>
-
-                <div class="white-card">
-                    <div class="review-header-wrapper">
-                        <div class="review-header" style="margin-bottom: 0;">
-                            <img src="../image/penguingirl.png" alt="Avatar" class="avatar">
-                            <div>
-                                <div class="reviewer-name">User:GuGu gaga</div>
-                                <div class="rating-row" style="margin-bottom: 0;">
-                                    <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
-                                    <span class="review-count">xxx รีวิว</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn-delete">
+                        <button class="btn-delete" onclick="openDeleteModal()">
                             <i class="fa-solid fa-trash-can"></i> ลบรีวิว
                         </button>
                     </div>
@@ -413,14 +407,38 @@
                         <img src="../image/rem-rezero.png" class="review-img" alt="img">
                         <img src="../image/image-food-review.png" class="review-img" alt="img">
                     </div>
-                    
                     <div class="review-text">
                         Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
                         Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
                     </div>
-                    
                 </div>
 
+                <div class="white-card">
+                    <div class="review-header-wrapper">
+                        <div class="review-header">
+                            <img src="../image/penguingirl.png" alt="Avatar" class="avatar">
+                            <div>
+                                <div class="reviewer-name">User:GuGu gaga</div>
+                                <div class="rating-row" style="margin-bottom: 0;">
+                                    <div class="rating-badge">0.0 <i class="fa-solid fa-star" style="font-size: 10px;"></i></div>
+                                    <span class="review-count">xxx รีวิว</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-delete" onclick="openDeleteModal()">
+                            <i class="fa-solid fa-trash-can"></i> ลบรีวิว
+                        </button>
+                    </div>
+                    <div class="review-images-container">
+                        <img src="../image/owl.png" class="review-img" alt="img">
+                        <img src="../image/rem-rezero.png" class="review-img" alt="img">
+                        <img src="../image/image-food-review.png" class="review-img" alt="img">
+                    </div>
+                    <div class="review-text">
+                        Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
+                        Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
+                    </div>
+                </div>
             </div>
 
             <div class="right-column">
@@ -434,83 +452,101 @@
                 <a href="#" class="page-link">&lt; ย้อนกลับ</a>
                 <a href="#" class="page-link">ต่อไป &gt;</a>
             </div>
-
         </div>
         
         <footer>
             <div><strong>ชื่อระบบ: cs251 ระบบรีวิวสถานที่ใน TU</strong></div>
             <div>คำอธิบาย : แพลตฟอร์มกลางที่รวบรวมข้อมูลสถานที่และความคิดเห็นจากผู้ใช้งานจริงรอบรั้วธรรมศาสตร์ รังสิต</div>
-            
             <div class="footer-logo">
                 <div class="logo-icon">S</div>
                 <div class="logo-text">HotSnow</div>
             </div>
-
             <div class="footer-contact-group">
                 <div class="footer-text-light">ช่องทางติดต่อ : ........................................</div>
                 <div class="copyright-text">Copyright: © 2024 Group 8 CS251 Thammasat University.</div>
             </div>
         </footer>
     </div>
-        <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                const stars = document.querySelectorAll('#interactive-rating i');
-                const ratingDisplay = document.getElementById('rating-display');
-                let currentRating = 0; 
-                function updateStars(rating) {
-                    stars.forEach((star, index) => {
-                        star.className = 'fa-star'; 
-                        if (rating >= index + 1) {
-                            star.classList.add('fa-solid'); 
-                        } else if (rating >= index + 0.5) {
-                            star.classList.add('fa-solid', 'fa-star-half-stroke'); 
-                        } else {
-                            star.classList.add('fa-regular'); 
-                        }
-                    });
-                }
+
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header-danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="modal-body">
+                <h3>คุณแน่ใจหรือไม่ที่จะลบรีวิวนี้?</h3>
+                <div class="modal-buttons">
+                    <button class="btn-confirm-delete" id="confirmDeleteBtn">ลบรีวิว</button>
+                    <button class="btn-cancel" onclick="closeDeleteModal()">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-body success-padding">
+                <div class="success-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3>ลบรีวิวสำเร็จ</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('#interactive-rating i');
+            let currentRating = 0; 
+            function updateStars(rating) {
                 stars.forEach((star, index) => {
-                    star.addEventListener('click', function(e) {
-                        const rect = star.getBoundingClientRect();
-                        const isHalf = e.clientX - rect.left < rect.width / 2;
-                        currentRating = index + (isHalf ? 0.5 : 1);
-                        updateStars(currentRating);
-                        if(ratingDisplay) ratingDisplay.innerText = `คะแนนที่ให้: ${currentRating.toFixed(1)}`;
-                    });
+                    star.className = 'fa-star'; 
+                    if (rating >= index + 1) {
+                        star.classList.add('fa-solid'); 
+                    } else if (rating >= index + 0.5) {
+                        star.classList.add('fa-solid', 'fa-star-half-stroke'); 
+                    } else {
+                        star.classList.add('fa-regular'); 
+                    }
+                });
+            }
+            stars.forEach((star, index) => {
+                star.addEventListener('click', function(e) {
+                    const rect = star.getBoundingClientRect();
+                    const isHalf = e.clientX - rect.left < rect.width / 2;
+                    currentRating = index + (isHalf ? 0.5 : 1);
+                    updateStars(currentRating);
                 });
             });
-        </script>
+        });
 
-        <script>
-            async function fetchPlaceDetail() {
+        function openDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            closeDeleteModal();
+            const successModal = document.getElementById('successModal');
+            successModal.style.display = 'flex';
+            setTimeout(() => { successModal.style.display = 'none'; }, 2000);
+        });
+
+        async function fetchPlaceDetail() {
             const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');          
-    
+            const id = urlParams.get('id');           
             if (id) {
                 try {
-                const response = await fetch(`http://localhost:8080/places/${id}`);
-                const data = await response.json();
-            
-                const nameEl = document.getElementById('placeName');
-                const descEl = document.getElementById('description');
-                const addrEl = document.getElementById('address');
-                const timeEl = document.getElementById('timePeriod');
-                const phoneEl = document.getElementById('phone');
-
-                if (nameEl) nameEl.innerText = data.placeName; 
-                if (descEl) descEl.innerText = data.description;
-                if (addrEl) addrEl.innerText = data.address;
-                if (timeEl) timeEl.innerText = data.timePeriod;
-                if (phoneEl) phoneEl.innerText = data.phone;
-
-                console.log("แสดงข้อมูลสำเร็จ:", data);
-            } catch (error) {
-                console.error("เกิดข้อผิดพลาด:", error);
+                    const response = await fetch(`http://localhost:8080/places/${id}`);
+                    const data = await response.json();
+                    if (document.getElementById('placeName')) document.getElementById('placeName').innerText = data.placeName; 
+                    if (document.getElementById('description')) document.getElementById('description').innerText = data.description;
+                    if (document.getElementById('timePeriod')) document.getElementById('timePeriod').innerText = data.timePeriod;
+                } catch (error) { console.error("Error:", error); }
             }
-        }
-    } 
-    fetchPlaceDetail();
-        </script>
-
+        } 
+        fetchPlaceDetail();
+    </script>
 </body>
 </html>
