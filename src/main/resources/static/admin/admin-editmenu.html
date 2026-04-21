@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - เพิ่มเมนูใหม่</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+    
+    <style>
+        .btn-back {
+            background-color: white;
+            border: 1px solid var(--border-color, #e0e0e0);
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-main, #333);
+        }
+
+        .form-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-main, #333);
+        }
+
+        .required {
+            color: var(--primary-red, #c9302c);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color, #e0e0e0);
+            border-radius: 4px;
+            font-size: 12px;
+            outline: none;
+            font-family: 'Kanit', sans-serif;
+            background-color: white;
+        }
+
+        .form-control:focus {
+            border-color: #aaa;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .upload-zone {
+            border: 1px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #f9fafb;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .upload-zone:hover {
+            background-color: #f3f4f6;
+        }
+
+        .upload-icon {
+            margin-bottom: 10px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        .upload-subtext {
+            font-size: 10px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .btn-cancel {
+            padding: 8px 20px;
+            background-color: white;
+            border: 1px solid var(--border-color, #e0e0e0);
+            color: var(--text-main, #333);
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            padding: 8px 20px;
+            background-color: var(--primary-red, #c9302c);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="brand-text">
+                    <h2>HotSnow</h2>
+                    <span>Admin Panel</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">จัดการข้อมูล</div>
+            
+            <a href="admin-place-detail.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                สถานที่
+            </a>
+            <a href="admin-menu.html" class="menu-item active">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                เมนูอาหาร
+            </a>
+            <a href="admin-review.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                รีวิว
+            </a>
+        </div>
+        
+        <div class="logout">
+            <span style="margin-right: 8px;">[→</span> ออกจากระบบ
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="breadcrumb">
+            Admin / เมนูอาหาร / <span>เพิ่มใหม่</span>
+        </div>
+
+        <div class="page-header">
+            <h1 style="font-size: 20px;">เพิ่มเมนูใหม่</h1>
+            <button class="btn-back"><a href="admin-menu.html" style="text-decoration: none; color: black;">&larr; กลับ</button></a>
+        </div>
+
+        <div class="form-card">
+            
+            <div class="form-group">
+                <label class="form-label">ชื่อเมนู <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="เช่น ข้าวผัดกระเพราหมูสับ">
+            </div>
+
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label class="form-label">สถานที่ <span class="required">*</span></label>
+                        <select class="form-control">
+                            <option value="" disabled selected>เลือกสถานที่</option>
+                            <option value="1">Green Canteen กรีน แคนทีน</option>
+                            <option value="2">Yoguruto</option>
+                            </select>
+                    </div>
+                </div>
+                <div class="form-col">
+                    <div class="form-group">
+                        <label class="form-label">ราคา (บาท) <span class="required">*</span></label>
+                        <input type="number" class="form-control" placeholder="0" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">รูปภาพเมนู</label>
+                <div class="upload-zone">
+                    <div class="upload-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    </div>
+                    <div class="upload-text">คลิกเพื่ออัปโหลดรูปเมนู</div>
+                    <div class="upload-subtext">JPG, PNG - ไม่เกิน 5MB</div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-cancel">ยกเลิก</button>
+                <button class="btn-save">บันทึกเมนู</button>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
