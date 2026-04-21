@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: #555555; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .menu-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            padding: 50px 60px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-header {
+            margin: 0 auto 50px auto;
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; 
+        }
+
+        .line-thick {
+            height: 5px; 
+            background-color: #3b3f42;
+            width: 100%;
+        }
+
+        .line-text-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; 
+            padding: 5px 0;
+        }
+
+        .side-lines {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 32px;
+            width: 45px;  
+        }
+
+        .line-thin-short {
+            height: 2px;
+            background-color: #3b3f42;
+            width: 100%;
+        }
+
+        .menu-header h1 {
+            font-size: 52px;
+            color: #3b3f42;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 3px 4px 6px rgba(0,0,0,0.25); 
+            line-height: 1;
+            margin: 0;
+        }
+        
+
+        .menu-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-img {
+            width: 110px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .menu-name {
+            flex-grow: 1;
+            font-size: 16px;
+            color: #666;
+            font-weight: 300;
+        }
+
+        .menu-price {
+            font-size: 18px;
+            color: #444;
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            .menu-container {
+                padding: 30px 20px;
+            }
+            .menu-item {
+                gap: 15px;
+            }
+            .menu-img {
+                width: 80px;
+                height: 50px;
+            }
+            .menu-header h1 {
+                font-size: 38px;
+            }
+            .side-lines {
+                width: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        
+        <header class="menu-header">
+            <div class="line-thick"></div>
+            
+            <div class="line-text-wrap">
+                <div class="side-lines">
+                    <div class="line-thin-short"></div>
+                    <div class="line-thin-short"></div>
+                </div>
+                
+                <h1>Menu</h1>
+                
+                <div class="side-lines">
+                    <div class="line-thin-short"></div>
+                    <div class="line-thin-short"></div>
+                </div>
+            </div>
+            
+            <div class="line-thick"></div>
+        </header>
+
+        <ul class="menu-list">
+            <li class="menu-item">
+                <img src="image/menu.png" alt="Food" class="menu-img">
+                <span class="menu-name">Menu อาหาร xxxx</span>
+                <span class="menu-price">XX บาท</span>
+            </li>
+            <li class="menu-item">
+                <img src="image/menu.png" alt="Food" class="menu-img">
+                <span class="menu-name">Menu อาหาร xxxx</span>
+                <span class="menu-price">XX บาท</span>
+            </li>
+            <li class="menu-item">
+                <img src="image/menu.png" alt="Food" class="menu-img">
+                <span class="menu-name">Menu อาหาร xxxx</span>
+                <span class="menu-price">XX บาท</span>
+            </li>
+            <li class="menu-item">
+                <img src="image/menu.png" alt="Food" class="menu-img">
+                <span class="menu-name">Menu อาหาร xxxx</span>
+                <span class="menu-price">XX บาท</span>
+            </li>
+            <li class="menu-item">
+                <img src="image/menu.png" alt="Food" class="menu-img">
+                <span class="menu-name">Menu อาหาร xxxx</span>
+                <span class="menu-price">XX บาท</span>
+            </li>
+            <li class="menu-item">
+                <img src="image/menu.png" alt="Food" class="menu-img">
+                <span class="menu-name">Menu อาหาร xxxx</span>
+                <span class="menu-price">XX บาท</span>
+            </li>
+        </ul>
+
+    </div>
+
+</body>
+</html>

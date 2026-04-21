@@ -25,11 +25,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+            http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/places/**", "/images/**", "/", "/*.html", "/login", "/register", "/homepage", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/auth/**", "/places/**", "/image/**", "/", "/*.html", "/login", "/register", "/homepage", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/reviews/create").hasRole("USER") // เช็ค ROLE_USER อัตโนมัติ
                 .requestMatchers("/reviews/delete/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
