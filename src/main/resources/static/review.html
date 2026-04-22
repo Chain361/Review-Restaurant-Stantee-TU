@@ -164,7 +164,7 @@
 
             // ── 4. ตั้ง href ปุ่มย้อนกลับ ──────────────────────────────────
             const backLink = document.getElementById('back-link');
-            if (placeID) backLink.href = `place-detail.html?placeID=${placeID}`;
+            if (placeID) backLink.href = `place-detail.html?id=${placeID}`;
 
             // ── 5. Star rating ──────────────────────────────────────────────
             const stars = document.querySelectorAll('#interactive-rating i');
@@ -250,7 +250,7 @@
 
                     if (res.ok) {
                         alert('บันทึกรีวิวสำเร็จ!');
-                        window.location.href = `place-detail.html?placeID=${placeID}`;
+                        window.location.href = `place-detail.html?id=${placeID}`;
                     } else if (res.status === 401) {
                         alert('กรุณาเข้าสู่ระบบใหม่');
                         window.location.href = 'login.html';
@@ -267,7 +267,7 @@
             // ── 8. Cancel ──────────────────────────────────────────────────
             document.getElementById('cancel-btn').addEventListener('click', function () {
                 window.location.href = placeID
-                    ? `place-detail.html?placeID=${placeID}`
+                    ? `place-detail.html?id=${placeID}`
                     : 'homepage.html';
             });
 

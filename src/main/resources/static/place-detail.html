@@ -278,7 +278,7 @@
                     <div class="divider"></div>
 
                     <div class="action-buttons">
-                        <button class="btn btn-blue" onclick="window.location.href='review.html'">
+                        <button class="btn btn-blue" id="write-review-btn">
                             <i class="fa-solid fa-pen"></i> เขียนรีวิว
                         </button>
                         <button class="btn btn-gray" onclick="window.location.href='../template/account.html'"><i class="fa-regular fa-bookmark"></i> บันทึก</button>
@@ -325,7 +325,7 @@
                                 <span class="review-count">xxx รีวิว</span>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="review-text">
                         Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
@@ -354,7 +354,7 @@
                         Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
                         Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
                     </div>
-                    
+
                 </div>
 
                 <div class="white-card">
@@ -373,12 +373,12 @@
                         <img src="image/rem-rezero.png" class="review-img" alt="img">
                         <img src="image/image-food-review.png" class="review-img" alt="img">
                     </div>
-                    
+
                     <div class="review-text">
                         Gugu gaga 药品价格便宜， 大约 40-50 泰铢， 大部分菜色都是现点现做。<br>
                         Gugu gaga แถมราคาถูก ราคาประมาณ 40 - 50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง
                     </div>
-                    
+
                 </div>
 
             </div>
@@ -443,33 +443,38 @@
 
         <script>
             async function fetchPlaceDetail() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');          
-    
-            if (id) {
-                try {
-                const response = await fetch(`http://localhost:8080/places/${id}`);
-                const data = await response.json();
-            
-                const nameEl = document.getElementById('placeName');
-                const descEl = document.getElementById('description');
-                const addrEl = document.getElementById('address');
-                const timeEl = document.getElementById('timePeriod');
-                const phoneEl = document.getElementById('phone');
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id') || urlParams.get('placeID');
 
-                if (nameEl) nameEl.innerText = data.placeName; 
-                if (descEl) descEl.innerText = data.description;
-                if (addrEl) addrEl.innerText = data.address;
-                if (timeEl) timeEl.innerText = data.timePeriod;
-                if (phoneEl) phoneEl.innerText = data.phone;
+                const writeReviewBtn = document.getElementById('write-review-btn');
+                if (writeReviewBtn && id) {
+                    writeReviewBtn.onclick = () => window.location.href = `review.html?placeID=${id}`;
+                }
 
-                console.log("แสดงข้อมูลสำเร็จ:", data);
-            } catch (error) {
-                console.error("เกิดข้อผิดพลาด:", error);
+                if (id) {
+                    try {
+                        const response = await fetch(`http://localhost:8080/places/${id}`);
+                        const data = await response.json();
+
+                        const nameEl = document.getElementById('placeName');
+                        const descEl = document.getElementById('description');
+                        const addrEl = document.getElementById('address');
+                        const timeEl = document.getElementById('timePeriod');
+                        const phoneEl = document.getElementById('phone');
+
+                        if (nameEl) nameEl.innerText = data.placeName;
+                        if (descEl) descEl.innerText = data.description;
+                        if (addrEl) addrEl.innerText = data.address;
+                        if (timeEl) timeEl.innerText = data.timePeriod;
+                        if (phoneEl) phoneEl.innerText = data.phone;
+
+                        console.log("แสดงข้อมูลสำเร็จ:", data);
+                    } catch (error) {
+                        console.error("เกิดข้อผิดพลาด:", error);
+                    }
+                }
             }
-        }
-    } 
-    fetchPlaceDetail();
+            fetchPlaceDetail();
         </script>
 
 </body>
