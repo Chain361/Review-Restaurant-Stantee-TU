@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - จัดการรีวิว</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+    
+    <style>
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .review-item {
+            border: 1px solid var(--border-color, #e0e0e0);
+            border-radius: 8px;
+            padding: 20px;
+            background-color: white;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .reviewer-name {
+            font-size: 12px; /* front 12 */
+            font-weight: 600;
+            color: var(--text-main, #333);
+        }
+
+        .review-meta {
+            font-size: 10px;
+            color: var(--text-muted, #888);
+            margin-top: 2px;
+        }
+
+        .review-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stars {
+            color: #f59e0b; /* สีส้ม */
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .btn-delete-review {
+            border: 1px solid #fca5a5;
+            color: #c9302c; /* primary-red */
+            background-color: #fef2f2;
+            border-radius: 20px;
+            padding: 4px 15px;
+            font-size: 10px;
+            cursor: pointer;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .review-body {
+            font-size: 10px; /* front 10 */
+            color: var(--text-main, #333);
+            margin-left: 55px; /* จัดให้ตรงกับข้อความ ไม่ทับรูปโปรไฟล์ */
+        }
+
+        .review-images {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .img-box {
+            width: 50px;
+            height: 50px;
+            background-color: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="brand-text">
+                    <h2>HotSnow</h2>
+                    <span>Admin Panel</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">จัดการข้อมูล</div>
+            
+            <a href="admin-place-detail.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                สถานที่
+            </a>
+            <a href="admin-menu.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                เมนูอาหาร
+            </a>
+            <a href="admin-review.html" class="menu-item active">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                รีวิว
+            </a>
+        </div>
+        
+        <div class="logout">
+            <span style="margin-right: 8px;">[→</span> ออกจากระบบ
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="breadcrumb">
+            Admin / <span>รีวิว</span>
+        </div>
+
+        <div class="page-header">
+            <h1 style="font-size: 20px;">จัดการรีวิว</h1>
+            </div>
+
+        <div class="card" style="background-color: transparent; box-shadow: none; padding: 0;">
+            <div class="toolbar" style="background-color: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                <div class="search-box">
+                    <input type="text" placeholder="ค้นหาผู้ใช้หรือสถานที่..." style="border: none; width: 100%; outline: none;">
+                </div>
+                <div class="filter-group">
+                    <select style="padding: 8px 15px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 12px; outline: none; background-color: white;">
+                        <option>ทุกสถานที่</option>
+                    </select>
+                    <select style="padding: 8px 15px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 12px; outline: none; background-color: white;">
+                        <option>ทุกคะแนน</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="review-list" style="margin-top: 15px;">
+                
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="avatar">GG</div>
+                            <div class="reviewer-details">
+                                <div class="reviewer-name">GuGu gaga</div>
+                                <div class="review-meta">Green Canteen · 2 ชั่วโมงที่แล้ว</div>
+                            </div>
+                        </div>
+                        <div class="review-actions">
+                            <div class="stars">★★★★★</div>
+                            <button class="btn-delete">ลบรีวิว</button>
+                        </div>
+                    </div>
+                    <div class="review-body">
+                        ราคาถูก ประมาณ 40-50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง สดใหม่ทุกวัน
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="avatar">GG</div>
+                            <div class="reviewer-details">
+                                <div class="reviewer-name">GuGu gaga</div>
+                                <div class="review-meta">Green Canteen · 3 ชั่วโมงที่แล้ว</div>
+                            </div>
+                        </div>
+                        <div class="review-actions">
+                            <div class="stars">★★★★★</div>
+                            <button class="btn-delete">ลบรีวิว</button>
+                        </div>
+                    </div>
+                    <div class="review-body">
+                        อาหารสดใหม่ บรรยากาศดี แนะนำสำหรับมื้อกลางวัน
+                        <div class="review-images">
+                            <div class="img-box"></div>
+                            <div class="img-box"></div>
+                            <div class="img-box"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="avatar" style="background-color: #e5e7eb;">TK</div>
+                            <div class="reviewer-details">
+                                <div class="reviewer-name">TuKtaK</div>
+                                <div class="review-meta">ห้องสมุด ป๋วย · 1 วันที่แล้ว</div>
+                            </div>
+                        </div>
+                        <div class="review-actions">
+                            <div class="stars">★★★★★</div>
+                            <button class="btn-delete">ลบรีวิว</button>
+                        </div>
+                    </div>
+                    <div class="review-body">
+                        เงียบสงบมาก เหมาะกับการอ่านหนังสือ อินเทอร์เน็ตเร็วดี
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pagination" style="margin-top: 20px; margin-bottom: 40px;">
+                <a href="#" class="page-item">&larr; ก่อนหน้า</a>
+                <a href="#" class="page-item active">1</a>
+                <a href="#" class="page-item">2</a>
+                <a href="#" class="page-item">ถัดไป &rarr;</a>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

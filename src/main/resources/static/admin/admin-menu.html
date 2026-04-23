@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - เมนูอาหาร</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="brand-text">
+                    <h2>HotSnow</h2>
+                    <span>Admin Panel</span>
+                </div>
+            </div>
+            
+            <div class="menu-section">จัดการข้อมูล</div>
+            
+            <a href="admin-place-detail.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                สถานที่
+            </a>
+            <a href="admin-menu.html" class="menu-item active">
+                <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                เมนูอาหาร
+            </a>
+            <a href="admin-review.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                รีวิว
+            </a>
+        </div>
+        
+        <div class="logout">
+            <span style="margin-right: 8px;">[→</span> ออกจากระบบ
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="breadcrumb">
+            Admin / <span>เมนูอาหาร</span>
+        </div>
+
+        <div class="page-header">
+            <h1>เมนูอาหารทั้งหมด</h1>
+            <button class="btn-add"><a href="admin-editmenu.html" style="text-decoration: none; color: white;" >+ เพิ่มเมนู</a></button>
+        </div>
+
+        <div class="card">
+            <div class="toolbar">
+                <div class="search-box">
+                    <input type="text" placeholder="ค้นหาชื่อเมนู...">
+                </div>
+                <div class="filter-box">
+                    <select>
+                        <option>ทุกสถานที่</option>
+                    </select>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">ภาพ</th>
+                        <th>ชื่อเมนู</th>
+                        <th>สถานที่</th>
+                        <th>ราคา</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="img-placeholder img-yellow"></div></td>
+                        <td style="font-weight: 500;">ข้าวผัดกระเพรา</td>
+                        <td style="color: #888;">Green Canteen</td>
+                        <td style="font-weight: 600;">45 ฿</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-edit">แก้ไข</button>
+                                <button class="btn-delete">ลบ</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="img-placeholder img-green"></div></td>
+                        <td style="font-weight: 500;">ส้มตำไทย</td>
+                        <td style="color: #888;">Green Canteen</td>
+                        <td style="font-weight: 600;">40 ฿</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-edit">แก้ไข</button>
+                                <button class="btn-delete">ลบ</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="img-placeholder img-red"></div></td>
+                        <td style="font-weight: 500;">โยเกิร์ตผลไม้</td>
+                        <td style="color: #888;">Yoguruto</td>
+                        <td style="font-weight: 600;">55 ฿</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-edit">แก้ไข</button>
+                                <button class="btn-delete">ลบ</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+</html>
