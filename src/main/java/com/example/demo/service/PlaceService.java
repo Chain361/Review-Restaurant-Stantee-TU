@@ -98,6 +98,9 @@ public class PlaceService {
         dto.setAddress(place.getAddress());
         dto.setDescription(place.getDescription());
         dto.setPhone(place.getPhone());
+        dto.setLongitude(place.getLongitude());
+        dto.setLatitude(place.getLatitude());
+
 
         List<ReviewResponseDTO> reviewDTOs = place.getReviews().stream().map(review -> {
             ReviewResponseDTO rDto = reviewService.convertToDTO(review);
