@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -56,6 +57,8 @@ public class AdminController {
         return false;
     }
 
+
+    // Parts place
     @PostMapping(value = "/places/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createPlace(
             @RequestHeader(value = "Authorization", required = false) String token,
@@ -89,7 +92,62 @@ public class AdminController {
                 "placeId", savedPlace.getPlaceID()
         ));
     }
+    @PutMapping(value = "/places/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> editPlace(
+            @PathVariable("id") int id,
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestPart(value = "placeName", required = false) String placeName,
+            @RequestPart(value = "description", required = false) String description,
+            @RequestPart(value = "phone", required = false) String phone,
+            @RequestPart(value = "address", required = false) String address,
+            @RequestPart(value = "timePeriod", required = false) String timePeriod,
+            @RequestPart(value = "latitude", required = false) String latitude,
+            @RequestPart(value = "longitude", required = false) String longitude,
+            @RequestPart(value = "images", required = false) List<MultipartFile> images) {
 
+        if (!isAdmin(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Admin only"));
+        }
+
+        // สร้าง Object เพื่อเก็บเฉพาะค่าที่ส่งมา
+        Place updateDetails = new Place();
+        updateDetails.setPlaceName(placeName);
+        updateDetails.setDescription(description);
+        updateDetails.setPhone(phone);
+        updateDetails.setAddress(address);
+        updateDetails.setTimePeriod(timePeriod);
+        
+        if (latitude != null) updateDetails.setLatitude(Double.parseDouble(latitude));
+        if (longitude != null) updateDetails.setLongitude(Double.parseDouble(longitude));
+
+        Place updatedPlace = placeService.updatePlace(id, updateDetails, images);
+
+        return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "message", "Updated successfully"
+        ));
+    }
+    @DeleteMapping("/places/delete/{id}")
+    public ResponseEntity<?> deletePlace(
+            @PathVariable("id") int id,
+            @RequestHeader(value = "Authorization", required = false) String token) {
+
+        if (!isAdmin(token)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Admin only"));
+        }
+
+        try {
+            placeService.deletePlace(id);
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "message", "Place deleted successfully"
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Error deleting place: " + e.getMessage()));
+        }
+    }
     @GetMapping("/reviews")
     public ResponseEntity<?> getAllReviews(
             @RequestHeader(value = "Authorization", required = false) String token,

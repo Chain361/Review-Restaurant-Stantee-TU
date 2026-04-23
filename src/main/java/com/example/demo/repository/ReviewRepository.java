@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.entity.Review;
 
 public interface ReviewRepository extends JpaRepository<Review,Integer>{
-    List<Review> findByPlacePlaceID(int placeId);    
+    List<Review> findByPlacePlaceID(int placeId);   
+    List<Review> findByUserUserID(Integer userID); 
 } 
