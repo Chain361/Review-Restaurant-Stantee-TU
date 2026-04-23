@@ -21,7 +21,7 @@ public class PlaceReviewsResponseDTO {
     @Data
     public static class ReviewItem {
         private Integer reviewID;
-        private Integer rating;
+        private Float rating;
         private LocalDate reviewDate;
         private String comment;
         private Integer userID;
