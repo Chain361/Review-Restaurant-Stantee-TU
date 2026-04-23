@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**", "/places/**", "/image/**", "/", "/*.html", "/login", "/register", "/homepage", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/reviews/create").hasRole("USER") // เช็ค ROLE_USER อัตโนมัติ
                 .requestMatchers("/reviews/delete/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()
                 .anyRequest().authenticated()
             );
 

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.ReviewService;
+import com.example.demo.dto.PlaceReviewsResponseDTO;
 import com.example.demo.dto.ReviewResponseDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
@@ -63,5 +64,11 @@ public class ReviewController {
             e.printStackTrace(); 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("เกิดข้อผิดพลาดภายในระบบ");
         }
+    }
+
+    @GetMapping("/{placeID}")
+    public ResponseEntity<PlaceReviewsResponseDTO> getAllPlaceReviews(@PathVariable Integer placeID) {
+        PlaceReviewsResponseDTO response = reviewService.getAllPlaceReviews(placeID);
+        return ResponseEntity.ok(response);
     }
 }

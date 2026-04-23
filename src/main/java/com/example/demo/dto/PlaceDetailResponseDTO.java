@@ -12,4 +12,6 @@ public class PlaceDetailResponseDTO {
     private String description;
     private String phone;
     private List<ReviewResponseDTO> reviews;
+    private Double longitude;
+    private double latitude;
 }
