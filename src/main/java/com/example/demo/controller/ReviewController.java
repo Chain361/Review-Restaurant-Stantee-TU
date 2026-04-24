@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.ReviewService;
+import com.example.demo.dto.PlaceReviewsResponseDTO;
 import com.example.demo.dto.ReviewResponseDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
@@ -22,7 +23,6 @@ public class ReviewController {
     @Autowired private PlaceRepository placeRepository;
     @Autowired private ImageService imageService;
     
-    // ตรวจสอบชื่อ Class ให้ตรงกับในไฟล์ Service นะครับ
     @Autowired private ReviewService reviewService; 
 
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -54,7 +54,6 @@ public class ReviewController {
                 imageService.uploadImage(placeID, savedReview, file);
             }
 
-          
             ReviewResponseDTO responseDTO = reviewService.convertToDTO(savedReview);
             
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
@@ -62,9 +61,14 @@ public class ReviewController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            // พิมพ์ log เพื่อดู error จริงๆ บน console server
             e.printStackTrace(); 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("เกิดข้อผิดพลาดภายในระบบ");
         }
+    }
+
+    @GetMapping("/{placeID}")
+    public ResponseEntity<PlaceReviewsResponseDTO> getAllPlaceReviews(@PathVariable Integer placeID) {
+        PlaceReviewsResponseDTO response = reviewService.getAllPlaceReviews(placeID);
+        return ResponseEntity.ok(response);
     }
 }
