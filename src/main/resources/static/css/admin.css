@@ -22,6 +22,7 @@ body {
     height: 100vh;
     background-color: var(--bg-light);
     color: var(--text-main);
+    padding-right: 0 !important;
 }
 
 .sidebar {
