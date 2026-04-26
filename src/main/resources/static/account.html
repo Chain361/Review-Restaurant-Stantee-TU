@@ -212,6 +212,14 @@
             // 1. เปลี่ยนชื่อที่ปุ่ม Header (ใช้ FirstName)
             document.getElementById('header-username-display').innerHTML = 
                 `${data.firstName} <i class="fa-solid fa-circle-user"></i>`;
+
+            document.getElementById('header-username-display').addEventListener('click', function(e) {
+                e.preventDefault();
+                if(confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
+                    sessionStorage.clear();
+                    window.location.href = 'account.html';
+                }
+            });
             
             // 2. เปลี่ยนชื่อที่ Profile Hero (ใช้ Full Name)
             document.getElementById('profile-name-display').textContent = fullName;
