@@ -154,59 +154,61 @@
         </p>
     </div>
 
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
+ <script>
+    const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
 
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            errorMessage.classList.remove('show');
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorMessage.classList.remove('show');
 
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
 
-            try {
-                const response = await fetch('http://localhost:8080/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    })
-                });
+        try {
+            const response = await fetch('http://localhost:8080/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            });
 
-                if (response.status === 200) {
-                    const data = await response.json();
-                    
-                    // Store accessToken in session storage
-                    sessionStorage.setItem('accessToken', data.accessToken);
-                    sessionStorage.setItem('role', data.role);
-                    
-                    // Redirect to homepage
+            if (response.status === 200) {
+                const data = await response.json();
+                
+                sessionStorage.setItem('accessToken', data.accessToken);
+                sessionStorage.setItem('role', data.role);
+                
+                console.log("Login Success, Role:", data.role); 
+
+                if (data.role === 'ADMIN') {
+                    window.location.href = 'admin-place-detail.html'; 
+                } else {                
                     window.location.href = 'homepage.html';
-                } else if (response.status === 401) {
-                    const data = await response.json();
-                    
-                    // Show error message
-                    errorMessage.textContent = data.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
-                    errorMessage.classList.add('show');
-                    
-                    // Clear password field
-                    passwordInput.value = '';
-                } else {
-                    errorMessage.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ';
-                    errorMessage.classList.add('show');
                 }
-            } catch (error) {
-                errorMessage.textContent = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์';
+        
+
+            } else if (response.status === 401) {
+                const data = await response.json();
+                errorMessage.textContent = data.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
                 errorMessage.classList.add('show');
-                console.error('Login error:', error);
+                passwordInput.value = '';
+            } else {
+                errorMessage.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ';
+                errorMessage.classList.add('show');
             }
-        });
-    </script>
+        } catch (error) {
+            errorMessage.textContent = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์';
+            errorMessage.classList.add('show');
+            console.error('Login error:', error);
+        }
+    });
+</script>
 </body>
 </html>

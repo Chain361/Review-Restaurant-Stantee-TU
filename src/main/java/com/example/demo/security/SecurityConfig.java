@@ -30,7 +30,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/places/**", "/image/**", "/", "/*.html", "/login", "/register", "/homepage", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/auth/**", "/places/**", "/image/**", "/", "/**/*.html","/admin-place-detail.html", "/login", "/register", "/homepage", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/reviews/create").hasRole("USER") // เช็ค ROLE_USER อัตโนมัติ
                 .requestMatchers("/reviews/delete/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()
