@@ -27,8 +27,8 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             
-            <a href="login.html" class="login-btn" style="text-decoration: none;">
-                กฤษณะพล<i class="fa-solid fa-circle-user"></i>
+            <a href="account.html" class="login-btn" id="header-username-display" style="text-decoration: none;">
+                กำลังโหลด... <i class="fa-solid fa-circle-user"></i>
             </a>
         </header>
 
@@ -40,7 +40,7 @@
           <i class="fa-solid fa-user"></i>
         </div>
         <div>
-          <h2 class="acc-profile-name">กฤษณะพล</h2>
+          <h2 class="acc-profile-name" id="profile-name-display">กำลังโหลด...</h2>
           <div class="acc-stats">
             <div class="acc-stat-item">
               <span class="acc-stat-number">0</span>
@@ -184,6 +184,47 @@
         btn.classList.add('active');
         document.getElementById('acc-tab-' + btn.dataset.tab).classList.remove('hidden');
       });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const token = sessionStorage.getItem('accessToken');
+
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        fetch('/users/profile', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Unauthorized');
+            return response.json();
+        })
+        .then(data => {
+            // ✅ ดึง Firstname และ Lastname มาแสดงผล
+            const fullName = `${data.firstName} ${data.lastName}`;
+            
+            // 1. เปลี่ยนชื่อที่ปุ่ม Header (ใช้ FirstName)
+            document.getElementById('header-username-display').innerHTML = 
+                `${data.firstName} <i class="fa-solid fa-circle-user"></i>`;
+            
+            // 2. เปลี่ยนชื่อที่ Profile Hero (ใช้ Full Name)
+            document.getElementById('profile-name-display').textContent = fullName;
+            
+            // 3. ถ้าคุณอยากเก็บ Username ไว้ใช้ที่อื่นในหน้านี้ (เช่น console log หรือซ่อนไว้)
+            console.log("Logged in as:", data.username);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // ถ้า Error ให้เด้งไป Login
+            // sessionStorage.clear();
+            // window.location.href = 'login.html';
+        });
     });
   </script>
 </body>

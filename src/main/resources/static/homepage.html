@@ -132,6 +132,28 @@
                 });
             })
             .catch(function(err) { console.error('Failed to load top places:', err); });
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            const token = sessionStorage.getItem('accessToken');
+            const firstName = sessionStorage.getItem('firstName');
+            const loginBtn = document.querySelector('.login-btn');
+
+            if (token && firstName && loginBtn) {
+                // เปลี่ยนข้อความปุ่มเป็นชื่อ User + ไอคอน
+                loginBtn.innerHTML = `${firstName} <i class="fa-solid fa-circle-user"></i>`;
+                
+                // ป้องกันไม่ให้กดแล้วเด้งไปหน้า login.html
+                loginBtn.href = "javascript:void(0)"; 
+                
+                // ตัวเลือก: กดที่ชื่อแล้วให้ Logout
+                loginBtn.addEventListener('click', function() {
+                    if(confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
+                        sessionStorage.clear();
+                        window.location.reload();
+                    }
+                });
+            }
+        });        
     </script>
 
 </body>
