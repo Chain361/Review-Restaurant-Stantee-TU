@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - สถานที่</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
 
@@ -76,73 +76,7 @@
                         <th>จัดการ</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td><div class="img-placeholder img-green"></div></td>
-                        <td>
-                            <div class="location-name">Green Canteen กรีน แคนทีน</div>
-                            <div class="location-sub">ใกล้ตึก SC</div>
-                        </td>
-                        <td><span class="badge badge-orange">ร้านอาหาร</span></td>
-                        <td>08:00 - 16:00</td>
-                        <td><span class="rating">★</span> <span class="rating-text">4.2</span></td>
-                        <td>87</td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-edit">แก้ไข</button>
-                                <button class="btn-delete">ลบ</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><div class="img-placeholder img-blue"></div></td>
-                        <td>
-                            <div class="location-name">ห้องสมุด ป๋วย อึ๊งภากรณ์</div>
-                            <div class="location-sub">ชั้น 1-4</div>
-                        </td>
-                        <td><span class="badge badge-blue">ที่เรียน</span></td>
-                        <td>08:00 - 20:00</td>
-                        <td><span class="rating">★</span> <span class="rating-text">4.5</span></td>
-                        <td>143</td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-edit">แก้ไข</button>
-                                <button class="btn-delete">ลบ</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><div class="img-placeholder img-yellow"></div></td>
-                        <td>
-                            <div class="location-name">สนามฟุตบอล มธ. รังสิต</div>
-                        </td>
-                        <td><span class="badge badge-green">สนามกีฬา</span></td>
-                        <td>06:00 - 20:00</td>
-                        <td><span class="rating">★</span> <span class="rating-text">3.8</span></td>
-                        <td>52</td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-edit">แก้ไข</button>
-                                <button class="btn-delete">ลบ</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><div class="img-placeholder img-red"></div></td>
-                        <td>
-                            <div class="location-name">ป้ายรถเมล์หน้า มธ.</div>
-                        </td>
-                        <td><span class="badge badge-pink">การเดินทาง</span></td>
-                        <td>ตลอด 24 ชม.</td>
-                        <td><span class="rating">★</span> <span class="rating-text">3.1</span></td>
-                        <td>30</td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-edit">แก้ไข</button>
-                                <button class="btn-delete">ลบ</button>
-                            </div>
-                        </td>
-                    </tr>
+                <tbody id="place-tbody">
                 </tbody>
             </table>
 
@@ -156,5 +90,67 @@
         </div>
     </main>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', loadTopPlaces);
+
+    async function loadTopPlaces() {
+        const tbody = document.getElementById('place-tbody');
+        try {
+            const res = await fetch('/places/top');
+            const json = await res.json();
+            if (json.status !== 'success') return;
+
+            tbody.innerHTML = json.data.map(place => {
+                const img = place.images && place.images.length > 0
+                    ? `<img src="${place.images[0]}" style="width:40px;height:40px;object-fit:cover;border-radius:4px;">`
+                    : `<div class="img-placeholder"></div>`;
+                const rating = place.rating ? place.rating.toFixed(1) : '-';
+                return `
+                    <tr>
+                        <td>${img}</td>
+                        <td><div class="location-name">${place.name}</div></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><span class="rating">★</span> <span class="rating-text">${rating}</span></td>
+                        <td>${place.reviewCount}</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-delete" onclick="deletePlace(${place.id})">ลบ</button>
+                            </div>
+                        </td>
+                    </tr>`;
+            }).join('');
+        } catch (err) {
+            console.error('ดึงข้อมูลไม่สำเร็จ', err);
+        }
+    }
+
+    async function deletePlace(id) {
+        if (!confirm('ยืนยันการลบสถานที่นี้?')) return;
+        const token = sessionStorage.getItem('accessToken');
+        try {
+            const res = await fetch(`/admin/places/delete/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const json = await res.json();
+            if (json.status === 'success') {
+                alert('ลบสถานที่สำเร็จ');
+                loadTopPlaces();
+            } else {
+                alert('เกิดข้อผิดพลาด: ' + (json.message || ''));
+            }
+        } catch (err) {
+            console.error(err);
+            alert('เกิดข้อผิดพลาด');
+        }
+    }
+
+    document.querySelector('.logout').addEventListener('click', () => {
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+    });
+</script>
 </body>
 </html>
