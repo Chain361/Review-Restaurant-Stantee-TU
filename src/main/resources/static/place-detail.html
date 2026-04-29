@@ -407,47 +407,39 @@
         });
     </script>
 
-    <script>
+<script>
+        // 1. ส่วนเช็ค Login 
+        document.addEventListener("DOMContentLoaded", function () {
+            const token = sessionStorage.getItem('accessToken');
+            const firstName = sessionStorage.getItem('firstName');
+            const loginBtn = document.querySelector('.login-btn');
+
+            if (token && firstName && loginBtn) {
+                loginBtn.innerHTML = `${firstName} <i class="fa-solid fa-circle-user"></i>`;
+                loginBtn.href = 'account.html';
+                loginBtn.style.textDecoration = 'none';
+            }
+        });
+
+        // 2. ส่วนดึงข้อมูลสถานที่และรีวิว
         async function fetchPlaceDetail() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id') || urlParams.get('placeID');
 
+            if (!id) return; // ถ้าไม่มี id ไม่ต้องทำอะไรต่อ
+
             // จัดการปุ่มเขียนรีวิว
             const writeReviewBtn = document.getElementById('write-review-btn');
-            if (writeReviewBtn && id) {
+            if (writeReviewBtn) {
                 writeReviewBtn.onclick = () => window.location.href = `review.html?placeID=${id}`;
             }
-            fetchPlaceDetail();
-
-            document.addEventListener("DOMContentLoaded", function () {
-                // 1. ดึงข้อมูลจาก sessionStorage
-                const token = sessionStorage.getItem('accessToken');
-                const firstName = sessionStorage.getItem('firstName');
-
-                // 2. ค้นหาปุ่ม "เข้าสู่ระบบ"
-                // อ้างอิงจากรูป ปุ่มนี้คือคลาส .login-btn
-                const loginBtn = document.querySelector('.login-btn');
-
-                if (token && firstName && loginBtn) {
-                    // ✅ เปลี่ยนข้อความเป็นชื่อ User
-                    loginBtn.innerHTML = `${firstName} <i class="fa-solid fa-circle-user"></i>`;
-
-                    // ✅ เปลี่ยนลิงก์ให้กดแล้วไปหน้า Account แทนหน้า Login
-                    loginBtn.href = 'account.html';
-
-                    // ปรับ Style เล็กน้อยไม่ให้ขีดเส้นใต้
-                    loginBtn.style.textDecoration = 'none';
-                }
-            });
-
-            if (!id) return;
 
             try {
                 const response = await fetch(`http://localhost:8080/places/${id}`);
                 if (!response.ok) throw new Error("ไม่สามารถโหลดข้อมูลจาก API ได้");
                 const data = await response.json();
 
-                // 1. แปะข้อมูลสถานที่พื้นฐาน
+                // แปะข้อมูลสถานที่พื้นฐาน
                 const nameEl = document.getElementById('placeName');
                 const descEl = document.getElementById('description');
                 const addrEl = document.getElementById('address');
@@ -460,7 +452,7 @@
                 if (phoneEl) phoneEl.innerText = data.phone || '-';
                 if (timeEl) timeEl.innerText = data.timePeriod || '-';
 
-                // 2. จัดการคะแนนเฉลี่ย และ จำนวนรีวิว
+                // จัดการคะแนนเฉลี่ย และ จำนวนรีวิว
                 let avgRating = 0.0;
                 const reviewCount = data.reviews ? data.reviews.length : 0;
 
@@ -475,7 +467,7 @@
                 if (avgRatingEl) avgRatingEl.innerHTML = `${avgRating} <i class="fa-solid fa-star" style="font-size: 10px;"></i>`;
                 if (totalReviewsEl) totalReviewsEl.innerText = `${reviewCount} รีวิว`;
 
-                // 3. จัดการแผนที่ (เปิด Google Maps)
+                // จัดการแผนที่ (เปิด Google Maps)
                 const mapLink = document.getElementById('map-link');
                 if (mapLink && data.latitude && data.longitude) {
                     mapLink.style.cursor = 'pointer';
@@ -485,25 +477,24 @@
                     };
                 }
 
-                // 4. แปะรายการรีวิวและรูปภาพ
+                // แปะรายการรีวิวและรูปภาพ
                 const reviewsContainer = document.getElementById('reviews-container');
                 if (reviewCount > 0) {
-                    reviewsContainer.innerHTML = ''; // ล้างข้อความ 'กำลังโหลดรีวิว...'
+                    reviewsContainer.innerHTML = ''; // ล้างข้อความโหลด
 
                     const baseImageUrl = "http://localhost:8080/image/";
 
                     data.reviews.forEach(review => {
-                        // จัดการรูปภาพ (ถ้ามี)
                         let imagesHtml = '';
                         if (review.reviewImages && review.reviewImages.length > 0) {
                             imagesHtml = `<div class="review-images-container">`;
                             review.reviewImages.forEach(imgPath => {
-                                imagesHtml += `<img src="${baseImageUrl}${imgPath}" class="review-img" alt="img" onerror="this.src='image/image-food-review.png'">`;
+                                // 💡 ทริค: ใส่ this.onerror=null ป้องกันบั๊กรูปภาพกระพริบซ้อนเผื่อไฟล์ภาพพัง
+                                imagesHtml += `<img src="${baseImageUrl}${imgPath}" class="review-img" alt="img" onerror="this.onerror=null; this.src='image/image-food-review.png'">`;
                             });
                             imagesHtml += `</div>`;
                         }
 
-                        // สร้างการ์ดรีวิวตามคลาส UI เดิมของคุณ
                         const reviewCard = `
                         <div class="white-card">
                             <div class="review-header">
@@ -536,6 +527,8 @@
                 document.getElementById('placeName').innerText = "ไม่สามารถโหลดข้อมูลได้";
             }
         }
+
+        // 3. สั่งให้ฟังก์ชันเริ่มทำงาน
         fetchPlaceDetail();
     </script>
 </body>
