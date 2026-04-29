@@ -5,35 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - จัดการรีวิว</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/admin.css">
-    
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .review-list {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
-
         .review-item {
-            border: 1px solid var(--border-color, #e0e0e0);
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 20px;
             background-color: white;
         }
-
         .review-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 10px;
         }
-
         .reviewer-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
         .avatar {
             width: 40px;
             height: 40px;
@@ -46,34 +42,29 @@
             font-size: 14px;
             font-weight: 600;
         }
-
         .reviewer-name {
-            font-size: 12px; /* front 12 */
+            font-size: 12px;
             font-weight: 600;
-            color: var(--text-main, #333);
+            color: #333;
         }
-
         .review-meta {
             font-size: 10px;
-            color: var(--text-muted, #888);
+            color: #888;
             margin-top: 2px;
         }
-
         .review-actions {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
         .stars {
-            color: #f59e0b; /* สีส้ม */
+            color: #f59e0b;
             font-size: 14px;
             letter-spacing: 2px;
         }
-
         .btn-delete-review {
             border: 1px solid #fca5a5;
-            color: #c9302c; /* primary-red */
+            color: #c9302c;
             background-color: #fef2f2;
             border-radius: 20px;
             padding: 4px 15px;
@@ -81,35 +72,23 @@
             cursor: pointer;
             font-family: 'Kanit', sans-serif;
         }
-
         .review-body {
-            font-size: 10px; /* front 10 */
-            color: var(--text-main, #333);
-            margin-left: 55px; /* จัดให้ตรงกับข้อความ ไม่ทับรูปโปรไฟล์ */
+            font-size: 10px;
+            color: #333;
+            margin-left: 55px;
+        }
+        body.swal2-shown {
+        padding-right: 0 !important;
+        overflow-y: auto !important;
         }
 
-        .review-images {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .img-box {
-            width: 50px;
-            height: 50px;
-            background-color: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-        }
-        
-        .filter-group {
-            display: flex;
-            gap: 10px;
+        html.swal2-shown, body.swal2-shown {
+        height: auto !important;
+        overflow: auto !important;
         }
     </style>
 </head>
 <body>
-
     <aside class="sidebar">
         <div class="sidebar-top">
             <div class="brand">
@@ -121,9 +100,7 @@
                     <span>Admin Panel</span>
                 </div>
             </div>
-            
             <div class="menu-section">จัดการข้อมูล</div>
-            
             <a href="admin-place-detail.html" class="menu-item">
                 <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 สถานที่
@@ -137,110 +114,113 @@
                 รีวิว
             </a>
         </div>
-        
-        <div class="logout">
+        <div class="logout" onclick="sessionStorage.clear(); window.location.href='login.html';" style="cursor:pointer;">
             <span style="margin-right: 8px;">[→</span> ออกจากระบบ
         </div>
     </aside>
 
     <main class="main-content">
-        <div class="breadcrumb">
-            Admin / <span>รีวิว</span>
+        <div class="breadcrumb">Admin / <span>รีวิว</span></div>
+        <div class="page-header"><h1 style="font-size: 20px;">จัดการรีวิว</h1></div>
+
+        <div class="toolbar" style="background-color: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0; display: flex; gap: 10px;">
+            <div class="search-box" style="flex: 1;">
+                <input type="number" id="searchPlaceId" placeholder="ใส่ Place ID เพื่อดึงข้อมูลรีวิว..." style="border: 1px solid #e0e0e0; width: 100%; outline: none; padding: 8px 15px; border-radius: 4px;">
+            </div>
+            <button onclick="fetchReviewsByPlace()" style="background-color: #798d9a; color: white; border: none; padding: 8px 25px; border-radius: 4px; cursor: pointer; font-family: 'Kanit';">
+                ค้นหา
+            </button>
         </div>
 
-        <div class="page-header">
-            <h1 style="font-size: 20px;">จัดการรีวิว</h1>
-            </div>
-
-        <div class="card" style="background-color: transparent; box-shadow: none; padding: 0;">
-            <div class="toolbar" style="background-color: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
-                <div class="search-box">
-                    <input type="text" placeholder="ค้นหาผู้ใช้หรือสถานที่..." style="border: none; width: 100%; outline: none;">
-                </div>
-                <div class="filter-group">
-                    <select style="padding: 8px 15px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 12px; outline: none; background-color: white;">
-                        <option>ทุกสถานที่</option>
-                    </select>
-                    <select style="padding: 8px 15px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 12px; outline: none; background-color: white;">
-                        <option>ทุกคะแนน</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="review-list" style="margin-top: 15px;">
-                
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer-info">
-                            <div class="avatar">GG</div>
-                            <div class="reviewer-details">
-                                <div class="reviewer-name">GuGu gaga</div>
-                                <div class="review-meta">Green Canteen · 2 ชั่วโมงที่แล้ว</div>
-                            </div>
-                        </div>
-                        <div class="review-actions">
-                            <div class="stars">★★★★★</div>
-                            <button class="btn-delete">ลบรีวิว</button>
-                        </div>
-                    </div>
-                    <div class="review-body">
-                        ราคาถูก ประมาณ 40-50 บาท ส่วนใหญ่เป็นอาหารตามสั่ง สดใหม่ทุกวัน
-                    </div>
-                </div>
-
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer-info">
-                            <div class="avatar">GG</div>
-                            <div class="reviewer-details">
-                                <div class="reviewer-name">GuGu gaga</div>
-                                <div class="review-meta">Green Canteen · 3 ชั่วโมงที่แล้ว</div>
-                            </div>
-                        </div>
-                        <div class="review-actions">
-                            <div class="stars">★★★★★</div>
-                            <button class="btn-delete">ลบรีวิว</button>
-                        </div>
-                    </div>
-                    <div class="review-body">
-                        อาหารสดใหม่ บรรยากาศดี แนะนำสำหรับมื้อกลางวัน
-                        <div class="review-images">
-                            <div class="img-box"></div>
-                            <div class="img-box"></div>
-                            <div class="img-box"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="review-item">
-                    <div class="review-header">
-                        <div class="reviewer-info">
-                            <div class="avatar" style="background-color: #e5e7eb;">TK</div>
-                            <div class="reviewer-details">
-                                <div class="reviewer-name">TuKtaK</div>
-                                <div class="review-meta">ห้องสมุด ป๋วย · 1 วันที่แล้ว</div>
-                            </div>
-                        </div>
-                        <div class="review-actions">
-                            <div class="stars">★★★★★</div>
-                            <button class="btn-delete">ลบรีวิว</button>
-                        </div>
-                    </div>
-                    <div class="review-body">
-                        เงียบสงบมาก เหมาะกับการอ่านหนังสือ อินเทอร์เน็ตเร็วดี
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="pagination" style="margin-top: 20px; margin-bottom: 40px;">
-                <a href="#" class="page-item">&larr; ก่อนหน้า</a>
-                <a href="#" class="page-item active">1</a>
-                <a href="#" class="page-item">2</a>
-                <a href="#" class="page-item">ถัดไป &rarr;</a>
-            </div>
+        <div class="review-list" id="reviewListContainer" style="margin-top: 15px;">
+            <div style="text-align: center; padding: 40px; color: #888;">กรุณาใส่ Place ID และกดปุ่มเพื่อดึงข้อมูลรีวิว</div>
         </div>
     </main>
 
+    <script>
+        if (sessionStorage.getItem('role') !== 'ADMIN') {
+            window.location.href = 'homepage.html';
+        }
+
+        async function fetchReviewsByPlace() {
+            const placeId = document.getElementById('searchPlaceId').value;
+            const container = document.getElementById('reviewListContainer');
+            if (!placeId) return;
+            container.innerHTML = '<div style="text-align: center; padding: 20px;">กำลังโหลด...</div>';
+            try {
+                const response = await fetch(`http://localhost:8080/places/${placeId}`);
+                const data = await response.json();
+                const reviews = data.reviews || [];
+                if (reviews.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; padding: 20px; color: #c9302c;">ไม่พบรีวิวสำหรับสถานที่นี้</div>';
+                    return;
+                }
+                container.innerHTML = reviews.map(rev => `
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="avatar">${rev.username ? rev.username.substring(0,2).toUpperCase() : 'US'}</div>
+                                <div class="reviewer-details">
+                                    <div class="reviewer-name">${rev.username || 'Anonymous'}</div>
+                                    <div class="review-meta">ID รีวิว: ${rev.reviewID}</div>
+                                </div>
+                            </div>
+                            <div class="review-actions">
+                                <div class="stars">${'★'.repeat(rev.rating)}${'☆'.repeat(5-rev.rating)}</div>
+                                <button class="btn-delete-review" onclick="deleteReview(${rev.reviewID})">ลบรีวิว</button>
+                            </div>
+                        </div>
+                        <div class="review-body">${rev.comment || 'ไม่มีข้อความรีวิว'}</div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; color: red;">เชื่อมต่อ Server ไม่สำเร็จ</div>';
+            }
+        }
+
+        async function deleteReview(reviewId) {
+    const result = await Swal.fire({
+        title: 'ยืนยันการลบรีวิว?',
+        text: `คุณกำลังจะลบรีวิวหมายเลข ${reviewId} การกระทำนี้ไม่สามารถย้อนกลับได้`,
+        icon: 'warning',
+        backdrop: `rgba(0,0,0,0.4)`, // ใส่สีพื้นหลังเองแทนการให้ระบบจัดการ
+        heightAuto: false,            // ห้ามปรับความสูง body อัตโนมัติ
+        scrollbarPadding: false,
+        showCancelButton: true,
+        confirmButtonColor: '#c9302c',
+        cancelButtonColor: '#798d9a',   
+        confirmButtonText: 'ใช่, ลบเลย!',
+        cancelButtonText: 'ยกเลิก',
+        reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+        const token = sessionStorage.getItem('accessToken');
+        
+        try {
+            Swal.showLoading();
+
+            const response = await fetch(`http://localhost:8080/reviews/delete/${reviewId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                await Swal.fire({
+                    title: 'ลบสำเร็จ!',
+                    text: 'ข้อมูลรีวิวถูกลบออกจากระบบแล้ว',
+                    icon: 'success',
+                    confirmButtonColor: '#798d9a'
+                });
+                fetchReviewsByPlace(); 
+            } else {
+                Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบได้ (อาจติดสิทธิ์ ADMIN)', 'error');
+            }
+        } catch (error) {
+            Swal.fire('Error', 'ไม่สามารถเชื่อมต่อกับ Server ได้', 'error');
+        }
+    }
+}
+    </script>
 </body>
 </html>

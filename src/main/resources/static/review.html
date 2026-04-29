@@ -137,6 +137,14 @@
                 return;
             }
 
+            // 2.1 ดึงชื่อผู้ใช้จาก sessionStorage
+            const firstName = sessionStorage.getItem('firstName') || sessionStorage.getItem('username');
+            const loginBtn = document.querySelector('.login-btn');
+            if (firstName && loginBtn) {
+                loginBtn.innerHTML = `${firstName} <i class="fa-solid fa-circle-user"></i>`;
+                loginBtn.href = 'account.html';
+            }
+
             // ── 3. ดึงข้อมูลสถานที่ ────────────────────────────────────────
             if (placeID) {
                 try {

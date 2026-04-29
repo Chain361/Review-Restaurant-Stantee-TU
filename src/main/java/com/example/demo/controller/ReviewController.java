@@ -71,4 +71,19 @@ public class ReviewController {
         PlaceReviewsResponseDTO response = reviewService.getAllPlaceReviews(placeID);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/delete/{id}")
+public ResponseEntity<?> deleteReview(@PathVariable Integer id) {
+    try {
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ไม่พบรีวิวที่ต้องการลบ (ID: " + id + ")"));
+
+        reviewRepository.delete(review);
+        return ResponseEntity.ok("ลบรีวิวสำเร็จเรียบร้อยแล้ว");
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("เกิดข้อผิดพลาดในการลบรีวิว");
+    }
+}
 }

@@ -132,6 +132,17 @@
                 });
             })
             .catch(function(err) { console.error('Failed to load top places:', err); });
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            const token = sessionStorage.getItem('accessToken');
+            const firstName = sessionStorage.getItem('firstName');
+            const loginBtn = document.querySelector('.login-btn');
+
+            if (token && firstName && loginBtn) {
+                loginBtn.innerHTML = `${firstName} <i class="fa-solid fa-circle-user"></i>`;
+                loginBtn.href = "account.html";
+            }
+        });        
     </script>
 
 </body>

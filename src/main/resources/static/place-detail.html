@@ -417,6 +417,28 @@
             if (writeReviewBtn && id) {
                 writeReviewBtn.onclick = () => window.location.href = `review.html?placeID=${id}`;
             }
+            fetchPlaceDetail();
+
+            document.addEventListener("DOMContentLoaded", function() {
+                // 1. ดึงข้อมูลจาก sessionStorage
+                const token = sessionStorage.getItem('accessToken');
+                const firstName = sessionStorage.getItem('firstName');
+                
+                // 2. ค้นหาปุ่ม "เข้าสู่ระบบ"
+                // อ้างอิงจากรูป ปุ่มนี้คือคลาส .login-btn
+                const loginBtn = document.querySelector('.login-btn');
+
+                if (token && firstName && loginBtn) {
+                    // ✅ เปลี่ยนข้อความเป็นชื่อ User
+                    loginBtn.innerHTML = `${firstName} <i class="fa-solid fa-circle-user"></i>`;
+                    
+                    // ✅ เปลี่ยนลิงก์ให้กดแล้วไปหน้า Account แทนหน้า Login
+                    loginBtn.href = 'account.html';
+                    
+                    // ปรับ Style เล็กน้อยไม่ให้ขีดเส้นใต้
+                    loginBtn.style.textDecoration = 'none';
+                }
+            });        
 
             if (!id) return;
 

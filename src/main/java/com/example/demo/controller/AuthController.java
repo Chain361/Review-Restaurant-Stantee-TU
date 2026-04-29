@@ -34,6 +34,7 @@ public class AuthController {
         boolean isAuthenticated = userService.authenticate(
                 request.getUsername(),
                 request.getPassword()
+                
         );
 
         if (isAuthenticated) {
@@ -42,7 +43,9 @@ public class AuthController {
 
             return ResponseEntity.ok(Map.of(
                     "accessToken", token,
-                    "role", user.getRole()
+                    "role", user.getRole(),
+                    "username", user.getUsername(),
+                    "firstName", user.getFirstName()
             ));
         }
 
