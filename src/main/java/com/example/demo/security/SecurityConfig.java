@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**", "/places/**", "/image/**", "/", "/**/*.html","/admin-place-detail.html", "/login", "/register", "/homepage", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/reviews/create").hasRole("USER") // เช็ค ROLE_USER อัตโนมัติ
                 .requestMatchers("/reviews/delete/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyRequest().authenticated()
             );
 

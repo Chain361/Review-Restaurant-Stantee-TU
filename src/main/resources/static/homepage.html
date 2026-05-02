@@ -17,7 +17,7 @@
         <header>
             <div class="logo-container">
                 <div class="logo-icon">S</div>
-                <div class="logo-text">HotSnow</div>
+                <div class="logo-text">ReviewTU</div>
             </div>
             
             <div class="search-bar">
@@ -31,7 +31,7 @@
         </header>
 
         <div class="banner">
-            <img src="https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg" alt="Banner Image">
+            <img src="./image/rem-rezero.png" alt="Banner Image">
         </div>
 
         <nav class="categories">
@@ -90,7 +90,7 @@
             
             <div class="footer-logo">
                 <div class="logo-icon">S</div>
-                <div class="logo-text">HotSnow</div>
+                <div class="logo-text">ReviewTU</div>
             </div>
 
             <div class="footer-contact-group">
@@ -117,12 +117,13 @@
                     var imgSrc = (place.images && place.images.length > 0)
                         ? place.images[0]
                         : 'https://i.pinimg.com/236x/0b/57/0e/0b570e9b799056906ad50fadc1a6087a.jpg';
+                    var placeid = place.id;
                     var rating = place.rating ? place.rating.toFixed(1) : '0.0';
                     var card = document.createElement('a');
                     card.href = 'place-detail.html?id=' + place.id;
                     card.className = 'card';
                     card.innerHTML =
-                        '<img src="' + imgSrc + '" alt="Place image">' +
+                        '<img src="./places/' + placeid + '/' + imgSrc + '" alt="Place image">' +
                         '<div class="card-title">' + place.name + '</div>' +
                         '<div class="card-footer">' +
                             '<div class="rating">' + rating + ' ★</div>' +

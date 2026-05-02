@@ -268,7 +268,7 @@
         <header>
             <div class="logo-container" onclick="window.location.href='../static/homepage.html'">
                 <div class="logo-icon">S</div>
-                <div class="logo-text">HotSnow</div>
+                <div class="logo-text">ReviewTU</div>
             </div>
 
             <div class="search-bar">
@@ -472,7 +472,7 @@
                 if (mapLink && data.latitude && data.longitude) {
                     mapLink.style.cursor = 'pointer';
                     mapLink.onclick = () => {
-                        const googleMapUrl = `https://www.google.com/maps?q=LAT,LNG?q=$${data.latitude},${data.longitude}`;
+                        const googleMapUrl = `https://www.google.com/maps/search/?api=1&query=${data.latitude}%2C${data.longitude}`;
                         window.open(googleMapUrl, '_blank');
                     };
                 }

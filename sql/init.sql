@@ -97,46 +97,48 @@ INSERT INTO places (
     "longitude"
 ) VALUES 
 (
-    'The Grand Palace', 
-    'Historic royal complex and home to the Temple of the Emerald Buddha.', 
+    'U smile I smile', 
+    'อาหารจานเดียวของหวานเครื่องดื่ม/น้ำผลไม้', 
     '+66 2 623 5500', 
-    'Na Phra Lan Rd, Phra Borom Maha Ratchawang, Phra Nakhon, Bangkok 10200', 
+    '88/29, ถนน คลองหนึ่ง คลองหลวง ปทุมธานี ปทุมธานี', 
     '08:30 - 15:30', 
-    13.7500, 
-    100.4913
+    14.065603, 
+    100.610676
 ),
 (
-    'Wat Arun', 
-    'Iconic riverside temple known as the Temple of Dawn, featuring a towering central prang.', 
+    'เทพพระยาก๋วยเตี๋ยวเรือ', 
+    'ที่จอดรถ(มีที่จอดรถ)
+    รับบัตรเครดิต
+        เดลิเวอรี', 
     '+66 2 891 2185', 
-    '158 Thanon Wang Doem, Wat Arun, Bangkok Yai, Bangkok 10600', 
+    '58/259, ซอย คลองหนึ่ง คลองหลวง ปทุมธานี ปทุมธานี (Mingle Market)', 
     '08:00 - 18:00', 
-    13.7437, 
-    100.4889
+    14.066126, 
+    100.610574
 ),
 (
-    'Chatuchak Weekend Market', 
-    'One of the largest weekend markets in the world with over 15,000 stalls.', 
+    'Sweet Daisy (กรีกโยเกิร์ต)', 
+    'อาหารคลีน/สลัดเบเกอรี/เค้กของหวาน', 
     '+66 2 272 4813', 
-    'Kamphaeng Phet 2 Rd, Chatuchak, Bangkok 10900', 
+    '160, ถนน คลองหนึ่ง คลองหลวง ปทุมธานี ปทุมธานี (ตลาดนัดเที่ยงคืน มธ.)', 
     '09:00 - 18:00', 
-    13.7999, 
-    100.5506
+    14.065637, 
+    100.612866
 ),
 (
-    'Lumphini Park', 
-    'A rare open public space, trees, and playgrounds in the Thai capital, featuring boating on an artificial lake.', 
+    'Kulikuli สาขา ม.ธรรมศาสตร์รังสิต', 
+    'เบเกอรี/เค้กของหวาน', 
     '+66 2 252 7006', 
-    'Rama IV Rd, Lumphini, Pathum Wan, Bangkok 10330', 
+    '60, หมู่ 8 ถนนเชียงราก คลองหนึ่ง คลองหลวง ปทุมธานี ปทุมธานี', 
     '04:30 - 21:00', 
-    13.7314, 
-    100.5415
+    14.066145, 
+    100.609860
 ),
 (
-    'ICONSIAM', 
-    'Large, modern riverside mall featuring luxury shopping, an indoor floating market, and dining.', 
+    'นัมบะชาบูหม่าล่า - Namba Shabu Mala (ธรรมศาสตร์รังสิต) (Namba Shabu Mala (TU Rangsit))', 
+    'ชาบู/สุกี้ยากี้/หม้อไฟ', 
     '+66 2 495 7000', 
-    '299 Charoen Nakhon Rd, Khlong Ton Sai, Khlong San, Bangkok 10600', 
+    '60ม8, เชียงราก คลองหนึ่ง คลองหลวง ปทุมธานี ปทุมธานี (ร้านนัมบะชาบู)', 
     '10:00 - 22:00', 
     13.7267, 
     100.5105
